@@ -2,14 +2,14 @@
 <widget xmlns       = "http://www.w3.org/ns/widgets"
         xmlns:gap   = "http://phonegap.com/ns/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id          = "WaveTools"
+        id          = "MyWave"
         versionCode = "10"
-        version     = "0.2.14">
+        version     = "0.0.1">
  
-    <name>WaveTools</name>
+    <name>Cel-Fi MyWAVE</name>
  
     <description>
-        Nextivity Phone App Wave Tools
+        Nextivity Phone App MyWAVE
     </description>
  
     <author email="jowen@nextivityinc.com">
