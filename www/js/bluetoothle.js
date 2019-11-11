@@ -347,7 +347,7 @@ function CatchBluetoothDisabled()
     PrintLog(1, "BT: CatchBluetoothDisabled()" );
     isSouthBoundIfEnabled = false;
     isSouthBoundIfStarted = true;
-    showAlert("WaveTools", "This app requires Bluetooth to be enabled.<br>Please activate Bluetooth from your system settings.");
+    showAlert("BlueTooth", "This app requires Bluetooth to be enabled.<br>Please activate Bluetooth from your system settings and restart app.");
 //    ShowConfirmPopUpMsg( 'KEY_BLUETOOTH_REQUIRED',               // title
 //            "This app requires Bluetooth to be enabled.<br>Please activate Bluetooth from your system settings.",    // message text written by handler, this text written to log.
 //            HandleBtDisabledConfirmation,      // callback to invoke with index of button pressed
@@ -448,7 +448,8 @@ function isConnectedCallback(obj)
 	                            PrintLog(1, "BT: Location services disabled." );
 	                            locationEnabled = false;
 	                            guiDisableBtScanFlag = true;    // Disable the start of BT scanning since we must throw dialog and then reset...
-	                            util.preLocationMessageAndroid(false);  // false to indicate location not enabled yet.
+//	                            util.preLocationMessageAndroid(false);  // false to indicate location not enabled yet.
+	                            CatchBluetoothDisabled();  // Should not get here since should have already been caught.
 	                        }
 	                    }
 
@@ -457,7 +458,8 @@ function isConnectedCallback(obj)
                             PrintLog(1, "BT: Location services not enabled.  Err callback." );
                             locationEnabled = false;
                             guiDisableBtScanFlag = true;    // Disable the start of BT scanning since we must throw dialog and then reset...
-                            util.preLocationMessageAndroid(false);  // false to indicate location not enabled yet.
+//                            util.preLocationMessageAndroid(false);  // false to indicate location not enabled yet.
+                            CatchBluetoothDisabled();  // Should not get here since should have already been caught.
 	                    }
 	                }
     
@@ -493,6 +495,39 @@ function isConnectedCallback(obj)
 }
 
 
+function checkLocationPermissionAndroid() 
+{
+    PrintLog(1, "checkLocationPermissionAndroid()");
+    
+    bluetoothle.hasPermission(function(obj) 
+    {
+        if (obj.hasPermission) {
+            //Already has permissions
+            // Re-enable the check and now both location services and permissions shouold pass so bluetooth should start scanning.
+            guiDisableBtScanFlag = false;               
+            PrintLog(1, "checkLocationPermissionAndroid() - already has permission.");
+            return;
+        }
+
+        PrintLog(1, "checkLocationPermissionAndroid() - phone may be automatically sent to the background to show system permission popup.");
+        bluetoothle.requestPermission(function(obj) 
+        {
+            if (obj.requestPermission) 
+            {
+                //Permission granted
+                // Re-enable the check and now both location services and permissions shouold pass so bluetooth should start scanning.
+                guiDisableBtScanFlag = false;               
+                PrintLog(1, "checkLocationPermissionAndroid() - user just granted permission.");
+                return;
+            }
+
+            // Permission denied, show another message?
+            PrintLog(1, "checkLocationPermissionAndroid() - user just denied permission.");
+//            util.displayLocationServiceRequiredAndroid();
+            CatchBluetoothDisabled();  
+        });
+    });
+}
 
 // StartScan.....................................................................................
 function StartBluetoothScan()
