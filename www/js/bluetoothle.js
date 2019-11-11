@@ -120,7 +120,7 @@ var bUseIdValTechData       = false;    // True if running on BtIcdVer2.
 var bUseThunkLayer          = false;    // Convert ICD msgs to debug messages
 var szSouthBoundIfEnableMsg = GetLangString("SouthBoundIfEnableMsgBT");     // "Bluetooth Required: Please Enable...";
 var szSouthBoundIfNotCnxMsg = GetLangString("SouthBoundIfNotCnxMsgBT");     //  "Bluetooth connection lost.";
-var szSouthBoundIfInfoMsg   = GetLangString("SouthBoundIfInfoMsgBT");       // "Indicates if connected to Cel-Fi device via Bluetooth.\nBlue means connected.\nGray means not connected.\nCurrent status: ";
+var // szSouthBoundIfInfoMsg   = GetLangString("SouthBoundIfInfoMsgBT");       // "Indicates if connected to Cel-Fi device via Bluetooth.\nBlue means connected.\nGray means not connected.\nCurrent status: ";
 
 
 var addressKey      = "address";
