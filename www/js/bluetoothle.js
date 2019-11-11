@@ -495,6 +495,48 @@ function isConnectedCallback(obj)
 }
 
 
+// Android specific-----------------------------------------------------
+function HandlePreLocationConfirmation(buttonIndex) 
+{
+ // buttonIndex = 0 if dialog dismissed, i.e. back button pressed.
+ // buttonIndex = 1 if 'Ok'
+ if( (buttonIndex == 0) || (buttonIndex == 1) )
+ {
+     // Ok...
+     checkLocationPermissionAndroid();
+ }
+}
+
+function restartApp() 
+{
+    location.reload();
+}
+
+function HandleLocationServicesRequiredConfirmation()
+{
+    // buttonIndex = 0 if dialog dismissed, i.e. back button pressed.
+    // buttonIndex = 1 if 'Ok'
+    if( (buttonIndex == 0) || (buttonIndex == 1) )
+    {
+        // Ok...
+        DisconnectAndStopSouthBoundIf();
+        setTimeout(restartApp, 2000);    // Allow BT to disconnect...
+    }
+
+}
+
+// message for user before asking for location services
+function preLocationMessageAndroid(bLocationEnabled) 
+{
+    PrintLog(1, "preLocationMessageAndroid(" + bLocationEnabled + ")" );
+    
+    navigator.notification.confirm(
+            GetLangString('LocationServicesText'),    // message
+            HandlePreLocationConfirmation,  // callback to invoke with index of button pressed
+            GetLangString('LocationServices'),       // title
+            ['Ok'] );                       // buttonLabels
+}
+
 function checkLocationPermissionAndroid() 
 {
     PrintLog(1, "checkLocationPermissionAndroid()");
@@ -528,6 +570,21 @@ function checkLocationPermissionAndroid()
         });
     });
 }
+
+
+function displayLocationServiceRequiredAndroid()
+{
+    PrintLog(1, "displayLocationServiceRequiredAndroid()" );
+    
+    navigator.notification.confirm(
+            GetLangString('LocationServicesRequiredText'),    // message
+            HandleLocationServicesRequiredConfirmation,  // callback to invoke with index of button pressed
+            GetLangString('LocationServicesRequired'),       // title
+            ['Try Again'] );                       // buttonLabels
+
+}
+
+
 
 // StartScan.....................................................................................
 function StartBluetoothScan()
