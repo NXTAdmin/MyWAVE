@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+<!--
+    <script src="https://jsconsole.com/js/remote.js?nxty_owen"></script>
+-->
+
+        <title>WaveTools</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=0" />
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css"/>
+        <script type="text/javascript" language="JavaScript">
+ 
+ 
+
+
+ 
+        </script>
+    </head>
+    <body>
+
+        <script>
+            // Set to true to debug on browser...
+//          var ImRunningOnBrowser = true;
+            var ImRunningOnBrowser = false;
+        </script>
+        
+        <script src="cordova.js"></script>  
+        <script src="lib/jquery-1.8.2.min.js"></script>
+
+        
+<!--
+  Make sure that bluetoothle.js is listed before main.js so that StartBluetooth() 
+  called from main.js can be found in bluetoothle.js.
+-->  
+
+        <script src="js/language.js"></script>
+        <script src="js/bluetoothle.js"></script>
+        <script src="js/msg_nxty.js"></script>
+        <script src="js/thunk.js"></script>
+
+                        
+        <script src="js/file.js"></script>
+        <script src="js/main.js"></script>
+        
+        <script>
+            // Wait for the document to be ready before starting...
+            $(document).ready(function() {
+                   app.initialize();
+            });
+        </script>
+    
+        
+        
+    </body>
+</html>
