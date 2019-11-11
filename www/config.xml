@@ -52,7 +52,6 @@
     <gap:plugin name="cordova-plugin-globalization"  source="npm" version="1.0.4" />
     <gap:plugin name="cordova-plugin-spinnerdialog" source="npm" />
     <gap:plugin name="cordova-plugin-dialogs" source="npm" />
-    <gap:plugin name="cordova.plugins.diagnostic"     source="npm" version="3.6.8" />
 
     <!-- Third party plugins -->
     <gap:plugin spec="https://github.com/NXTAdmin/cordova-plugin-bluetoothle" source="git"/>     <!-- Based on version 4.4.4.  -->
