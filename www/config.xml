@@ -16,7 +16,9 @@
         John Owen
     </author>
  
- 
+    <platform name="ios" />
+    <platform name="android" />
+
     <gap:config-file platform="android" parent="/manifest">
         <application android:debuggable="true" />
     </gap:config-file>
