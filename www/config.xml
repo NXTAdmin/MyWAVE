@@ -33,14 +33,19 @@
 
     <!-- Customize your app and platform with the preference element. -->
     
-    <preference name="phonegap-version" value="cli-6.5.0" />  
+    <!-- <preference name="phonegap-version" value="cli-6.5.0" />  --> 
+    
+    <preference name="phonegap-version" value="cli-7.0.1" /> 
+    <preference name='pgb-builder-version' value='1' />         <!-- To use new 7.0.1 Phonegap with old build process.  Without this line there are icon file issues.  -->
+    
+     
     <preference name="orientation"                value="portrait" />       <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
+    <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
     
     <preference name="android-minSdkVersion"      value="21" />             <!-- android: MIN SDK version supported on the target device. MAX version is blank by default. -->
-    <preference name="android-targetSdkVersion"   value="26" />   
-    <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
+    <preference name="android-targetSdkVersion"   value="28" />   
 
     <!-- Plugins -->
  
