@@ -958,7 +958,7 @@ var app = {
         if(bWaveTest)
         {
             var myHtml = 
-                "<img src='img/header_main.png' width='100%' />" +
+//                "<img src='img/header_main.png' width='100%' />" +
                 
                 myBluetoothIcon +
                 myBluetoothMain +
@@ -1036,7 +1036,7 @@ SimpleTimer.start(onTimerTick, errorStart, config);
 
         
 //        UpdateRssiLine( -100 );               
-//        GetRssiPeriodically();
+        GetRssiPeriodically();
         
     },
 
@@ -1090,7 +1090,7 @@ function GetRssiPeriodically()
                 function(err)               // Fail
                 {
                     PrintLog(99, "Telephony Err: " + err.toString() );
-                    showAlert("Telephony Plugin", JSON.stirngify(err) );
+                    showAlert("Telephony Plugin", JSON.stringify(err) );
                 }
              );  // follow
 
