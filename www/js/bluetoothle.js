@@ -403,51 +403,72 @@ function isConnectedCallback(obj)
 	        
 	        if( guiDisableBtScanFlag == false )
 	        {
+	            PrintLog(1, "BT: Privacy Policy accepted, check to see if scan allowed..." );
 	        
-	           if( (window.device.platform == "Android") && (parseInt(window.device.version, 10) >= 6) )
-               {
-                  enableLocationPerDialog = true;
-               }
+	            if( window.device.platform == androidPlatform  ) 
+	            {
+	                // Android version >= 6 must have Location services on for Bluetooth scan to work...
+	                if( parseInt(window.device.version, 10) < 6)
+	                {
+	                    // Before Android 6, there is no way to determine if location services are on or not so just assume on.
+                        PrintLog(1, "BT: Android version < 6 so location services not necessary.  Go ahead and start BT scan." );
+                        locationEnabled = true;     // Set so we know it is ok to call geolocation which will timeout if location services not enabled.
+                        StartBluetoothScan();
+	                }
+	                else
+	                {
+	                    PrintLog(1, "BT: Android version >= 6 so location services are required." );
 	        
-	            PrintLog(1, "BT: Privacy Policy accepted, scan for bluetooth devices..." );
-                // StartBluetoothScan();
-                if(enableLocationPerDialog) {
+	                    bluetoothle.isLocationEnabled(isLocationEnabledSuccessAndroid, isLocationEnabledErrorAndroid);
 
-                    //check if location is accessible or not
-                    cordova.plugins.diagnostic.isLocationAvailable(successCallback, errorCallback);
+	                    function isLocationEnabledSuccessAndroid(status)
+	                    {
+	                        if( status.isLocationEnabled == true )
+	                        {
+    	                        PrintLog(1, "BT: Location services enabled." );
+                                locationEnabled = true;     // Set so we know it is ok to call geolocation.
 
-                    function successCallback(success) 
-                    {
-                        //success=true, when the location setting is enabled and the user has given permission to access location.
-                        if(success) 
-                        {
-                            locationEnabled = true;
-                            PrintLog(1, "Location services available.");
-                            StartBluetoothScan();
-                        } 
-                        else 
-                        {
-                            PrintLog(1, "Location services not available, success callback but not success.");
-                            guiDisableBtScanFlag = true;    // Disable the start of BT scanning...
-//                            util.preLocationMessage();
-                              showAlert("WaveTools", "Location services not available.");
+    	                        bluetoothle.hasPermission(function(obj) 
+    	                        {
+    	                            if (obj.hasPermission) 
+    	                            {
+    	                                PrintLog(1, "BT: Permission to use location granted." );
+    	                                StartBluetoothScan();
+    	                            } 
+    	                            else 
+    	                            {
+                                        PrintLog(1, "BT: Permission to use location not granted yet." );
+    	                                guiDisableBtScanFlag = true;    // Disable the start of BT scanning since we must throw dialog and then reset...
+    	                                util.preLocationMessageAndroid(true);  // true to indicate location enabled but permission not granted yet.
+    	                            }
+    	                        });
+	                        }
+	                        else
+	                        {
+	                            PrintLog(1, "BT: Location services disabled." );
+	                            locationEnabled = false;
+	                            guiDisableBtScanFlag = true;    // Disable the start of BT scanning since we must throw dialog and then reset...
+	                            util.preLocationMessageAndroid(false);  // false to indicate location not enabled yet.
+	                        }
+	                    }
 
+                        function isLocationEnabledErrorAndroid()
+	                    {
+                            PrintLog(1, "BT: Location services not enabled.  Err callback." );
+                            locationEnabled = false;
+                            guiDisableBtScanFlag = true;    // Disable the start of BT scanning since we must throw dialog and then reset...
+                            util.preLocationMessageAndroid(false);  // false to indicate location not enabled yet.
+	                    }
+	                }
     
-                        }
-                    } 
+                }  // android platform
+   
 
-                    function errorCallback() 
-                    {
-                        PrintLog(1, "Location services not available, error callback.");
-                        guiDisableBtScanFlag = true;    // Disable the start of BT scanning...
-//                        util.preLocationMessage();
-                        showAlert("WaveTools", "Location services not available.");
-                        
-                    }
-                } else {
-                    StartBluetoothScan();
-                }                
-	            
+	        }
+	        else
+	        {
+                PrintLog(1, "BT: Do not call StartBluetoothScan().  Var guiDisableBtScanFlag=" + guiDisableBtScanFlag );
+	        }
                 
 /*                
                 // Waveapp-760: General BT catch.  Inform after 30 seconds of no BT.
@@ -461,13 +482,8 @@ function isConnectedCallback(obj)
     	                uNoBtCount = 0;
     	            }
                 }
-*/                
-
-	        }
-	        else
-	        {
-                PrintLog(1, "BT: Do not start scan if we have a popup, i.e. Cant find a booster popup." );
-	        }
+*/
+	        
 		}
 		else
 		{
@@ -481,7 +497,7 @@ function isConnectedCallback(obj)
 // StartScan.....................................................................................
 function StartBluetoothScan()
 {
-    checkPermission(); 
+//    checkPermission(); 
     PrintLog(1, "BT: StartBluetoothScan()...");
     
     // WAVEAPP-544: See if we have a cached MAC address for auto connect.
@@ -527,7 +543,7 @@ function StartBluetoothScan()
         {
             var paramsObj = {
               "services":[myAdvertisingUuid],
-              allowDuplicates: true,
+              allowDuplicates: false, // true,
               scanMode: bluetoothle.SCAN_MODE_LOW_LATENCY,
               callbackType: bluetoothle.CALLBACK_TYPE_ALL_MATCHES,
               matchNum: bluetoothle.MATCH_NUM_MAX_ADVERTISEMENT,
