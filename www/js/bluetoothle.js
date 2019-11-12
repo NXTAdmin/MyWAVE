@@ -439,7 +439,8 @@ function isConnectedCallback(obj)
     	                            {
                                         PrintLog(1, "BT: Permission to use location not granted yet." );
     	                                guiDisableBtScanFlag = true;    // Disable the start of BT scanning since we must throw dialog and then reset...
-    	                                util.preLocationMessageAndroid(true);  // true to indicate location enabled but permission not granted yet.
+//    	                                util.preLocationMessageAndroid(true);  // true to indicate location enabled but permission not granted yet.
+                                      preLocationMessageAndroid(true);  // true to indicate location enabled but permission not granted yet.
     	                            }
     	                        });
 	                        }
@@ -526,7 +527,7 @@ function HandleLocationServicesRequiredConfirmation()
 }
 
 // message for user before asking for location services
-function preLocationMessageAndroid(bLocationEnabled) 
+function preLocationMessageAndroid(bLocationEnabled) // ignore the bLocationEnabled argument
 {
     PrintLog(1, "preLocationMessageAndroid(" + bLocationEnabled + ")" );
     
