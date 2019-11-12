@@ -568,7 +568,7 @@ function checkLocationPermissionAndroid()
             // Permission denied, show another message?
             PrintLog(1, "checkLocationPermissionAndroid() - user just denied permission.");
 //            util.displayLocationServiceRequiredAndroid();
-            CatchBluetoothDisabled();  
+            displayLocationServiceRequiredAndroid();  
         });
     });
 }
