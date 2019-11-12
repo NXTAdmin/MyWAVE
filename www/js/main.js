@@ -1078,24 +1078,30 @@ SimpleTimer.start(onTimerTick, errorStart, config);
 
 function GetRssiPeriodically()
 {
-
-            UpdateStatusLine("jdo test");  // follow
-            phony.getCellInfo(
-                function(info)        // Success
-                {
-                    PrintLog(1, "Telephony: " + JSON.stringify(info)); 
-//                    UpdateStatusLine(JSON.stringify(info));  // follow
-                    UpdateStatusLine("CellInfo: " + info.cellInfo);  // follow
-                },
-                function(err)               // Fail
-                {
-                    PrintLog(99, "Telephony Err: " + err.toString() );
-                    showAlert("Telephony Plugin", JSON.stringify(err) );
-                }
-             );  // follow
+    if(locationEnabled)
+    {
+        UpdateStatusLine("location enabled");  // follow
+        phony.getCellInfo(
+        
+            function(info)        // Success
+            {
+                PrintLog(1, "Telephony: " + JSON.stringify(info)); 
+//              UpdateStatusLine(JSON.stringify(info));  // follow
+                UpdateStatusLine("CellInfo: " + info.cellInfo);  // follow
+            },
+            function(err)               // Fail
+            {
+                PrintLog(99, "Telephony Err: " + err.toString() );
+                showAlert("Telephony Plugin", JSON.stringify(err) );
+            }
+        );  // follow
 
 //    setTimeout(GetRssiPeriodically, 1000);
-
+    }
+    else
+    {
+        UpdateStatusLine("location not enabled");  // follow
+    }
 /*
     if(isSouthBoundIfCnx)
     {

@@ -232,6 +232,7 @@ var guiAntennaGetBoosterListFlag = false;       // true when a delay should be d
 var guiAntennaGotBoosterListFlag = false;       // true when guiDeviceTempSubSnList[] has been populated. 
 var bSkalAntControlFlag          = false;       // Read AntennaControl reg to see if G32 type GO.  false: If value is 0xDEADBABE then not G32.
 var deviceFoundUIFlag       = false;
+var locationEnabled         = false;    // For IOS or Android >= 6, set to TRUE if location enabled after check.
 
 // OpenSouthBoundIf...................................................................................
 function OpenSouthBoundIf(bFirstTime)
