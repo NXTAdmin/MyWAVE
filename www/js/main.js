@@ -30,8 +30,6 @@ var bDisplayBackgroundRing  = false;
 var bSentCloud              = false;
 var bUniiUp                 = true;
 var bNaking                 = false;
-var uMainLoopCounter        = 0;
-var MainLoopIntervalHandle  = null; 
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
@@ -187,64 +185,8 @@ function UpdateRegButton(reg)
 
 
 
-function WaitForFileSystemThenStartSouthboundIf()
-{ 
-    if(bfileOpenLogFileSuccess)
-    {
-        // Now that the file system is open, start SouthBound Interface...
-        OpenSouthBoundIf(true);
-    }
-    else
-    {
-        // Try again in one second...
-        setTimeout(WaitForFileSystemThenStartSouthboundIf, 1000);  
-    }
-}
 
 
-function WaitForBluetooth()
-{ 
-    if(isSouthBoundIfCnx)
-    {
-
-
-        // jdo Normal operation    
-//        setTimeout(SetUartLocal, 1000 );
-        setTimeout(GetStatus, 2000);     
-
-        
-//        SpinnerStop();  // jdo added to stop spinner when BT connected
-    }
-    else
-    {
-        // Try again in one second...
-        setTimeout(WaitForBluetooth, 1000);  
-    }
-}
-
-
-function GetStatus()
-{ 
-    if(isSouthBoundIfCnx)
-    {
-//        SpinnerStart( "", "Get current status..." );
-    
-        if( nxtyRxStatusIcd == null )
-        {
-            nxty.SendNxtyMsg(NXTY_STATUS_REQ, null, 0);
-            setTimeout(GetStatus, 3000);    // Come back until it is not null...  
-        }
-        else
-        {
-            SpinnerStop();
-        }
-    }
-    else
-    {
-        // Try again in one second...
-        setTimeout(GetStatus, 1000);  
-    }
-}
 
 
 
@@ -282,12 +224,13 @@ var app = {
     //
       // PhoneGap is now loaded and it is now safe to make calls using PhoneGap
     //
-    onDeviceReady: function() {
+    onDeviceReady: function() 
+    {
     
         if( window.device.platform != iOSPlatform )
         {
             // IOS did not like opening the file system this early, no error just stalled.
-            OpenFileSystem();
+//            OpenFileSystem();
     
             PrintLog(10,  "device ready:  Running on phone version: " + window.device.version + " parseFloat:" + parseFloat(window.device.version) );
         }
@@ -316,16 +259,12 @@ var app = {
             }
         } 
         
+  
+        StartMainLoop();
         
-        // Only start bluetooth if on a phone...
-        if( window.isPhone )
-        {
-            WaitForFileSystemThenStartSouthboundIf();
-            
-            window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            // 
-            
-            
-        }
+//        WaitForFileSystemThenStartSouthboundIf();
+//        window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            //
+        
     },   
        
        
@@ -1021,15 +960,7 @@ var app = {
         
         }
         
-        uMainLoopCounter = 0;
-            
 
-
-
-        // Get the status in 4 seconds  
-        WaitForBluetooth();
-                
-                        
         currentView = "main";
         
 // follow        SpinnerStart( "", "Searching for Cel-Fi Bluetooth Devices..." );
@@ -1131,6 +1062,93 @@ function stringifyReplaceToHex(key, value)
     return value;
 }
 
+
+
+
+
+
+
+
+// Follow.....................................................................
+const   MAIN_LOOP_STATE_INIT      = 0;
+var     uMainLoopState            = MAIN_LOOP_STATE_INIT;
+var     uMainLoopCounter          = 0;
+var     MainLoopIntervalHandle    = null;
+v
+//.................................................................................................
+function StartMainLoop()
+{
+    if( MainLoopIntervalHandle != null )
+    {
+        StopMainLoop();
+    }
+    
+    PrintLog(1, "StartMainLoop()" );         
+    MainLoopIntervalHandle = setInterval(MainLoop, 1000);
+}
+
+
+//.................................................................................................
+function StopMainLoop()
+{
+    if( MainLoopIntervalHandle != null )
+    {
+        clearInterval(MainLoopIntervalHandle)
+    }
+    MainLoopIntervalHandle = null;
+}
+
+
+// MainLoop.......................................................................................
+function MainLoop() 
+{
+
+    uMainLoopCounter++;
+    PrintLog(1, "MainLoop: Counter=" + uMainLoopCounter );
+    
+    // --------------------------------------------------------------------
+    switch(uMainLoopState)
+    {
+        case MAIN_LOOP_STATE_INIT:
+        {
+            
+            if(bfileOpenLogFileSuccess == false )
+            {
+                PrintLog(1, "MainLoop: Init: Open File system...");
+                OpenFileSystem();
+            }
+            else if(bfileOpenLogFileSuccess)
+            {
+                // Now that the file system is open, start SouthBound Interface...
+                PrintLog(1, "MainLoop: Init: Open Southbount IF system...");
+                OpenSouthBoundIf(true);
+            }
+            else if(isSouthBoundIfCnx)
+            {
+                if( nxtyRxStatusIcd == null )
+                {
+                    PrintLog(1, "MainLoop: Init: Get Status...");
+                    nxty.SendNxtyMsg(NXTY_STATUS_REQ, null, 0);
+                }
+                else
+                {
+                    uMainLoopState = MAIN_LOOP_STATE_OPERATE;
+                }
+            }
+            break;
+        }
+        
+        case MAIN_LOOP_STATE_OPERATE:
+        {
+            PrintLog(1, "MainLoop: Operate: ...");
+            break;
+        }
+
+    }        
+}
+        
+        
+        
 
 
 function onTimerTick() 

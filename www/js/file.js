@@ -57,6 +57,12 @@ function OpenFileSystem()
     {
         // This gets a file system pointing to the Download directory on Android....
         window.resolveLocalFileSystemURL( "file:///storage/emulated/0/Download/", onFSSuccessCB, onFSErrorCB);
+        
+        // Persistent and private data storage within the application's sandbox using internal memory.
+        // Should be able to find the Wave.log in Android -> data -> com.NxtyWave -> files -> Wave.log
+        // On Android, if you need to use external memory, use .externalDataDirectory.
+//            window.resolveLocalFileSystemURL( cordova.file.dataDirectory, onFSSuccessCB, onFSErrorCB);
+        window.resolveLocalFileSystemURL( cordova.file.externalDataDirectory, onFSSuccessCB, onFSErrorCB);
     }
 } 
 
