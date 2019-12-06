@@ -21,7 +21,7 @@ var g_fileReadEvent                 = null;
 var g_fileTransferSuccess           = null;
 
 
-var bfileOpenLogFileSuccess         = null;
+var bfileOpenLogFileSuccess         = false;
 var bfileWriteInProgress            = false;
 var fileWriterObject                = null;
 var fileWriteBuffer                 = "";
