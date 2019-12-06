@@ -207,11 +207,11 @@ function WaitForBluetooth()
     if(isSouthBoundIfCnx)
     {
 
-/*
+
         // jdo Normal operation    
-        setTimeout(SetUartLocal, 1000 );
+//        setTimeout(SetUartLocal, 1000 );
         setTimeout(GetStatus, 2000);     
-*/
+
         
 //        SpinnerStop();  // jdo added to stop spinner when BT connected
     }
@@ -971,14 +971,14 @@ var app = {
 //            GetRssiPeriodically();  // Run one time at start...
 
 
-
-var config = {
-    interval: 30000, // 30 seconds
-    useWakelock: false
-}
-
-// Start
-SimpleTimer.start(onTimerTick, errorStart, config);
+            // Start a timer that can run from background...
+            var config = {
+                interval: 30000, // 30 seconds
+                useWakelock: false
+            }
+            
+            // Start
+            SimpleTimer.start(onTimerTick, errorStart, config);
 
         
         }
@@ -1027,7 +1027,7 @@ SimpleTimer.start(onTimerTick, errorStart, config);
 
 
         // Get the status in 4 seconds  
-//        WaitForBluetooth();
+        WaitForBluetooth();
                 
                         
         currentView = "main";

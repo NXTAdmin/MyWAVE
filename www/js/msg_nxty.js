@@ -57,18 +57,37 @@ const     NXTY_SUPER_MSG_SET_ANT_STATE          = 0x06;
 const     NXTY_SUPER_MSG_RESET_ARES             = 0x07;
 const     NXTY_SUPER_MSG_SET_NU_PARAM           = 0x0F;
 const     NXTY_SUPER_MSG_GET_BOARD_CONFIG       = 0x14;
+const     NXTY_SUPER_MSG_GET_FOLLOW_TAG         = 0x15;
+const     NXTY_SUPER_MSG_GET_FOLLOW_XARFCN      = 0x16;
+
 
 const   NXTY_SUPER_MSG_RSP                      = 0x53;
 const   NXTY_SUPER_MSG_PARAM_SEL_ARRAY    = ["0:Xfer Bufr",    "UniqueIdLsd",       "UniqueIdMsd",      "BuildId",         "SWVersion",         
                                              "BoardConfig",    "LinkState",         "FirstConfigDword", "SystemSnLsd",     "SystemSnMsd",
                                              "SelfTestRslt",   "CaptBufferAddress", "ChanListAddress",  "DbgIfVersion",    "CloudBuffAddr",
                                              "CloudSwVersion", "AntennaStatus",     "RegSupportData",   "CustomSupported", "HwError" ];
+                                             
+                                             
+const   NXTY_SUPER_MSG_WAVE_DATA_ARRAY    = ["0:SafemodeBackoff",    "1:UniiBlock[]",       "2:BandMask3G",      "3:BandMask4G",         "4:TechBandBias[]",
+                                             "5:Femto3GMinSC",       "6:Femto3GMaxSC",      "7:Femto4GMinSC",    "8:Femto4GMaxSC",       "9:MinSysGain",
+                                             "10:MaxSysGain",        "11:MaxPilot3G",       "12:MaxPilot4G",     "13:MaxCellRssi",       "14:IpAddr",     
+                                             "15:IpSubnet",          "16:IpGateway",        "17:IpDnsServer",    "18:MacIAB",            "19:MacMAM",
+                                             "20:DeviceFeatures",    "21:TechDataPeriodSec","22:FollowTag",      "23:FollowXarfcn"];
+                                             
 
 const   NXTY_PCCTRL_UART_REDIRECT         = 0xF0000024;
 const   NXTY_PCCTRL_CLOUD_INFO            = 0xF0000028;
 const   NXTY_PCCTRL_GLOBALFLAGS           = 0xF0000038;
 const   NXTY_PCCTRL_SELPARAM_REG          = 0xF0000020;
 const   NXTY_PCCTRL_XFER_BUFFER           = 0xF000001C;
+const   NXTY_PCCTRL_WAVE_ID_REG           = 0xF0000020;     // Same as SELPARAM
+const     NXTY_WAVEID_BAND_MASK_3G_TYPE   = 0x01020000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 2 for BandMask3G
+const     NXTY_WAVEID_BAND_MASK_4G_TYPE   = 0x01030000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 3 for BandMask4G
+const     NXTY_WAVEID_TECHDATAPERIODSEC   = 0x01150000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 21 for TechDataPeriodSec
+const     NXTY_WAVEID_FOLLOW_TAG          = 0x01160000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 22 for FollowTag
+const     NXTY_WAVEID_FOLLOW_XARFCN       = 0x01170000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 23 for FollowXarfcn
+const   NXTY_PCCTRL_WAVE_DATA_BUFFER      = 0xF000001C;     // Same as XFER_BUFFER
+
 const   NXTY_PCCTRL_CELLIDTIME            = 0xF000002C;
 const   NXTY_PCCTRL_FUNCTION              = 0xF0000000;
 const   NXTY_PCCTRL_CAC_FRAME_TIMER       = 0xF0000090;
@@ -211,7 +230,8 @@ var nxtyGlobalFlags                    = 0;
 var nxtyAntStatus                      = 0;
 var bExtAntCheckComplete               = false;            // Set to true when we get response from NU.
 var bExtAntAvailable                   = false;            // Set to true if ant check returns non 0xFFFFFFFF.
-
+var nxtyFollowTag                      = 0x00;
+var nxtyFollowXarfcn                   = 0x00;
 
 // CU Cloud Info bits....................................
 const CU_CLOUD_INFO_TECH_MASK          = 0x00000FFF;   // bits 0 to 11 are used for Tech Mode control.
@@ -1318,6 +1338,68 @@ var nxty = {
                     }
                 }
                 
+                else if( nxtyCurrentReq == NXTY_SUPER_MSG_GET_FOLLOW_TAG )
+                {
+                    // Read the Follow Tag
+
+                    //                   Write FollowTag            Read  
+                    // Tx: ae 62 9d 13   11 f0 0 0 20 01 16 00 00   0 0 0 6  10 f0 0 0 1c  
+                    // Rx  ae 31 ce 53   51 1                       50 01 02 03 04 
+                    //     [0]           [4]                        [6] 
+                    
+                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                    {
+                        // Got a NAK...
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
+                        PrintLog(99,  "Super Msg: Get Follow Tag msg type encountered a NAK." );
+                    }
+                    else
+                    {
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
+                        
+                        // Update the Global flag data ...
+                        nxtyFollowTag = (u8RxBuff[9] << 24)  |          
+                                        (u8RxBuff[10] << 16) |          
+                                        (u8RxBuff[11] << 8)  |        
+                                         u8RxBuff[12];
+                                               
+                        nxtyFollowTag >>>= 0;  
+
+                        PrintLog(1,  "Super Msg Rsp: Follow Tag: 0x" + nxtyFollowTag.toString(16) );
+                    }
+                }
+                else if( nxtyCurrentReq == NXTY_SUPER_MSG_GET_FOLLOW_XARFCN )
+                {
+                    // Read the Follow Xarfcn
+
+                    //                   Write FollowXarfcn         Read  
+                    // Tx: ae 62 9d 13   11 f0 0 0 20 01 17 00 00   0 0 0 6  10 f0 0 0 1c  
+                    // Rx  ae 31 ce 53   51 1                       50 01 02 03 04 
+                    //     [0]           [4]                        [6] 
+                    
+                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                    {
+                        // Got a NAK...
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
+                        PrintLog(99,  "Super Msg: Get Follow Xarfcn msg type encountered a NAK." );
+                    }
+                    else
+                    {
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
+                        
+                        // Update the Global flag data ...
+                        nxtyFollowXarfcn = (u8RxBuff[9] << 24)  |          
+                                           (u8RxBuff[10] << 16) |          
+                                           (u8RxBuff[11] << 8)  |        
+                                           u8RxBuff[12];
+                                               
+                        nxtyFollowXarfcn >>>= 0;  
+
+                        PrintLog(1,  "Super Msg Rsp: Follow Tag: 0x" + nxtyFollowXarfcn.toString(16) );
+                    }
+                }
+                
+                
                 else if( nxtyCurrentReq == NXTY_SUPER_MSG_SET_ANT_STATE )
                 {
                 
@@ -2267,3 +2349,109 @@ function ClearNxtyMsgPending()
 { 
     msgRxLastCmd      = NXTY_INIT; // Make sure we can send the next message.
 }
+
+
+
+// Used for MyWAVE..............................................................................................
+
+// GetFollowTag.......................................................................................
+function GetFollowTag()
+{
+    var i            = 0;
+
+    PrintLog(1,  "Super Msg Send: Get FollowTag." );
+
+    // Read Wave ID FollowTag .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_TAG >> 24);                               
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_TAG >> 16);
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_TAG >> 8);
+    u8TempTxBuff[i++] = NXTY_WAVEID_FOLLOW_TAG;
+    
+    u8TempTxBuff[i++] = NXTY_READ_ADDRESS_REQ;                    // Now read the data buffer.
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+    
+    nxtyCurrentReq = NXTY_SUPER_MSG_GET_FOLLOW_TAG;
+    nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
+}
+
+
+// GetFollowXarfcn.......................................................................................
+function GetFollowXarfcn()
+{
+    var i            = 0;
+
+    PrintLog(1,  "Super Msg Send: Get FollowXarfcn." );
+
+    // Read Wave ID FollowXarfcn .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 24);                               
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 16);
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 8);
+    u8TempTxBuff[i++] = NXTY_WAVEID_FOLLOW_XARFCN;
+    
+    u8TempTxBuff[i++] = NXTY_READ_ADDRESS_REQ;                    // Now read the data buffer.
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+    
+    nxtyCurrentReq = NXTY_SUPER_MSG_GET_FOLLOW_XARFCN;
+    nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
+}
+
+
+
+
+
+
+// SetNxtySuperMsgWaveData.......................................................................................
+function SetNxtySuperMsgWaveData( param1, data1 )
+{ 
+ var i            = 0;
+
+ // params are formatted 0x01xx0000 where xx is the actual enum value.
+ var param1Id = (param1 >> 16) & 0xFF;
+ 
+ data1 >>>= 0;   // Use >>> operator to make unsiged.
+ 
+ PrintLog(1,  "Super Msg Send: Set Wave Data: param1=" + NXTY_SUPER_MSG_WAVE_DATA_ARRAY[param1Id] + " data1=0x" + data1.toString(16) );
+
+ // Write WaveId .................................................
+ u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+ u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+ u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+ u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+ u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+ u8TempTxBuff[i++] = (param1 >> 24);                               
+ u8TempTxBuff[i++] = (param1 >> 16);
+ u8TempTxBuff[i++] = (param1 >> 8);
+ u8TempTxBuff[i++] = param1;
+
+ // Write the data to the Wave data register...........................
+ u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+ u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+ u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+ u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+ u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+ u8TempTxBuff[i++] = (data1 >> 24);                               
+ u8TempTxBuff[i++] = (data1 >> 16);
+ u8TempTxBuff[i++] = (data1 >> 8);
+ u8TempTxBuff[i++] = data1;
+
+
+ nxtyCurrentReq = NXTY_SUPER_MSG_SET_WAVE_DATA;
+ nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
+}
+
