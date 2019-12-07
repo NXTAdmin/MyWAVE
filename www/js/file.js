@@ -56,7 +56,7 @@ function OpenFileSystem()
     else
     {
         // This gets a file system pointing to the Download directory on Android....
-        window.resolveLocalFileSystemURL( "file:///storage/emulated/0/Download/", onFSSuccessCB, onFSErrorCB);
+//        window.resolveLocalFileSystemURL( "file:///storage/emulated/0/Download/", onFSSuccessCB, onFSErrorCB);
         
         // Persistent and private data storage within the application's sandbox using internal memory.
         // Should be able to find the Wave.log in Android -> data -> com.NxtyWave -> files -> Wave.log

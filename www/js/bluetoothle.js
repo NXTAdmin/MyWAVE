@@ -247,7 +247,11 @@ function OpenSouthBoundIf(bFirstTime)
 //        guiFavoriteIcd     = parseInt( window.localStorage.getItem( "guiFavoriteIcd_ID" ) );
 //        guiFavoriteRssi    = parseInt( window.localStorage.getItem( "guiFavoriteRssi_ID" ) );
 //    }
+
     
+/*
+jdo do not enable the thunker for MyWave 
+
     if( bFirstTime )
     {
         // Initialize the Thunk layer, i.e. ICD to debug
@@ -256,6 +260,7 @@ function OpenSouthBoundIf(bFirstTime)
         u8ThunkTx = Module.AllocToThunkU8(maxNumTxThunkBytes);
         u8ThunkRx = Module.AllocToThunkU8(maxNumRxThunkBytes);
     }
+*/    
 
 /*    
     guiFavoriteMacAddr = window.localStorage.getItem( "guiFavoriteMacAddr_ID" );
@@ -1035,6 +1040,8 @@ function UpdateBluetoothIcon(cnx)
 
      var cnxIdx = guiDeviceMacAddrList.indexOf(btAddr);
 
+/*
+jdo do not enable the thunker...
      if( (icdBtList[cnxIdx] & BT_ICD_VER_2) == BT_ICD_VER_2)
      {
          PrintLog(1, "BT: Set bBtIcdVer2 and bUseThunkLayer to true: Tech data will use ID-Val pairs.  No PIC-ICD status message." );
@@ -1047,6 +1054,8 @@ function UpdateBluetoothIcon(cnx)
 
      }
      else
+*/
+     
      {
          PrintLog(1, "BT: Set bBtIcdVer2 and bUseThunkLayer to false: Tech data will use C-struct." );
          bBtIcdVer2        = false;

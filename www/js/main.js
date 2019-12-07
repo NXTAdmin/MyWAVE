@@ -1117,22 +1117,32 @@ function MainLoop()
                 PrintLog(1, "MainLoop: Init: Open File system...");
                 OpenFileSystem();
             }
-            else if(bfileOpenLogFileSuccess)
+            else if(bfileOpenLogFileSuccess && (isSouthBoundIfCnx == false) )
             {
-                // Now that the file system is open, start SouthBound Interface...
-                PrintLog(1, "MainLoop: Init: Open Southbount IF system...");
-                OpenSouthBoundIf(true);
+                if( isSouthBoundIfStarted == false )
+                {
+                    // Now that the file system is open, start SouthBound Interface...
+                    PrintLog(1, "MainLoop: Init: Open Southbount IF system...");
+                    OpenSouthBoundIf(true);
+                }
             }
             else if(isSouthBoundIfCnx)
             {
-                if( nxtyRxStatusIcd == null )
+//                if(locationEnabled)
                 {
-                    PrintLog(1, "MainLoop: Init: Get Status...");
-                    nxty.SendNxtyMsg(NXTY_STATUS_REQ, null, 0);
+                    if( nxtyRxStatusIcd == null )
+                    {
+                        PrintLog(1, "MainLoop: Init: Get Status...");
+                        nxty.SendNxtyMsg(NXTY_STATUS_REQ, null, 0);
+                    }
+                    else
+                    {
+                        uMainLoopState = MAIN_LOOP_STATE_OPERATE;
+                    }
                 }
                 else
                 {
-                    uMainLoopState = MAIN_LOOP_STATE_OPERATE;
+                    PrintLog(1, "MainLoop: Init: Waiting on location to be enabled...");
                 }
             }
             break;
