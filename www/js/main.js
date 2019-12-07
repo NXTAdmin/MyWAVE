@@ -1140,10 +1140,10 @@ function MainLoop()
                         uMainLoopState = MAIN_LOOP_STATE_OPERATE;
                     }
                 }
-                else
-                {
-                    PrintLog(1, "MainLoop: Init: Waiting on location to be enabled...");
-                }
+//                else
+//                {
+//                    PrintLog(1, "MainLoop: Init: Waiting on location to be enabled...");
+//                }
             }
             break;
         }
