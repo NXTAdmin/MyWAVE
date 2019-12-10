@@ -1123,7 +1123,7 @@ function MainLoop()
                 if( isSouthBoundIfStarted == false )
                 {
                     // Now that the file system is open, start SouthBound Interface...
-                    PrintLog(1, "MainLoop: Init: Open Southbount IF system...");
+                    PrintLog(1, "MainLoop: Init: Open Southbound IF system...");
                     OpenSouthBoundIf(true);
                 }
             }
@@ -1152,6 +1152,15 @@ function MainLoop()
         case MAIN_LOOP_STATE_OPERATE:
         {
             PrintLog(1, "MainLoop: Operate: ...");
+            
+            if( nxtyFollowTag == -1 )
+            {
+                GetFollowTag();
+            }
+            else if( nxtyFollowXarfcn == -1 )
+            {
+                GetFollowXarfcn();
+            }
             break;
         }
 

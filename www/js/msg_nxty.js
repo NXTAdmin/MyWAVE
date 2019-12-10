@@ -230,8 +230,8 @@ var nxtyGlobalFlags                    = 0;
 var nxtyAntStatus                      = 0;
 var bExtAntCheckComplete               = false;            // Set to true when we get response from NU.
 var bExtAntAvailable                   = false;            // Set to true if ant check returns non 0xFFFFFFFF.
-var nxtyFollowTag                      = 0x00;
-var nxtyFollowXarfcn                   = 0x00;
+var nxtyFollowTag                      = -1;
+var nxtyFollowXarfcn                   = -1;
 
 // CU Cloud Info bits....................................
 const CU_CLOUD_INFO_TECH_MASK          = 0x00000FFF;   // bits 0 to 11 are used for Tech Mode control.
