@@ -132,6 +132,7 @@ var nxtyRxStatusHw          = null;
 var nxtyRxStatusIcd         = null;
 var nxtyRxRegLockStatus     = 0;
 var nxtyRxStatusBoardConfig = null;
+var bNxtySuperMsgLocalInfo2 = false;
 
 
 const V1_ICD                = 0x07;             // Old:  Consider removing logic for version 1 devices.
