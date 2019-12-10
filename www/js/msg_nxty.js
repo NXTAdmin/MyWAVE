@@ -1343,8 +1343,8 @@ var nxty = {
                     // Read the Follow Tag
 
                     //                   Write FollowTag            Read  
-                    // Tx: ae 62 9d 13   11 f0 0 0 20 01 16 00 00   0 0 0 6  10 f0 0 0 1c  
-                    // Rx  ae 31 ce 53   51 1                       50 01 02 03 04 
+                    // Tx: ae 0e f1 13   11 f0 0 0 20 01 16 00 00   10 f0 0 0 1c  80  
+                    // Rx  ae 07 f8 53   51 1                       50 01 02 03 04 
                     //     [0]           [4]                        [6] 
                     
                     if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
@@ -1358,10 +1358,10 @@ var nxty = {
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
                         
                         // Update the Global flag data ...
-                        nxtyFollowTag = (u8RxBuff[9] << 24)  |          
-                                        (u8RxBuff[10] << 16) |          
-                                        (u8RxBuff[11] << 8)  |        
-                                         u8RxBuff[12];
+                        nxtyFollowTag = (u8RxBuff[7] << 24) |          
+                                        (u8RxBuff[8] << 16) |          
+                                        (u8RxBuff[9] << 8)  |        
+                                         u8RxBuff[10];
                                                
                         nxtyFollowTag >>>= 0;  
 
@@ -1373,7 +1373,7 @@ var nxty = {
                     // Read the Follow Xarfcn
 
                     //                   Write FollowXarfcn         Read  
-                    // Tx: ae 62 9d 13   11 f0 0 0 20 01 17 00 00   0 0 0 6  10 f0 0 0 1c  
+                    // Tx: ae 0E f1 13   11 f0 0 0 20 01 17 00 00   10 f0 0 0 1c   c3  
                     // Rx  ae 31 ce 53   51 1                       50 01 02 03 04 
                     //     [0]           [4]                        [6] 
                     
@@ -1388,9 +1388,9 @@ var nxty = {
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
                         
                         // Update the Global flag data ...
-                        nxtyFollowXarfcn = (u8RxBuff[9] << 24)  |          
-                                           (u8RxBuff[10] << 16) |          
-                                           (u8RxBuff[11] << 8)  |        
+                        nxtyFollowXarfcn = (u8RxBuff[7] << 24) |          
+                                           (u8RxBuff[8] << 16) |          
+                                           (u8RxBuff[9] << 8)  |        
                                            u8RxBuff[12];
                                                
                         nxtyFollowXarfcn >>>= 0;  

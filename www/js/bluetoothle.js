@@ -2343,20 +2343,10 @@ function GetDeviceSerialNumbersLoop()
     var i;
     PrintLog(10, "BT: GetDeviceSerialNumbersLoop()... idx=" + getSnIdx + " state=" + getSnState + " Counter=" + getSnLoopCounter + " len=" + guiDeviceSnList.length );
 
-    // Find the SNs and place in guiDeviceSnList[] up to a max of 8.
-    if( (getSnIdx < guiDeviceMacAddrList.length) && (guiNumDevicesFound < 8) && (bPhoneInBackground == false)  )
+    // Find the SNs and place in guiDeviceSnList[] up to a max of 8.  
+//    if( (getSnIdx < guiDeviceMacAddrList.length) && (guiNumDevicesFound < 8) && (bPhoneInBackground == false)  )
+    if( (getSnIdx < guiDeviceMacAddrList.length) && (guiNumDevicesFound < 1) && (bPhoneInBackground == false)  )  // FollowMe set max to 1 to remain connected which will also have the highest RSSI.
     {
-/*        
-        if( guiDeviceMacAddrList[getSnIdx] != "98:07:2D:AF:55:2A" )     // Eric's Skal for testing
-//        if( guiDeviceMacAddrList[getSnIdx] != "B0:B4:48:D2:C0:03" )     // John's Skal for testing
-        {
-            PrintLog(1, "BT: Skip BT device " +  guiDeviceMacAddrList[getSnIdx] + "  Not target Skal" );
-            getSnIdx++;
-            getSnLoopCounter = 0;
-            
-        }
-        else if( guiDeviceRssiList[getSnIdx] < -95 )
-*/      
         var bBabblingMac = false;
         for( i = 0; i < babblingMacsList.length; i++)
         {

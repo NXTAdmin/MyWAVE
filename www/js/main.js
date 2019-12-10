@@ -1131,12 +1131,7 @@ function MainLoop()
             {
 //                if(locationEnabled)
                 {
-                    if( nxtyRxStatusIcd == null )
-                    {
-                        PrintLog(1, "MainLoop: Init: Get Status...");
-                        nxty.SendNxtyMsg(NXTY_STATUS_REQ, null, 0);
-                    }
-                    else
+                    if( guiNumDevicesFound )  // When set to 1 in BT file, we should have the SN by then.
                     {
                         uMainLoopState = MAIN_LOOP_STATE_OPERATE;
                     }
@@ -1153,7 +1148,19 @@ function MainLoop()
         {
             PrintLog(1, "MainLoop: Operate: ...");
             
-            if( nxtyFollowTag == -1 )
+            if( bNxtySuperMsgLocalInfo2 == false )
+            {
+                PrintLog(1, "MainLoop: Operate: Get local info 2...");
+                if( (bNxtySuperMsgRsp == false) || (iNxtySuperMsgRspStatus != NXTY_SUPER_MSG_STATUS_SUCCESS) )
+                {
+                    GetNxtySuperMsgInfo2();
+                }
+                else
+                {
+                    bNxtySuperMsgLocalInfo2 = true;
+                }
+            }    
+            else if( nxtyFollowTag == -1 )
             {
                 GetFollowTag();
             }
