@@ -1148,17 +1148,10 @@ function MainLoop()
         {
             PrintLog(1, "MainLoop: Operate: ...");
             
-            if( bNxtySuperMsgLocalInfo2 == false )
+            if( nxtyNuXferBufferAddr == -1 )
             {
-                PrintLog(1, "MainLoop: Operate: Get local info 2...");
-                if( (bNxtySuperMsgRsp == false) || (iNxtySuperMsgRspStatus != NXTY_SUPER_MSG_STATUS_SUCCESS) )
-                {
-                    GetNxtySuperMsgInfo2();
-                }
-                else
-                {
-                    bNxtySuperMsgLocalInfo2 = true;
-                }
+                PrintLog(1, "MainLoop: Operate: Get Xfer Buffer Addr...");
+                GetXferBufferAddr();
             }    
             else if( nxtyFollowTag == -1 )
             {

@@ -59,6 +59,7 @@ const     NXTY_SUPER_MSG_SET_NU_PARAM           = 0x0F;
 const     NXTY_SUPER_MSG_GET_BOARD_CONFIG       = 0x14;
 const     NXTY_SUPER_MSG_GET_FOLLOW_TAG         = 0x15;
 const     NXTY_SUPER_MSG_GET_FOLLOW_XARFCN      = 0x16;
+const     NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR   = 0x17;
 
 
 const   NXTY_SUPER_MSG_RSP                      = 0x53;
@@ -123,6 +124,7 @@ var uSendCount                          = 0;
 
 var uRxBuffIdx                            = 0;
 var uTxMsgNotReadyCnt                   = 0;
+var nxtyNuXferBufferAddr               = -1;
 
 
         
@@ -1161,7 +1163,10 @@ var nxty = {
                         
                     }   // NAK check             
                 
-                }               
+                }       
+                
+                
+                        
                 else if( nxtyCurrentReq == NXTY_SUPER_MSG_LINK_STATE )
                 {
                     //                   Write Link State      Read  
@@ -1357,15 +1362,12 @@ var nxty = {
                     else
                     {
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
-                        
-                        // Update the Global flag data ...
                         nxtyFollowTag = (u8RxBuff[7] << 24) |          
                                         (u8RxBuff[8] << 16) |          
                                         (u8RxBuff[9] << 8)  |        
                                          u8RxBuff[10];
                                                
                         nxtyFollowTag >>>= 0;  
-
                         PrintLog(1,  "Super Msg Rsp: Follow Tag: 0x" + nxtyFollowTag.toString(16) );
                     }
                 }
@@ -1387,18 +1389,41 @@ var nxty = {
                     else
                     {
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
-                        
-                        // Update the Global flag data ...
                         nxtyFollowXarfcn = (u8RxBuff[7] << 24) |          
                                            (u8RxBuff[8] << 16) |          
                                            (u8RxBuff[9] << 8)  |        
                                            u8RxBuff[12];
                                                
                         nxtyFollowXarfcn >>>= 0;  
-
-                        PrintLog(1,  "Super Msg Rsp: Follow Tag: 0x" + nxtyFollowXarfcn.toString(16) );
+                        PrintLog(1,  "Super Msg Rsp: Follow Xarfcn: 0x" + nxtyFollowXarfcn.toString(16) );
                     }
                 }
+                else if( nxtyCurrentReq == NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR )
+                {
+                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                    {
+                        // Got a NAK...
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
+                        PrintLog(99,  "Super Msg: Get Follow Xarfcn msg type encountered a NAK." );
+                    }
+                    else
+                    {
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
+                        
+                        nxtyNuXferBufferAddr = (u8RxBuff[7] << 24) |          
+                                               (u8RxBuff[8] << 16) |          
+                                               (u8RxBuff[9] << 8)  |        
+                                               u8RxBuff[12];
+                                               
+                        nxtyNuXferBufferAddr >>>= 0;  
+                        PrintLog(1,  "Super Msg Rsp: Xfer Buffer Addr: 0x" + nxtyNuXferBufferAddr.toString(16) );
+                    }
+                }
+                
+                
+                
+                
+                
                 
                 
                 else if( nxtyCurrentReq == NXTY_SUPER_MSG_SET_ANT_STATE )
@@ -2413,6 +2438,33 @@ function GetFollowXarfcn()
 }
 
 
+// GetXferBufferAddr.......................................................................................
+function GetXferBufferAddr()
+{
+    var i            = 0;
+
+    PrintLog(1,  "Super Msg Send: Get Xfer Buffer Addr." );
+
+    // Read Wave ID FollowXarfcn .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+    u8TempTxBuff[i++] = 0x00;                               
+    u8TempTxBuff[i++] = 0x00;                               
+    u8TempTxBuff[i++] = 0x00;                               
+    u8TempTxBuff[i++] = 0x00;                               
+    
+    u8TempTxBuff[i++] = NXTY_READ_ADDRESS_REQ;                    // Now read the data buffer.
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+    
+    nxtyCurrentReq = NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR;
+    nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
+}
 
 
 

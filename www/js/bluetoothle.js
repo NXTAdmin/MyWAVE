@@ -2345,7 +2345,7 @@ function GetDeviceSerialNumbersLoop()
 
     // Find the SNs and place in guiDeviceSnList[] up to a max of 8.  
 //    if( (getSnIdx < guiDeviceMacAddrList.length) && (guiNumDevicesFound < 8) && (bPhoneInBackground == false)  )
-    if( (getSnIdx < guiDeviceMacAddrList.length) && (guiNumDevicesFound < 1) && (bPhoneInBackground == false)  )  // FollowMe set max to 1 to remain connected which will also have the highest RSSI.
+    if( (getSnIdx < guiDeviceMacAddrList.length) && (guiNumDevicesFound < 1) && (bPhoneInBackground == false)  )  // FollowMe set max to 1 to connect to the highest RSSI only.
     {
         var bBabblingMac = false;
         for( i = 0; i < babblingMacsList.length; i++)
@@ -2760,7 +2760,7 @@ function GetDeviceSerialNumbersLoop()
                         if( guiDeviceMacAddrList.length > 1 )
                         {
                             // Disconnect from BT if more than 1 in list, i.e. favorite has only 1...
-                            DisconnectBluetoothDevice();
+// FollowMe: do not disconnect here                            DisconnectBluetoothDevice();
                         }
                         getSnState = 0;
                         getSnIdx++;
