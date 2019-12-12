@@ -1392,7 +1392,7 @@ var nxty = {
                         nxtyFollowXarfcn = (u8RxBuff[7] << 24) |          
                                            (u8RxBuff[8] << 16) |          
                                            (u8RxBuff[9] << 8)  |        
-                                           u8RxBuff[12];
+                                           u8RxBuff[10];
                                                
                         nxtyFollowXarfcn >>>= 0;  
                         PrintLog(1,  "Super Msg Rsp: Follow Xarfcn: 0x" + nxtyFollowXarfcn.toString(16) );
@@ -1413,7 +1413,7 @@ var nxty = {
                         nxtyNuXferBufferAddr = (u8RxBuff[7] << 24) |          
                                                (u8RxBuff[8] << 16) |          
                                                (u8RxBuff[9] << 8)  |        
-                                               u8RxBuff[12];
+                                               u8RxBuff[10];
                                                
                         nxtyNuXferBufferAddr >>>= 0;  
                         PrintLog(1,  "Super Msg Rsp: Xfer Buffer Addr: 0x" + nxtyNuXferBufferAddr.toString(16) );

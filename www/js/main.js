@@ -910,15 +910,8 @@ var app = {
 //            GetRssiPeriodically();  // Run one time at start...
 
 
-            // Start a timer that can run from background...
-            var config = {
-                interval: 30000, // 30 seconds
-                useWakelock: false
-            }
+            SpinnerStart( "", "Searching for Cel-Fi Bluetooth Devices..." );
             
-            // Start
-            SimpleTimer.start(onTimerTick, errorStart, config);
-
         
         }
         else
@@ -962,8 +955,7 @@ var app = {
         
 
         currentView = "main";
-        
-// follow        SpinnerStart( "", "Searching for Cel-Fi Bluetooth Devices..." );
+        SpinnerStart( "", GetLangString("SearchDevices") );  // "Searching for Cel-Fi Devices..."
 
         
 //        UpdateRssiLine( -100 );               
@@ -1161,6 +1153,33 @@ function MainLoop()
             {
                 GetFollowXarfcn();
             }
+            else
+            {
+                SpinnerStop();
+                StopMainLoop();
+                
+                if( nxtyFollowTag != nxtyNuXferBufferAddr )
+                {
+                    // Start a timer that can run from background...
+                    var config = {
+                        interval: 30000, // 30 seconds
+                        useWakelock: false
+                    }
+                    
+                    // Start
+                    SimpleTimer.start(onTimerTick, errorStart, config);
+                }
+                else
+                {
+                    PrintLog(1, "This Cel-Fi device does not support Follow My Phone" );
+                    
+                    navigator.notification.confirm(
+                            GetLangString('NoFollowSupport'),    // message
+                            HandleNoFollowConfirmation,  // callback to invoke with index of button pressed
+                            "Cel-Fi SN: " + guiSerialNumber,       // title
+                            ['Try Again'] );                       // buttonLabels
+                }
+            }
             break;
         }
 
@@ -1168,9 +1187,26 @@ function MainLoop()
 }
         
         
-        
+ 
 
 
+function HandleNoFollowConfirmation()
+{
+    // buttonIndex = 0 if dialog dismissed, i.e. back button pressed.
+    // buttonIndex = 1 if 'Ok'
+    if( (buttonIndex == 0) || (buttonIndex == 1) )
+    {
+        // Ok...
+        DisconnectAndStopSouthBoundIf();
+        setTimeout(restartApp, 2000);    // Allow BT to disconnect...
+    }
+}
+
+
+
+
+
+// -------------------------------------------------------------------------------------------------------
 function onTimerTick() 
 {
     PrintLog(1, "timer tick");
