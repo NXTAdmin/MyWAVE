@@ -1066,9 +1066,6 @@ jdo do not enable the thunker...
      }
      
      
-     guiSerialNumber = guiDeviceSnList[cnxIdx];  
-     UpdateStatusLine( guiSerialNumber );
-
      
      isSouthBoundIfCnx     = true;
  }
@@ -2730,6 +2727,10 @@ function GetDeviceSerialNumbersLoop()
                         guiDeviceSnList[getSnIdx] = "SN:" + tempSn;
                         guiNumDevicesFound++;
     
+                        guiSerialNumber = tempSn;  
+                        UpdateStatusLine(guiSerialNumber);
+
+                        
                         if( guiNumDevicesFound == 1 )
                         {
                             // Save the index just in case this is the only one found...

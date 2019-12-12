@@ -1119,7 +1119,7 @@ function MainLoop()
                     OpenSouthBoundIf(true);
                 }
             }
-            else if(isSouthBoundIfCnx)
+            else if(guiSerialNumber != null )
             {
 //                if(locationEnabled)
                 {
