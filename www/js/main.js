@@ -1190,7 +1190,7 @@ function MainLoop()
  
 
 
-function HandleNoFollowConfirmation()
+function HandleNoFollowConfirmation(buttonIndex)
 {
     // buttonIndex = 0 if dialog dismissed, i.e. back button pressed.
     // buttonIndex = 1 if 'Ok'
