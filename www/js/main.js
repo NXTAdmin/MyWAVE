@@ -51,7 +51,8 @@ var bCnxToCu                = true;             // Set to true if connected loca
 var bCnxToOneBoxNu          = false;            // Set to true if connected to a 1-Box NU, all UART redirects are disabled.
 var bWaveTest               = true;            // Set to false for normal WaveTools or true for Bluetooth test only.                
 
-var bPhoneInBackground          = false;    // Set to true if phone is in background.
+var bPhoneInBackground      = false;    // Set to true if phone is in background.
+var bFollowMyPhoneFlag      = false;    // Set to true when phone in Follow My Phone mode.
 
 // Determine which messages get sent to the console.  1 normal, 10 verbose.
 // Level  1: Flow and errors.
@@ -1157,17 +1158,44 @@ function MainLoop()
             {
                 SpinnerStop();
                 StopMainLoop();
+                bFollowMyPhoneFlag = false; 
                 
+                
+
                 if( nxtyFollowTag != nxtyNuXferBufferAddr )
                 {
-                    // Start a timer that can run from background...
-                    var config = {
-                        interval: 30000, // 30 seconds
-                        useWakelock: false
+                    
+// jdo test                
+window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
+// jdo test
+                    
+                    
+                    // Cel-Fi hardware supports Follow My Phone, see if this phone has requested to follow:
+                    var phoneFollowTag = window.localStorage.getItem("phoneFollowTagId");
+                    if( phoneFollowTag != null )
+                    {
+                        if( phoneFollowTag == nxtyFollowTag )
+                        {
+                            PrintLog(1, "Follow Tags match, enable Follow My Phone.");
+                            bFollowMyPhoneFlag = true; 
+                    
+                            // Start a timer that can run from background...
+                            var config = {
+                                interval: 30000, // 30 seconds
+                                useWakelock: false
+                            }
+                            
+                            // Start
+                            SimpleTimer.start(onTimerTick, errorStart, config);
+                        }
+                        
                     }
                     
-                    // Start
-                    SimpleTimer.start(onTimerTick, errorStart, config);
+                    if( bFollowMyPhoneFlag == false )
+                    {
+                        PrintLog(1, "Follow Tags do not match, disable Follow My Phone.");
+                    }
+
                 }
                 else
                 {
