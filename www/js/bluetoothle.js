@@ -1059,7 +1059,7 @@ jdo do not enable the thunker...
 */
      
      {
-         PrintLog(1, "BT: Set bBtIcdVer2 and bUseThunkLayer to false: Tech data will use C-struct." );
+ //        PrintLog(1, "BT: Set bBtIcdVer2 and bUseThunkLayer to false: Tech data will use C-struct." );
          bBtIcdVer2        = false;
          bUseIdValTechData = false;
          bUseThunkLayer    = false;
@@ -2728,7 +2728,6 @@ function GetDeviceSerialNumbersLoop()
                         guiNumDevicesFound++;
     
                         guiSerialNumber = tempSn;  
-                        UpdateStatusLine(guiSerialNumber);
 
                         
                         if( guiNumDevicesFound == 1 )

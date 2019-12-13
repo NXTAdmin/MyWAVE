@@ -910,10 +910,6 @@ var app = {
 //            UpdateRssiLine( -100 );               
 //            GetRssiPeriodically();  // Run one time at start...
 
-
-            SpinnerStart( "", "Searching for Cel-Fi Bluetooth Devices..." );
-            
-        
         }
         else
         {
@@ -1140,6 +1136,7 @@ function MainLoop()
         case MAIN_LOOP_STATE_OPERATE:
         {
             PrintLog(1, "MainLoop: Operate: ...");
+            UpdateStatusLine( "SN: " + guiSerialNumber);
             
             if( nxtyNuXferBufferAddr == -1 )
             {
@@ -1158,10 +1155,10 @@ function MainLoop()
             {
                 SpinnerStop();
                 StopMainLoop();
+                DisconnectAndStopSouthBoundIf();
+
                 bFollowMyPhoneFlag = false; 
                 
-                
-
                 if( nxtyFollowTag != nxtyNuXferBufferAddr )
                 {
                     
