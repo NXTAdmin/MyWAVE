@@ -1259,15 +1259,13 @@ function FollowMyPhone(myState)
                 break;
             }
             
-            followState++;
-            if( followState >= FOLLOW_STATE_DONE )
-            {
-                setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
-            }
-            
         }
-        
-        
+
+        followState++;
+        if( followState >= FOLLOW_STATE_DONE )
+        {
+            setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
+        }
 
     }
     else
