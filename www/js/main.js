@@ -907,8 +907,6 @@ var app = {
     
             $('body').html(myHtml); 
             
-//            UpdateRssiLine( -100 );               
-//            GetRssiPeriodically();  // Run one time at start...
 
         }
         else
@@ -956,7 +954,6 @@ var app = {
 
         
 //        UpdateRssiLine( -100 );               
-        GetRssiPeriodically();
         
     },
 
@@ -996,42 +993,6 @@ var app = {
 };
 
 
-function GetRssiPeriodically()
-{
-    if(locationEnabled)
-    {
-        UpdateStatusLine("location enabled");  // follow
-        phony.getCellInfo(
-        
-            function(info)        // Success
-            {
-                PrintLog(1, "Telephony: " + JSON.stringify(info)); 
-//              UpdateStatusLine(JSON.stringify(info));  // follow
-                UpdateStatusLine("CellInfo: " + info.cellInfo);  // follow
-            },
-            function(err)               // Fail
-            {
-                PrintLog(99, "Telephony Err: " + err.toString() );
-                showAlert("Telephony Plugin", JSON.stringify(err) );
-            }
-        );  // follow
-
-//    setTimeout(GetRssiPeriodically, 1000);
-    }
-    else
-    {
-        UpdateStatusLine("location not enabled");  // follow
-    }
-/*
-    if(isSouthBoundIfCnx)
-    {
-        GetBluetoothRssi();
-    }
-    setTimeout(GetRssiPeriodically, 250);
-*/    
-    
-    
-}
 
 
 //.................................................................................................................
@@ -1230,13 +1191,99 @@ function HandleNoFollowConfirmation(buttonIndex)
 
 
 
+//-------------------------------------------------------------------------------------------------------
+const   FOLLOW_STATE_INIT       = 0;
+const   FOLLOW_STATE_GET_TAG    = 1;
+const   FOLLOW_STATE_SET_XARFCN = 2;
+const   FOLLOW_STATE_VERIFY     = 3;
+const   FOLLOW_STATE_DONE       = 4;
+const   FOLLOW_STATE_WORK       = 100;
+var     followState         = FOLLOW_STATE_INIT;
+
+function FollowMyPhone(myState)
+{
+    if( myState == FOLLOW_STATE_INIT)
+    {
+        followState = myState;
+    }
+
+    if(locationEnabled)
+    {
+        switch(followState)
+        {
+            case FOLLOW_STATE_INIT:
+            {
+                PrintLog(1, "Follow State Init");
+                
+                if(isSouthBoundIfCnx == false)
+                {
+                    ConnectBluetoothDevice(myLastBtAddress);
+                }
+                
+                phony.getCellInfo(
+                        
+                        function(info)        // Success
+                        {
+                            PrintLog(1, "Telephony: " + JSON.stringify(info)); 
+                            UpdateStatusLine("CellInfo: " + info.cellInfo);  // follow
+                        },
+                        function(err)               // Fail
+                        {
+                            PrintLog(99, "Telephony Err: " + err.toString() );
+                            showAlert("Telephony Plugin", JSON.stringify(err) );
+                        }
+                    );  // follow
+
+                break;
+            }
+            
+            case FOLLOW_STATE_GET_TAG:
+            {
+                PrintLog(1, "Follow State Get Tag");
+                break;
+            }
+            case FOLLOW_STATE_SET_XARFCN:
+            {
+                PrintLog(1, "Follow State Set Xarfcn");
+                break;
+            }
+            case FOLLOW_STATE_VERIFY:
+            {
+                PrintLog(1, "Follow State Verify");
+                break;
+            }
+            case FOLLOW_STATE_DONE:
+            {
+                PrintLog(1, "Follow State Done");
+                DisconnectAndStopSouthBoundIf();
+                break;
+            }
+            
+            followState++;
+            if( followState >= FOLLOW_STATE_DONE )
+            {
+                setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
+            }
+            
+        }
+        
+        
+
+    }
+    else
+    {
+        UpdateStatusLine("location not enabled");  // follow
+    }
+   
+    
+}
+
 
 // -------------------------------------------------------------------------------------------------------
 function onTimerTick() 
 {
     PrintLog(1, "timer tick");
-    GetRssiPeriodically();
-    
+    FollowMyPhone();
 }    
 
 function errorStart(message) {
