@@ -1281,17 +1281,6 @@ function FollowMyPhone(myState)
             
         }
 
-
-        else if( nxtyFollowTag == -1 )
-        {
-            GetFollowTag();
-        }
-        else if( nxtyFollowXarfcn == -1 )
-        {
-            GetFollowXarfcn();
-
-        
-        
         
         if( followState < FOLLOW_STATE_DONE )
         {
