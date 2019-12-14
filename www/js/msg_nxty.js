@@ -2467,44 +2467,39 @@ function GetXferBufferAddr()
 }
 
 
+// SetFollowXarfcn.......................................................................................
+function SetFollowXarfcn(myXarfcn)
+{
+    var i            = 0;
 
+    myXarfcn >>>= 0;   // Use >>> operator to make unsiged.
+    PrintLog(1,  "Super Msg Send: Set FollowXarfcn to " + myXarfcn );
 
-// SetNxtySuperMsgWaveData.......................................................................................
-function SetNxtySuperMsgWaveData( param1, data1 )
-{ 
- var i            = 0;
+    // Write Wave ID FollowXarfcn .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 24);                               
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 16);
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 8);
+    u8TempTxBuff[i++] = NXTY_WAVEID_FOLLOW_XARFCN;
 
- // params are formatted 0x01xx0000 where xx is the actual enum value.
- var param1Id = (param1 >> 16) & 0xFF;
- 
- data1 >>>= 0;   // Use >>> operator to make unsiged.
- 
- PrintLog(1,  "Super Msg Send: Set Wave Data: param1=" + NXTY_SUPER_MSG_WAVE_DATA_ARRAY[param1Id] + " data1=0x" + data1.toString(16) );
+     // Write the data to the Wave data register...........................
+     u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+     u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+     u8TempTxBuff[i++] = (myXarfcn >> 24);                               
+     u8TempTxBuff[i++] = (myXarfcn >> 16);
+     u8TempTxBuff[i++] = (myXarfcn >> 8);
+     u8TempTxBuff[i++] = myXarfcn;
 
- // Write WaveId .................................................
- u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
- u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
- u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
- u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
- u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
- u8TempTxBuff[i++] = (param1 >> 24);                               
- u8TempTxBuff[i++] = (param1 >> 16);
- u8TempTxBuff[i++] = (param1 >> 8);
- u8TempTxBuff[i++] = param1;
-
- // Write the data to the Wave data register...........................
- u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
- u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
- u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
- u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
- u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
- u8TempTxBuff[i++] = (data1 >> 24);                               
- u8TempTxBuff[i++] = (data1 >> 16);
- u8TempTxBuff[i++] = (data1 >> 8);
- u8TempTxBuff[i++] = data1;
-
-
- nxtyCurrentReq = NXTY_SUPER_MSG_SET_WAVE_DATA;
- nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
+    nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
 }
+
+
+
 

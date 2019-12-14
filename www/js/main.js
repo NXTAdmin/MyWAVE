@@ -1240,11 +1240,31 @@ function FollowMyPhone(myState)
             case FOLLOW_STATE_GET_TAG:
             {
                 PrintLog(1, "Follow State Get Tag");
+                if(isSouthBoundIfCnx)
+                {
+                    nxtyFollowTag = -1;
+                    GetFollowTag();
+                }
                 break;
             }
             case FOLLOW_STATE_SET_XARFCN:
             {
                 PrintLog(1, "Follow State Set Xarfcn");
+                
+                if( (isSouthBoundIfCnx == true) && (nxtyFollowTag != -1) )
+                {
+                    if( phoneFollowTag == nxtyFollowTag )
+                    {
+                        SetFollowXarfcn(0x12345678);
+                    }
+                    else
+                    {
+                        PrintLog(1, "Follow Tag no longer matches, disable Follow My Phone");
+                        bFollowMyPhoneFlag = false;
+                        SimpleTimer.stop(onStopped);
+                        
+                    }
+                }
                 break;
             }
             case FOLLOW_STATE_VERIFY:
@@ -1261,6 +1281,18 @@ function FollowMyPhone(myState)
             
         }
 
+
+        else if( nxtyFollowTag == -1 )
+        {
+            GetFollowTag();
+        }
+        else if( nxtyFollowXarfcn == -1 )
+        {
+            GetFollowXarfcn();
+
+        
+        
+        
         if( followState < FOLLOW_STATE_DONE )
         {
             setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
@@ -1281,7 +1313,7 @@ function FollowMyPhone(myState)
 function onTimerTick() 
 {
     PrintLog(1, "timer tick");
-    FollowMyPhone();
+    FollowMyPhone(FOLLOW_STATE_INIT);
 }    
 
 function errorStart(message) {
@@ -1291,3 +1323,4 @@ function errorStart(message) {
 function onStopped() {
     PrintLog(1, 'timer is stopped');
 }
+
