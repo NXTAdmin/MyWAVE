@@ -53,6 +53,7 @@ var bWaveTest               = true;            // Set to false for normal WaveTo
 
 var bPhoneInBackground      = false;    // Set to true if phone is in background.
 var bFollowMyPhoneFlag      = false;    // Set to true when phone in Follow My Phone mode.
+var phoneFollowTag          = null;
 
 // Determine which messages get sent to the console.  1 normal, 10 verbose.
 // Level  1: Flow and errors.
@@ -1129,7 +1130,7 @@ window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
                     
                     
                     // Cel-Fi hardware supports Follow My Phone, see if this phone has requested to follow:
-                    var phoneFollowTag = window.localStorage.getItem("phoneFollowTagId");
+                    phoneFollowTag = window.localStorage.getItem("phoneFollowTagId");
                     if( phoneFollowTag != null )
                     {
                         if( phoneFollowTag == nxtyFollowTag )
