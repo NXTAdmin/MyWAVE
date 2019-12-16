@@ -1302,7 +1302,7 @@ function FollowMyPhone(myState)
 // -------------------------------------------------------------------------------------------------------
 function onTimerTick() 
 {
-    PrintLog(1, "timer tick");
+    PrintLog(1, "\r\nTimer Tick----------------------------------------------");
     FollowMyPhone(FOLLOW_STATE_INIT);
 }    
 

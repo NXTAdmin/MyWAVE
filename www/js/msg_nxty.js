@@ -60,6 +60,7 @@ const     NXTY_SUPER_MSG_GET_BOARD_CONFIG       = 0x14;
 const     NXTY_SUPER_MSG_GET_FOLLOW_TAG         = 0x15;
 const     NXTY_SUPER_MSG_GET_FOLLOW_XARFCN      = 0x16;
 const     NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR   = 0x17;
+const     NXTY_SUPER_MSG_SET_FOLLOW_XARFCN      = 0x18;
 
 
 const   NXTY_SUPER_MSG_RSP                      = 0x53;
@@ -1398,6 +1399,28 @@ var nxty = {
                         PrintLog(1,  "Super Msg Rsp: Follow Xarfcn: 0x" + nxtyFollowXarfcn.toString(16) );
                     }
                 }
+                else if( nxtyCurrentReq == NXTY_SUPER_MSG_SET_FOLLOW_XARFCN )
+                {
+                    // Set the Follow Xarfcn
+
+                    //                   Write FollowXarfcn         Write  
+                    // Tx: ae 0E f1 13   11 f0 0 0 20 01 17 00 00   10 f0  0  0 1c  01 02 03 04    c3  
+                    // Rx  ae 31 ce 53   51 1                       51 01 
+                    //     [0]           [4]                        [6] 
+                    
+                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                    {
+                        // Got a NAK...
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
+                        PrintLog(99,  "Super Msg: Set Follow Xarfcn msg type encountered a NAK." );
+                    }
+                    else
+                    {
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
+                        PrintLog(1,  "Super Msg Rsp: Set Follow Xarfcn successfully" );
+                    }
+                }
+                
                 else if( nxtyCurrentReq == NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR )
                 {
                     if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
@@ -2473,7 +2496,7 @@ function SetFollowXarfcn(myXarfcn)
     var i            = 0;
 
     myXarfcn >>>= 0;   // Use >>> operator to make unsiged.
-    PrintLog(1,  "Super Msg Send: Set FollowXarfcn to " + myXarfcn );
+    PrintLog(1,  "Super Msg Send: Set FollowXarfcn to 0x" + myXarfcn.toString(16) );
 
     // Write Wave ID FollowXarfcn .................................................                
     u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
@@ -2497,6 +2520,7 @@ function SetFollowXarfcn(myXarfcn)
      u8TempTxBuff[i++] = (myXarfcn >> 8);
      u8TempTxBuff[i++] = myXarfcn;
 
+    nxtyCurrentReq = NXTY_SUPER_MSG_SET_FOLLOW_XARFCN;
     nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
 }
 
