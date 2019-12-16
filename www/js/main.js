@@ -1199,13 +1199,15 @@ const   FOLLOW_STATE_SET_XARFCN = 2;
 const   FOLLOW_STATE_VERIFY     = 3;
 const   FOLLOW_STATE_DONE       = 4;
 const   FOLLOW_STATE_WORK       = 100;
-var     followState         = FOLLOW_STATE_INIT;
+var     followState             = FOLLOW_STATE_INIT;
+var     followStateCounter      = 0;
 
 function FollowMyPhone(myState)
 {
     if( myState == FOLLOW_STATE_INIT)
     {
-        followState = myState;
+        followState        = myState;
+        followStateCounter = 0;
     }
 
     if(locationEnabled)
@@ -1235,6 +1237,7 @@ function FollowMyPhone(myState)
                         }
                     );  // follow
 
+                followState = FOLLOW_STATE_GET_TAG;
                 break;
             }
             
@@ -1245,6 +1248,7 @@ function FollowMyPhone(myState)
                 {
                     nxtyFollowTag = -1;
                     GetFollowTag();
+                    followState = FOLLOW_STATE_SET_XARFCN;
                 }
                 break;
             }
@@ -1265,14 +1269,17 @@ function FollowMyPhone(myState)
                         SimpleTimer.stop(onStopped);
                         
                     }
+                    followState = FOLLOW_STATE_VERIFY;
                 }
                 break;
             }
             case FOLLOW_STATE_VERIFY:
             {
                 PrintLog(1, "Follow State Verify");
+                followState = FOLLOW_STATE_DONE;
                 break;
             }
+            
             case FOLLOW_STATE_DONE:
             {
                 PrintLog(1, "Follow State Done");
@@ -1283,11 +1290,22 @@ function FollowMyPhone(myState)
         }
 
         
-        if( followState < FOLLOW_STATE_DONE )
+        if( (followState < FOLLOW_STATE_DONE) )
         {
-            setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
+            if( followStateCounter < 10)
+            {
+                setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
+            }
+            else
+            {
+                PrintLog(99, "Follow State timed out..."); 
+                if( isSouthBoundIfCnx )
+                {
+                    DisconnectAndStopSouthBoundIf();
+                }
+            }
         }
-        followState++;
+        followStateCounter++;
 
     }
     else
