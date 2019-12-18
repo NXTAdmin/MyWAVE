@@ -1,0 +1,167 @@
+@font-face {
+    font-family: "RobotoRegular";
+    src: url('../fonts/Roboto-Regular.ttf');
+}
+
+.body {
+    font-family: RobotoRegular, sans-serif;
+    color: #434a54;
+}
+
+.section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100vh;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.div_product {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding-top: 80px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.div_footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding-right: 16px;
+  padding-bottom: 16px;
+  padding-left: 16px;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+  text-align: left;
+}
+
+.text_producttitle {
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.text_version {
+    color: #ccd1d9;
+    font-size: 12px;
+    padding-left: 16px
+}
+
+.div_footeroption {
+    padding-right: 16px;
+}
+
+.onoffswitch {
+    position: relative; 
+    width: 256px; 
+    -webkit-user-select:none; 
+    -moz-user-select:none; 
+    -ms-user-select: none;
+}
+
+.onoffswitch-checkbox {
+    display: none;
+}
+
+.onoffswitch-label {
+    display: block; 
+    overflow: hidden; 
+    cursor: pointer;
+    border: 0px; 
+    border-radius: 16px;
+}
+
+.onoffswitch-inner {
+    display: block; 
+    width: 200%; 
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block; 
+    float: left; 
+    width: 50%; 
+    height: 95px; 
+    padding: 0; 
+    line-height: 95px;
+    font-size: 14px; 
+    color: white; 
+    font-weight: bold; 
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "Following";
+    padding-left: 16px;
+    background-color: #F4F4F4; 
+    color: #434A54;
+}
+
+.onoffswitch-inner:after {
+    content: "Off";
+    padding-right: 16px;
+    background-color: #F4F4F4; 
+    color: #C7C7CB;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block; 
+    width: 80px; 
+    margin: 8px;
+    background: #C7C7CB;
+    position: absolute; 
+    top: 0; 
+    bottom: 0;
+    right: 160px;
+    border: 0px; 
+    border-radius: 12px;
+    transition: all 0.3s ease-in 0s; 
+    background-image: url('../images/ToggleIcon.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px; 
+    background-color: #00C854; 
+    background-image: url('../images/ToggleIcon.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+}

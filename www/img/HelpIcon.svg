@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 59.1 (86144) - https://sketch.com -->
+    <title>Help</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Footer" transform="translate(-304.000000, 0.000000)" fill="#4FAEE0" fill-rule="nonzero">
+            <path d="M314.8,19.2 L317.2,19.2 L317.2,16.8 L314.8,16.8 L314.8,19.2 Z M316,0 C309.376,0 304,5.376 304,12 C304,18.624 309.376,24 316,24 C322.624,24 328,18.624 328,12 C328,5.376 322.624,0 316,0 Z M316,21.6 C310.708,21.6 306.4,17.292 306.4,12 C306.4,6.708 310.708,2.4 316,2.4 C321.292,2.4 325.6,6.708 325.6,12 C325.6,17.292 321.292,21.6 316,21.6 Z M316,4.8 C313.348,4.8 311.2,6.948 311.2,9.6 L313.6,9.6 C313.6,8.28 314.68,7.2 316,7.2 C317.32,7.2 318.4,8.28 318.4,9.6 C318.4,12 314.8,11.7 314.8,15.6 L317.2,15.6 C317.2,12.9 320.8,12.6 320.8,9.6 C320.8,6.948 318.652,4.8 316,4.8 Z" id="Help"></path>
+        </g>
+    </g>
+</svg>
