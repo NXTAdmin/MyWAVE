@@ -149,7 +149,7 @@
     border: 0px; 
     border-radius: 12px;
     transition: all 0.3s ease-in 0s; 
-    background-image: url('../images/ToggleIcon.svg');
+    background-image: url('../img/ToggleIcon.svg');
     background-repeat: no-repeat;
     background-size: contain;
 }
@@ -161,7 +161,7 @@
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
     right: 0px; 
     background-color: #00C854; 
-    background-image: url('../images/ToggleIcon.svg');
+    background-image: url('../img/ToggleIcon.svg');
     background-repeat: no-repeat;
     background-size: contain;
 }
