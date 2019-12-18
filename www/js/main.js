@@ -131,7 +131,7 @@ function SpinnerStop()
 // UpdateStatusLine....................................................................................
 function UpdateStatusLine(statusText)
 {
-    document.getElementById("status_line_id").innerHTML = statusText;
+//    document.getElementById("status_line_id").innerHTML = statusText;
 }
 
 // UpdateRssiLine....................................................................................
