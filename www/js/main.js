@@ -884,32 +884,7 @@ var app = {
 
 
 
-
     
-    
-
-/*
-
-
-        <div class='section'>
-            <div class='div_product'><img src='img/G32-Lg.png' width='160' alt='' class='image_product'>
-                <div class='text_producttitle'>90440000038</div>
-            </div>
-            <div class='onoffswitch'>
-                <input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch'>
-                <label class='onoffswitch-label' for='myonoffswitch'>
-                    <span class='onoffswitch-inner'></span>
-                    <span class='onoffswitch-switch'></span>
-                </label>
-            </div>
-            <div class='div_footer'>
-                <div class='text_version'>Version 1.0.1</div>
-                <div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div> <!-- Change the help URL later -->
-            </div>
-        </div>
-
-
- */
 
     renderHomeView: function() 
     {
@@ -921,10 +896,10 @@ var app = {
 
            "<div class='section'>" +
                 "<div class='div_product'><img src='img/G32-Lg.png' width='160' alt='' class='image_product'>" +
-                    "<div class='text_producttitle'>90440000038</div>" +
+                    "<div class='text_producttitle'>" + guiSerialNumber + "</div>" +
                 "</div>" +
                 "<div class='onoffswitch'>" +
-                    "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch'>" +
+                    "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
                     "<label class='onoffswitch-label' for='myonoffswitch'>" +
                         "<span class='onoffswitch-inner'></span>" +
                         "<span class='onoffswitch-switch'></span>" +
@@ -1356,6 +1331,18 @@ function FollowMyPhone(myState)
     
 }
 
+
+function clickFollow()
+{
+    if (document.getElementById('myonoffswitch').checked) 
+    {
+        PrintLog(1, "Follow Me checked...");
+    } 
+    else 
+    {
+        PrintLog(1, "Follow Me not checked...");
+    }
+}
 
 // -------------------------------------------------------------------------------------------------------
 function onTimerTick() 
