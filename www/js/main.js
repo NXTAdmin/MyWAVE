@@ -5,20 +5,20 @@ var isRegistered = true;
 
 const   MAIN_LOOP_COUNTER_MAX   = 20;
 
-var szSbIfIconOn            = "<img src='img/bluetooth_on.png' />";
-var szSbIfIconOff           = "<img src='img/bluetooth_off.png' />";
-var szSbIfMainOn            = "<img src='img/bt_main_on.png' />";
-var szSbIfMainOff           = "<img src='img/bt_main_off.png' />";
+// var szSbIfIconOn            = "<img src='img/bluetooth_on.png' />";
+// var szSbIfIconOff           = "<img src='img/bluetooth_off.png' />";
+// var szSbIfMainOn            = "<img src='img/bt_main_on.png' />";
+// var szSbIfMainOff           = "<img src='img/bt_main_off.png' />";
 var iOSPlatform             = "iOS";
 var androidPlatform         = "Android";
 
 
 //var szBtIconOn              = "<img src='img/bluetooth_on.png' />";
 //var szBtIconOff             = "<img src='img/bluetooth_off.png' />";
-var szRegIconReg            = "<img src='img/reg_yes.png' />";
-var szRegIconNotReg         = "<img src='img/reg_no.png' />";                       // With bar
-var szMyStatusLine          = "<p id='status_line_id' class='status_line'></p>";
-var szMyRssiLine            = "<p id='rssi_line_id'   class='rssi_line'></p>";
+// var szRegIconReg            = "<img src='img/reg_yes.png' />";
+// var szRegIconNotReg         = "<img src='img/reg_no.png' />";                       // With bar
+// var szMyStatusLine          = "<p id='status_line_id' class='status_line'></p>";
+// var szMyRssiLine            = "<p id='rssi_line_id'   class='rssi_line'></p>";
 var myModel                 = "MN8";
 var mySn                    = "12345678";
 var myPlatformUrl           = "https://nextivity-sandbox-connect.axeda.com:443/ammp/";
@@ -49,7 +49,6 @@ var bSpinner                = false;
 var szNoStatus              = "No status response from unit so ICD version not known...kill app and retry";
 var bCnxToCu                = true;             // Set to true if connected locally to CU after reading local BoardConfig.
 var bCnxToOneBoxNu          = false;            // Set to true if connected to a 1-Box NU, all UART redirects are disabled.
-var bWaveTest               = true;            // Set to false for normal WaveTools or true for Bluetooth test only.                
 
 var bPhoneInBackground      = false;    // Set to true if phone is in background.
 var bFollowMyPhoneFlag      = false;    // Set to true when phone in Follow My Phone mode.
@@ -889,27 +888,68 @@ var app = {
     
     
 
+/*
 
+
+        <div class='section'>
+            <div class='div_product'><img src='img/G32-Lg.png' width='160' alt='' class='image_product'>
+                <div class='text_producttitle'>90440000038</div>
+            </div>
+            <div class='onoffswitch'>
+                <input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch'>
+                <label class='onoffswitch-label' for='myonoffswitch'>
+                    <span class='onoffswitch-inner'></span>
+                    <span class='onoffswitch-switch'></span>
+                </label>
+            </div>
+            <div class='div_footer'>
+                <div class='text_version'>Version 1.0.1</div>
+                <div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div> <!-- Change the help URL later -->
+            </div>
+        </div>
+
+
+ */
 
     renderHomeView: function() 
     {
-        var myBluetoothIcon = isSouthBoundIfCnx ? "<div id='bt_icon_id' class='bt_icon'>" + szSbIfIconOn + "</div>" : "<div  id='bt_icon_id' class='bt_icon'>" + szSbIfIconOff + "</div>";
-        var myBluetoothMain = isSouthBoundIfCnx ? "<div id='bt_main_id' class='bt_main_icon'>" + szSbIfMainOn + "</div>" : "<div  id='bt_main_id' class='bt_main_icon'>" + szSbIfMainOff + "</div>";
+//        var myBluetoothIcon = isSouthBoundIfCnx ? "<div id='bt_icon_id' class='bt_icon'>" + szSbIfIconOn + "</div>" : "<div  id='bt_icon_id' class='bt_icon'>" + szSbIfIconOff + "</div>";
+//        var myBluetoothMain = isSouthBoundIfCnx ? "<div id='bt_main_id' class='bt_main_icon'>" + szSbIfMainOn + "</div>" : "<div  id='bt_main_id' class='bt_main_icon'>" + szSbIfMainOff + "</div>";
         
         if(bWaveTest)
         {
             var myHtml = 
+
+           "<div class='section'>" +
+                "<div class='div_product'><img src='img/G32-Lg.png' width='160' alt='' class='image_product'>" +
+                    "<div class='text_producttitle'>90440000038</div>" +
+                "</div>" +
+                "<div class='onoffswitch'>" +
+                    "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch'>" +
+                    "<label class='onoffswitch-label' for='myonoffswitch'>" +
+                        "<span class='onoffswitch-inner'></span>" +
+                        "<span class='onoffswitch-switch'></span>" +
+                    "</label>" +
+                "</div>" +
+                "<div class='div_footer'>" +
+                    "<div class='text_version'>Version 1.0.1</div>" +
+                    "<div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div>" +
+                "</div>" +
+           "</div>";
+                    
 //                "<img src='img/header_main.png' width='100%' />" +
                 
-                myBluetoothIcon +
-                myBluetoothMain +
-                szMyRssiLine +
-                szMyStatusLine;
+//                myBluetoothIcon +
+//                myBluetoothMain +
+//                szMyRssiLine +
+//                szMyStatusLine;
     
             $('body').html(myHtml); 
             
 
         }
+        
+/*        
         else
         {
             var myHtml = 
@@ -948,8 +988,9 @@ var app = {
             UpdateStatusLine( "Wavetools ver: " + szVersion );
         
         }
-        
+*/      
 
+        
         currentView = "main";
         SpinnerStart( "", GetLangString("SearchDevices") );  // "Searching for Cel-Fi Devices..."
 

@@ -1023,24 +1023,8 @@ function UpdateBluetoothIcon(cnx)
          PrintLog(1, "BT: UpdateBluetoothIcon(): Set isSouthBoundIfCnx to true" );
      }
      
-     if( isSouthBoundIfListDone )
-     {
-         if( document.getElementById("bt_icon_id").innerHTML != szSbIfIconOn )
-         {
-             document.getElementById("bt_icon_id").innerHTML = szSbIfIconOn;
-         }
-         
-         if(bWaveTest)
-         {
-             if( document.getElementById("bt_main_id").innerHTML != szSbIfMainOn )
-             {
-                 document.getElementById("bt_main_id").innerHTML = szSbIfMainOn;
-             }
-         }
-         
-     }
-
-     var cnxIdx = guiDeviceMacAddrList.indexOf(btAddr);
+     
+ //    var cnxIdx = guiDeviceMacAddrList.indexOf(btAddr);
 
 /*
 jdo do not enable the thunker...
@@ -1076,18 +1060,6 @@ jdo do not enable the thunker...
          PrintLog(1, "BT: UpdateBluetoothIcon(): Set isSouthBoundIfCnx to false" );
      }
      
-     if( document.getElementById("bt_icon_id").innerHTML != szSbIfIconOff )
-     {
-         document.getElementById("bt_icon_id").innerHTML = szSbIfIconOff;
-     }
-
-     if(bWaveTest)
-     {
-         if( document.getElementById("bt_main_id").innerHTML != szSbIfMainOff )
-         {
-             document.getElementById("bt_main_id").innerHTML = szSbIfMainOff;
-         }
-     }
      
      isSouthBoundIfCnx     = false;
      isBluetoothSubscribed = false;
