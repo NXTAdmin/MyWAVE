@@ -1226,7 +1226,7 @@ function FollowMyPhone(myState)
         followStateCounter = 0;
     }
 
-    PrintLog(1, "Follow State counter =" + followStateCounter);
+//    PrintLog(1, "Follow State counter =" + followStateCounter);
 
     if(locationEnabled)
     {
@@ -1310,7 +1310,7 @@ function FollowMyPhone(myState)
         
         if( (followState <= FOLLOW_STATE_DONE) )
         {
-            if( followStateCounter < 10)
+            if( followStateCounter < 9)
             {
                 setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
             }
