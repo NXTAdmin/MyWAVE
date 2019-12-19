@@ -2836,7 +2836,7 @@ function GetDeviceSerialNumbersLoop()
         }
         else if( guiNumDevicesFound >= 1 )
         {
-            SpinnerStop();  // jdo added to stop spinner
+//            SpinnerStop();  // jdo added to stop spinner
             deviceFoundUIFlag = true;   // Keep the popup, "Can't find a booster" from showing up after 2 minutes
             
             

@@ -1157,6 +1157,8 @@ window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
                         {
                             PrintLog(1, "Follow Tags match, enable Follow My Phone.");
                             bFollowMyPhoneFlag = true; 
+                            
+                            document.getElementById("myonoffswitch").checked = true;
                     
                             // Start a timer that can run from background...
                             var config = {
@@ -1263,9 +1265,9 @@ function FollowMyPhone(myState)
             
             case FOLLOW_STATE_GET_TAG:
             {
-                PrintLog(1, "Follow State Get Tag");
                 if(isSouthBoundIfCnx)
                 {
+                    PrintLog(1, "Follow State Get Tag");
                     nxtyFollowTag = -1;
                     GetFollowTag();
                     followState = FOLLOW_STATE_SET_XARFCN;
