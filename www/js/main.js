@@ -1304,7 +1304,7 @@ function FollowMyPhone(myState)
             {
                 PrintLog(1, "Follow State Done");
                 DisconnectAndStopSouthBoundIf();
-                break;
+                return;
             }
             
         }
