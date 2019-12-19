@@ -5,6 +5,8 @@ var isRegistered = true;
 
 const   MAIN_LOOP_COUNTER_MAX   = 20;
 
+var szImgG32                = ""<img src='img/G32-Lg.png' width='160' alt='' class='image_product'>";
+var szImgG31                = ""<img src='img/G31-Lg.png' width='160' alt='' class='image_product'>";
 // var szSbIfIconOn            = "<img src='img/bluetooth_on.png' />";
 // var szSbIfIconOff           = "<img src='img/bluetooth_off.png' />";
 // var szSbIfMainOn            = "<img src='img/bt_main_on.png' />";
@@ -895,8 +897,8 @@ var app = {
             var myHtml = 
 
            "<div class='section'>" +
-                "<div class='div_product'><img src='img/G32-Lg.png' width='160' alt='' class='image_product'>" +
-                    "<div class='text_producttitle'>" + guiSerialNumber + "</div>" +
+                "<div id='go_img_id' class='div_product'>" + "" +
+                    "<div id='go_sn_id' class='text_producttitle'>" + "" + "</div>" +
                 "</div>" +
                 "<div class='onoffswitch'>" +
                     "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
@@ -1093,7 +1095,7 @@ function MainLoop()
                     OpenSouthBoundIf(true);
                 }
             }
-            else if(guiSerialNumber != null )
+            else if(guiSerialNumber != "" )
             {
 //                if(locationEnabled)
                 {
@@ -1143,7 +1145,10 @@ function MainLoop()
 window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
 // jdo test
                     
-                    
+
+                    document.getElementById("go_img_id").innerHTML = szImgG32;
+                    document.getElementById("go_sn_id").innerHTML = guiSerialNumber;
+
                     // Cel-Fi hardware supports Follow My Phone, see if this phone has requested to follow:
                     phoneFollowTag = window.localStorage.getItem("phoneFollowTagId");
                     if( phoneFollowTag != null )

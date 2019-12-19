@@ -230,7 +230,7 @@ var guiDeviceSubCnxList     = [];               // An array of "CNX" devices, in
 var guiDeviceTempSubSnList  = [];               // An array of serial numvers associated with a specific Antenna SN.   This is re-populated with each call to ConnectDevice().
 var guiAntennaGetBoosterListFlag = false;       // true when a delay should be displayed. 
 var guiAntennaGotBoosterListFlag = false;       // true when guiDeviceTempSubSnList[] has been populated. 
-var guiSerialNumber         = null;             // String based on the serial number.
+var guiSerialNumber         = "";               // String based on the serial number.
 
 var bSkalAntControlFlag          = false;       // Read AntennaControl reg to see if G32 type GO.  false: If value is 0xDEADBABE then not G32.
 var deviceFoundUIFlag       = false;
