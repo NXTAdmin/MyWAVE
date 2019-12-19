@@ -5,8 +5,8 @@ var isRegistered = true;
 
 const   MAIN_LOOP_COUNTER_MAX   = 20;
 
-var szImgG32                = "<img src='img/G32-Lg.png' width='160' alt='' class='image_product'>";
-var szImgG31                = "<img src='img/G31-Lg.png' width='160' alt='' class='image_product'>";
+var szImgG32                = "<img src='img/G32-Lg.png' width='160' alt='' class='image_product'> <div class='text_producttitle'>" + guiSerialNumber + "</div>";
+var szImgG31                = "<img src='img/G31-Lg.png' width='160' alt='' class='image_product'> <div class='text_producttitle'>" + guiSerialNumber + "</div>";
 // var szSbIfIconOn            = "<img src='img/bluetooth_on.png' />";
 // var szSbIfIconOff           = "<img src='img/bluetooth_off.png' />";
 // var szSbIfMainOn            = "<img src='img/bt_main_on.png' />";
@@ -898,7 +898,7 @@ var app = {
 
            "<div class='section'>" +
                 "<div id='go_img_id' class='div_product'>" + "" +
-                    "<div id='go_sn_id' class='text_producttitle'>" + "" + "</div>" +
+                    "<div id='go_sn_id' class='text_producttitle'>" + guiSerialNumber + "</div>" +
                 "</div>" +
                 "<div class='onoffswitch'>" +
                     "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
@@ -1147,7 +1147,6 @@ window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
                     
 
                     document.getElementById("go_img_id").innerHTML = szImgG32;
-                    document.getElementById("go_sn_id").innerHTML = guiSerialNumber;
 
                     // Cel-Fi hardware supports Follow My Phone, see if this phone has requested to follow:
                     phoneFollowTag = window.localStorage.getItem("phoneFollowTagId");
