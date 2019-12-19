@@ -3031,7 +3031,7 @@ function CnxId()
 // HandlePhoneBackground........................................................................
 function HandlePhoneBackground()
 {
-    PrintLog(1, "WaveTools sent to background, exiting..." );
+    PrintLog(1, "WaveTools sent to background..." );
 //    navigator.app.exitApp();
 
 /*

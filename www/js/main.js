@@ -266,7 +266,7 @@ var app = {
         StartMainLoop();
         
 //        WaitForFileSystemThenStartSouthboundIf();
-//        window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            //
+        window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            //
         
     },   
        
@@ -1310,7 +1310,7 @@ function FollowMyPhone(myState)
         }
 
         
-        if( (followState < FOLLOW_STATE_DONE) )
+        if( (followState <= FOLLOW_STATE_DONE) )
         {
             if( followStateCounter < 10)
             {
