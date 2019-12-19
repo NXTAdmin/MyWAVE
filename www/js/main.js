@@ -1156,18 +1156,12 @@ window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
                         if( phoneFollowTag == nxtyFollowTag )
                         {
                             PrintLog(1, "Follow Tags match, enable Follow My Phone.");
-                            bFollowMyPhoneFlag = true; 
-                            
-                            document.getElementById("myonoffswitch").checked = true;
-                    
-                            // Start a timer that can run from background...
-                            var config = {
-                                interval: 30000, // 30 seconds
-                                useWakelock: false
-                            }
-                            
-                            // Start
-                            SimpleTimer.start(onTimerTick, errorStart, config);
+                            SetFollow(true);
+                        }
+                        else
+                        {
+                            PrintLog(1, "Follow Tags match, enable Follow My Phone.");
+                            SetFollow(false);
                         }
                         
                     }
@@ -1339,17 +1333,48 @@ function FollowMyPhone(myState)
 }
 
 
+//-------------------------------------------------------------------------------------------------------
 function clickFollow()
 {
     if (document.getElementById('myonoffswitch').checked) 
     {
-        PrintLog(1, "Follow Me checked...");
+        SetFollow(true);
     } 
     else 
     {
-        PrintLog(1, "Follow Me not checked...");
+        SetFollow(false);
     }
 }
+
+
+//-------------------------------------------------------------------------------------------------------
+function SetFollow(myState)
+{
+    if( myState == true )
+    {
+        PrintLog(1, "Start Following...");
+        
+        // Start a timer that can run from background...
+        var config = {
+            interval: 30000, // 30 seconds
+            useWakelock: false
+        }
+        
+        // Start
+        SimpleTimer.start(onTimerTick, errorStart, config);
+    }
+    else
+    {
+        PrintLog(1, "Stop Following...");
+        SimpleTimer.stop(onStopped);
+    }
+    
+    bFollowMyPhoneFlag = myState; 
+    document.getElementById("myonoffswitch").checked = myState;
+}
+
+
+
 
 // -------------------------------------------------------------------------------------------------------
 function onTimerTick() 
