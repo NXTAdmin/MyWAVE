@@ -1226,6 +1226,8 @@ function FollowMyPhone(myState)
         followStateCounter = 0;
     }
 
+    PrintLog(1, "Follow State counter =" + followStateCounter);
+
     if(locationEnabled)
     {
         switch(followState)
