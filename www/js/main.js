@@ -5,8 +5,8 @@ var isRegistered = true;
 
 const   MAIN_LOOP_COUNTER_MAX   = 20;
 
-var szImgG32                = ""<img src='img/G32-Lg.png' width='160' alt='' class='image_product'>";
-var szImgG31                = ""<img src='img/G31-Lg.png' width='160' alt='' class='image_product'>";
+var szImgG32                = "<img src='img/G32-Lg.png' width='160' alt='' class='image_product'>";
+var szImgG31                = "<img src='img/G31-Lg.png' width='160' alt='' class='image_product'>";
 // var szSbIfIconOn            = "<img src='img/bluetooth_on.png' />";
 // var szSbIfIconOff           = "<img src='img/bluetooth_off.png' />";
 // var szSbIfMainOn            = "<img src='img/bt_main_on.png' />";
