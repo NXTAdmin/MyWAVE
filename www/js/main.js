@@ -1142,7 +1142,7 @@ function MainLoop()
                 {
                     
 // jdo test                
-window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
+window.localStorage.setItem("phoneFollowTag_Id", nxtyFollowTag);
 // jdo test
                     
 
@@ -1150,7 +1150,7 @@ window.localStorage.setItem("phoneFollowTagId", nxtyFollowTag);
                     document.getElementById("go_sn_id").innerHTML = guiSerialNumber;
 
                     // Cel-Fi hardware supports Follow My Phone, see if this phone has requested to follow:
-                    phoneFollowTag = window.localStorage.getItem("phoneFollowTagId");
+                    phoneFollowTag = window.localStorage.getItem("phoneFollowTag_Id");
                     if( phoneFollowTag != null )
                     {
                         if( phoneFollowTag == nxtyFollowTag )
@@ -1210,15 +1210,16 @@ function HandleNoFollowConfirmation(buttonIndex)
 
 //-------------------------------------------------------------------------------------------------------
 const   FOLLOW_STATE_INIT       = 0;
-const   FOLLOW_STATE_GET_TAG    = 1;
-const   FOLLOW_STATE_SET_XARFCN = 2;
-const   FOLLOW_STATE_VERIFY     = 3;
-const   FOLLOW_STATE_DONE       = 4;
+const   FOLLOW_STATE_SET_TAG    = 1;
+const   FOLLOW_STATE_GET_TAG    = 2;
+const   FOLLOW_STATE_SET_XARFCN = 3;
+const   FOLLOW_STATE_VERIFY     = 4;
+const   FOLLOW_STATE_DONE       = 5;
 const   FOLLOW_STATE_WORK       = 100;
 var     followState             = FOLLOW_STATE_INIT;
 var     followStateCounter      = 0;
 
-function FollowMyPhone(myState)
+function FollowMyPhone(myState, mySetTag)
 {
     if( myState == FOLLOW_STATE_INIT)
     {
@@ -1255,7 +1256,14 @@ function FollowMyPhone(myState)
                         }
                     );  // follow
 
-                followState = FOLLOW_STATE_GET_TAG;
+                if( mySetTage == 0)
+                {
+                    followState = FOLLOW_STATE_GET_TAG;
+                }
+                else
+                {
+                    followState = FOLLOW_STATE_SET_TAG;
+                }
                 break;
             }
             
@@ -1312,7 +1320,7 @@ function FollowMyPhone(myState)
         {
             if( followStateCounter < 9)
             {
-                setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK); }, 1000 );  // Come back in 1 second
+                setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK, mySetTag); }, 1000 );  // Come back in 1 second
             }
             else
             {
@@ -1354,8 +1362,14 @@ function SetFollow(myState)
 {
     if( myState == true )
     {
-        PrintLog(1, "Start Following...");
         
+        // Create random tag between 0 and 0x7FFFFFFF
+        var randomTag = Math.random() * 0x7FFFFFFF; 
+
+        PrintLog(1, "Start Following: tag = 0x" + randomTag.toString(16) );
+        
+        RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
+
         // Start a timer that can run from background...
         var config = {
             interval: 30000, // 30 seconds
@@ -1369,6 +1383,8 @@ function SetFollow(myState)
     {
         PrintLog(1, "Stop Following...");
         SimpleTimer.stop(onStopped);
+        ForgetThisDevice();                                     // Forget this BT device.
+        window.localStorage.removeItem( "phoneFollowTag_Id" );  // Delete the follow tag stored on the phone.
     }
     
     bFollowMyPhoneFlag = myState; 
@@ -1378,11 +1394,16 @@ function SetFollow(myState)
 
 
 
+
+
+
+
+
 // -------------------------------------------------------------------------------------------------------
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
-    FollowMyPhone(FOLLOW_STATE_INIT);
+    FollowMyPhone(FOLLOW_STATE_INIT, 0);
 }    
 
 function errorStart(message) {

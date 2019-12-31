@@ -242,13 +242,13 @@ function OpenSouthBoundIf(bFirstTime)
     PrintLog(1, "BT: Starting bluetooth");
 
     // WAVEAPP-544: See if we have a cached MAC address for auto connect. (Wavetools no caching)
-//    if( IsAnyDeviceRemembered() )
-//    {
-//        bBtTryFavoriteMac  = true;
-//        guiFavoriteMacAddr = window.localStorage.getItem( "guiFavoriteMacAddr_ID" );
-//        guiFavoriteIcd     = parseInt( window.localStorage.getItem( "guiFavoriteIcd_ID" ) );
-//        guiFavoriteRssi    = parseInt( window.localStorage.getItem( "guiFavoriteRssi_ID" ) );
-//    }
+    if( IsAnyDeviceRemembered() )
+    {
+        bBtTryFavoriteMac  = true;
+        guiFavoriteMacAddr = window.localStorage.getItem( "guiFavoriteMacAddr_ID" );
+        guiFavoriteIcd     = parseInt( window.localStorage.getItem( "guiFavoriteIcd_ID" ) );
+        guiFavoriteRssi    = parseInt( window.localStorage.getItem( "guiFavoriteRssi_ID" ) );
+    }
 
     
 /*
@@ -264,21 +264,6 @@ jdo do not enable the thunker for MyWave
     }
 */    
 
-/*    
-    guiFavoriteMacAddr = window.localStorage.getItem( "guiFavoriteMacAddr_ID" );
-    if( (guiFavoriteMacAddr != null) )
-    {
-        guiFavoriteIcd     = window.localStorage.getItem( "guiFavoriteIcd_ID" );
-        guiFavoriteRssi    = window.localStorage.getItem( "guiFavoriteRssi_ID" );
-        
-        if( (guiFavoriteIcd != null) && (guiFavoriteRssi != null) )
-        {
-            bBtTryFavoriteMac = true;
-            guiFavoriteIcd    = parseInt( window.localStorage.getItem( "guiFavoriteIcd_ID" ) );
-            guiFavoriteRssi   = parseInt( window.localStorage.getItem( "guiFavoriteRssi_ID" ) );
-        }
-    }
-*/
     
     var paramsObj = { "request": true,  "statusReceiver": true };
     bluetoothle.initialize(initializeSuccess, /*initializeError, */ paramsObj);  // error no longer used with plugin 3.3.0.
@@ -3081,3 +3066,76 @@ function ShutdownBluetoothInBackground()
     }
 }
 
+// IsAnyDeviceRemembered().................................................................................................................
+function IsAnyDeviceRemembered()
+{
+ var tempMacAddr = window.localStorage.getItem( "guiFavoriteMacAddr_ID" );
+ var tempIcd     = window.localStorage.getItem( "guiFavoriteIcd_ID" );
+ var tempRssi    = window.localStorage.getItem( "guiFavoriteRssi_ID" );
+
+ if( (tempMacAddr != null) && (tempIcd != null) && (tempRssi != null) )
+ {
+     return( true );
+ }
+ else
+ {
+     return( false );
+ }
+ 
+}
+
+//IsThisDeviceRemembered().................................................................................................................
+function IsThisDeviceRemembered(myDeviceMac)
+{
+ var tempMacAddr = window.localStorage.getItem( "guiFavoriteMacAddr_ID" );
+ var tempIcd     = window.localStorage.getItem( "guiFavoriteIcd_ID" );
+ var tempRssi    = window.localStorage.getItem( "guiFavoriteRssi_ID" );
+
+ if( (tempMacAddr != null) && (tempIcd != null) && (tempRssi != null) )
+ {
+     if( myDeviceMac == tempMacAddr )
+     {
+         return( true );
+     }
+     else
+     {
+         return( false );
+     }
+ }
+ else
+ {
+     return( false );
+ }
+ 
+}
+
+
+// RememberThisDevice().................................................................................................................
+// window.localStorage.setItem( "guiFavoriteMacAddr_ID", guiDeviceMacAddrList[btCnxIdIdx] );
+// window.localStorage.setItem( "guiFavoriteIcd_ID",     icdBtList[btCnxIdIdx] );
+// window.localStorage.setItem( "guiFavoriteRssi_ID",    guiDeviceRssiList[btCnxIdIdx] );
+function RememberThisDevice(myMac, myIcd, myRssi )
+{
+    PrintLog(1, "RememberThisDevice(" + myMac + ", " + myIcd + ", " + myRssi + ")" );
+    
+    // WAVEAPP-544: Cache this MAC address and auto connect next time the app starts...
+    window.localStorage.setItem( "guiFavoriteMacAddr_ID", myMac );
+    window.localStorage.setItem( "guiFavoriteIcd_ID",     myIcd );
+    window.localStorage.setItem( "guiFavoriteRssi_ID",    myRssi );
+}
+
+
+
+//ForgetThisDevice().................................................................................................................
+function ForgetThisDevice()
+{
+ PrintLog(1, "ForgetThisDevice()" );
+
+ window.localStorage.removeItem( "guiFavoriteMacAddr_ID" );
+ window.localStorage.removeItem( "guiFavoriteIcd_ID" );
+ window.localStorage.removeItem( "guiFavoriteRssi_ID" );
+ 
+ guiFavoriteMacAddr = null;
+ guiFavoriteIcd     = null;
+ guiFavoriteRssi    = null;
+}
