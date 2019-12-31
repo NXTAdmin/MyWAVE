@@ -1229,7 +1229,12 @@ function FollowMyPhone(myState, mySetTag)
             {
                 PrintLog(1, "Follow State Init");
                 
-                if(isSouthBoundIfCnx == false)
+                if(isSouthBoundIfCnx)
+                {
+                    // Wait for BT to become disconnected....
+                    setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK, mySetTag); }, 1000 );  // Come back in 1 second
+                }
+                else
                 {
                     ConnectBluetoothDevice(myLastBtAddress);
                 }
