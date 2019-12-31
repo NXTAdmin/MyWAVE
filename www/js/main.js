@@ -1153,7 +1153,7 @@ function MainLoop()
                         }
                         else
                         {
-                            PrintLog(1, "Follow Tags match, disable Follow My Phone.");
+                            PrintLog(1, "Follow Tags do not match, disable Follow My Phone.");
                             SetFollow(false);
                         }
                         

@@ -1435,10 +1435,12 @@ var nxty = {
                         // Got a NAK...
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
                         PrintLog(99,  "Super Msg: Set Follow Tag msg type encountered a NAK." );
+                        window.localStorage.removeItem( "phoneFollowTag_Id" );  // Delete the follow tag stored on the phone.
                     }
                     else
                     {
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
+                        nxtyFollowTag = window.localStorage.getItem("phoneFollowTag_Id");
                         PrintLog(1,  "Super Msg Rsp: Set Follow Tag successfully" );
                     }
                 }
