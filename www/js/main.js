@@ -961,7 +961,7 @@ var app = {
     
             document.getElementById("bypass_cac_button_id").addEventListener('touchstart', HandleButtonDown );
             document.getElementById("bypass_cac_button_id").addEventListener('touchend',   HandleButtonUp );
-            UpdateStatusLine( "Wavetools ver: " + szVersion );
+            UpdateStatusLine( "MyWave ver: " + szVersion );
         
         }
 */      
@@ -1097,18 +1097,10 @@ function MainLoop()
             }
             else if(guiSerialNumber != "" )
             {
-//                if(locationEnabled)
+                if( guiNumDevicesFound )  // When set to 1 in BT file, we should have the SN by then.
                 {
-                    if( guiNumDevicesFound )  // When set to 1 in BT file, we should have the SN by then.
-                    {
-                        uMainLoopState = MAIN_LOOP_STATE_OPERATE;
-                    }
+                    uMainLoopState = MAIN_LOOP_STATE_OPERATE;
                 }
-//                else
-//                {
-//                    PrintLog(1, "MainLoop: Init: Waiting on location to be enabled...");
-//                }
-            }
             break;
         }
         
@@ -1142,7 +1134,7 @@ function MainLoop()
                 {
                     
 // jdo test                
-window.localStorage.setItem("phoneFollowTag_Id", nxtyFollowTag);
+// window.localStorage.setItem("phoneFollowTag_Id", nxtyFollowTag);
 // jdo test
                     
 
@@ -1160,17 +1152,16 @@ window.localStorage.setItem("phoneFollowTag_Id", nxtyFollowTag);
                         }
                         else
                         {
-                            PrintLog(1, "Follow Tags match, enable Follow My Phone.");
+                            PrintLog(1, "Follow Tags match, disable Follow My Phone.");
                             SetFollow(false);
                         }
                         
                     }
-                    
-                    if( bFollowMyPhoneFlag == false )
+                    else
                     {
-                        PrintLog(1, "Follow Tags do not match, disable Follow My Phone.");
+                        PrintLog(1, "no Follow Tag stored on phone so disable Follow My Phone.");
+                        SetFollow(false);
                     }
-
                 }
                 else
                 {
@@ -1267,6 +1258,18 @@ function FollowMyPhone(myState, mySetTag)
                 break;
             }
             
+            case FOLLOW_STATE_SET_TAG:
+            {
+                if(isSouthBoundIfCnx)
+                {
+                    PrintLog(1, "Follow State Set Tag");
+                    nxtyFollowTag = -1;
+                    SetFollowTag(mySetTag);
+                    followState = FOLLOW_STATE_SET_XARFCN;
+                }
+                break;
+            }
+            
             case FOLLOW_STATE_GET_TAG:
             {
                 if(isSouthBoundIfCnx)
@@ -1278,6 +1281,7 @@ function FollowMyPhone(myState, mySetTag)
                 }
                 break;
             }
+
             case FOLLOW_STATE_SET_XARFCN:
             {
                 PrintLog(1, "Follow State Set Xarfcn");
@@ -1366,7 +1370,11 @@ function SetFollow(myState)
         // Create random tag between 0 and 0x7FFFFFFF
         var randomTag = Math.random() * 0x7FFFFFFF; 
 
+        randomTag >>>= 0;   // Use >>> operator to make unsiged.
+
         PrintLog(1, "Start Following: tag = 0x" + randomTag.toString(16) );
+        FollowMyPhone(FOLLOW_STATE_INIT, randomTag);                    // Call right away to give the tag to the hardware.
+        window.localStorage.setItem("phoneFollowTag_Id", randomTag);    // Remember locally
         
         RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
 
@@ -1381,7 +1389,7 @@ function SetFollow(myState)
     }
     else
     {
-        PrintLog(1, "Stop Following...");
+        PrintLog(1, "Do not follow...");
         SimpleTimer.stop(onStopped);
         ForgetThisDevice();                                     // Forget this BT device.
         window.localStorage.removeItem( "phoneFollowTag_Id" );  // Delete the follow tag stored on the phone.

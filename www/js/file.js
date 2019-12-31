@@ -99,7 +99,7 @@ function OpenLogFile()
 {
     bfileOpenLogFileSuccess = false;
     fileWriterObject        = null;
-    g_fileSystemDir.getFile( "wavetools.log", {create:true, exclusive: false}, onOpenWriteFileSuccessCB, onOpenWriteFileErrorCB );
+    g_fileSystemDir.getFile( "mywave.log", {create:true, exclusive: false}, onOpenWriteFileSuccessCB, onOpenWriteFileErrorCB );
 }                  
 
 // WriteLogFile..............................................................................................
@@ -343,7 +343,7 @@ function onOpenWriteFileSuccessCB(fileEntry)
 
 function onOpenWriteFileErrorCB(e) 
 {
-    PrintLog(99, "Unable to open file: wavetools.log  Error:" + e.toString() );
+    PrintLog(99, "Unable to open file: mywave.log  Error:" + e.toString() );
 }
 
 
@@ -358,13 +358,13 @@ function onCreateWriterSuccessCB(fileWriter)
     bfileOpenLogFileSuccess = true;
     bfileWriteInProgress    = true;
     
-    var devText = "Log file opened: " + Date() + " Print level: " + PrintLogLevel + "\nPhone Model: " + window.device.model + "  OS: " + window.device.platform + " Ver: " + window.device.version + " WaveTools Ver=" + szVersion;
+    var devText = "Log file opened: " + Date() + " Print level: " + PrintLogLevel + "\nPhone Model: " + window.device.model + "  OS: " + window.device.platform + " Ver: " + window.device.version + " MyWave Ver=" + szVersion;
     fileWriterObject.write( devText );
 }
 
 function onCreateWriterErrorCB(e) 
 {
-    PrintLog(99, "Unable to createWriter for file wavetools.log  Error:" + e.toString() );
+    PrintLog(99, "Unable to createWriter for file mywave.log  Error:" + e.toString() );
 }
 
 

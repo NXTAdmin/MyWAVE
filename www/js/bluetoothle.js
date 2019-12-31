@@ -210,7 +210,7 @@ var u8ThunkRxCountTotal = 0;
 var u8IcdRxCountTotal   = 0;
 
 
-// Added for WaveTools...
+// Added for MyWave...
 var Module = new Object;
 var guiDisableBtScanFlag    = false;
 var bPrivacyViewed          = true;
@@ -241,7 +241,7 @@ function OpenSouthBoundIf(bFirstTime)
 {
     PrintLog(1, "BT: Starting bluetooth");
 
-    // WAVEAPP-544: See if we have a cached MAC address for auto connect. (Wavetools no caching)
+    // WAVEAPP-544: See if we have a cached MAC address for auto connect.
     if( IsAnyDeviceRemembered() )
     {
         bBtTryFavoriteMac  = true;
@@ -473,7 +473,7 @@ function isConnectedCallback(obj)
                     uNoBtCount++;
     	            if( uNoBtCount > 3 )
     	            {
-    	                showAlert("WaveTools", "Bluetooth connection lost.");
+    	                showAlert("MyWave", "Bluetooth connection lost.");
 //    	                ShowAlertPopUpMsg(GetLangString("BluetoothCnxLost"),  GetLangString("UnableToSyncError99") );
     	                uNoBtCount = 0;
     	            }
@@ -2866,7 +2866,7 @@ function GetDeviceSerialNumbersLoop()
         if( bRangeIssue )
         {
 //            util.showNoDeviceFoundErrorPopup(true);
-            showAlert("WaveTools", "No device found.");
+            showAlert("MyWave", "No device found.");
             
             //ShowAlertPopUpMsg( GetLangString("BluetoothRangeIssue"), GetLangString("BluetoothRangeIssueMsg") );
             guiDeviceFlag = false;
@@ -3016,11 +3016,11 @@ function CnxId()
 // HandlePhoneBackground........................................................................
 function HandlePhoneBackground()
 {
-    PrintLog(1, "WaveTools sent to background..." );
+    PrintLog(1, "MyWave sent to background..." );
 //    navigator.app.exitApp();
 
 /*
-Not for WaveTools
+Not for MyWave
     PrintLog(1, "Phone sent to background, disconnect BT after 5 minutes to save power.  " + Date());
     bPhoneInBackground = true;
     

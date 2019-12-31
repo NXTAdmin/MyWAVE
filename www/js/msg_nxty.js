@@ -61,6 +61,7 @@ const     NXTY_SUPER_MSG_GET_FOLLOW_TAG         = 0x15;
 const     NXTY_SUPER_MSG_GET_FOLLOW_XARFCN      = 0x16;
 const     NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR   = 0x17;
 const     NXTY_SUPER_MSG_SET_FOLLOW_XARFCN      = 0x18;
+const     NXTY_SUPER_MSG_SET_FOLLOW_TAG         = 0x19;
 
 
 const   NXTY_SUPER_MSG_RSP                      = 0x53;
@@ -612,7 +613,7 @@ var nxty = {
 
                 PrintLog(1,  "Msg: Status Rsp: ICD ver=0x" + nxtyRxStatusIcd.toString(16) );
                 
-                UpdateStatusLine( "Wavetools ver: " + szVersion + " ICD: 0x" + nxtyRxStatusIcd.toString(16) );
+                UpdateStatusLine( "MyWave ver: " + szVersion + " ICD: 0x" + nxtyRxStatusIcd.toString(16) );
                 
                 
                 // Only grab the BoardConfig value if old ICD, <= 0x07. 
@@ -1418,6 +1419,27 @@ var nxty = {
                     {
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
                         PrintLog(1,  "Super Msg Rsp: Set Follow Xarfcn successfully" );
+                    }
+                }
+                else if( nxtyCurrentReq == NXTY_SUPER_MSG_SET_FOLLOW_TAG )
+                {
+                    // Set the Follow Tag
+
+                    //                   Write FollowTag            Write  
+                    // Tx: ae 0E f1 13   11 f0 0 0 20 01 16 00 00   10 f0  0  0 1c  01 02 03 04    c3  
+                    // Rx  ae 31 ce 53   51 1                       51 01 
+                    //     [0]           [4]                        [6] 
+                    
+                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                    {
+                        // Got a NAK...
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
+                        PrintLog(99,  "Super Msg: Set Follow Tag msg type encountered a NAK." );
+                    }
+                    else
+                    {
+                        iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_SUCCESS;
+                        PrintLog(1,  "Super Msg Rsp: Set Follow Tag successfully" );
                     }
                 }
                 
@@ -2489,6 +2511,39 @@ function GetXferBufferAddr()
     nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
 }
 
+
+// SetFollowTag.......................................................................................
+function SetFollowTag(myTag)
+{
+    var i            = 0;
+
+    PrintLog(1,  "Super Msg Send: Set FollowTag to 0x" + myTag.toString(16) );
+
+    // Write Wave ID FollowTag .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_TAG >> 24);                               
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_TAG >> 16);
+    u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_TAG >> 8);
+    u8TempTxBuff[i++] = NXTY_WAVEID_FOLLOW_TAG;
+
+     // Write the data to the Wave data register...........................
+     u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+     u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+     u8TempTxBuff[i++] = (myTag >> 24);                               
+     u8TempTxBuff[i++] = (myTag >> 16);
+     u8TempTxBuff[i++] = (myTag >> 8);
+     u8TempTxBuff[i++] = myTag;
+
+    nxtyCurrentReq = NXTY_SUPER_MSG_SET_FOLLOW_TAG;
+    nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
+}
 
 // SetFollowXarfcn.......................................................................................
 function SetFollowXarfcn(myXarfcn)
