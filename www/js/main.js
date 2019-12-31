@@ -225,7 +225,7 @@ var app = {
      
     // deviceready Event Handler
     //
-      // PhoneGap is now loaded and it is now safe to make calls using PhoneGap
+    // PhoneGap is now loaded and it is now safe to make calls using PhoneGap
     //
     onDeviceReady: function() 
     {
@@ -1256,7 +1256,7 @@ function FollowMyPhone(myState, mySetTag)
                         }
                     );  // follow
 
-                if( mySetTage == 0)
+                if( mySetTag == 0)
                 {
                     followState = FOLLOW_STATE_GET_TAG;
                 }
