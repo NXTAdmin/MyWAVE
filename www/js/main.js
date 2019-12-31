@@ -1101,6 +1101,7 @@ function MainLoop()
                 {
                     uMainLoopState = MAIN_LOOP_STATE_OPERATE;
                 }
+            }
             break;
         }
         
