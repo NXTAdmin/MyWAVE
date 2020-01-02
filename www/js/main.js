@@ -558,7 +558,7 @@ function FollowMyPhone(myState, mySetTag)
                                     
                                     if( cellReg[1] == "true" )
                                     {
-                                        phoneFollowXarfcn = parseInt(cellFcn[1]);  // Convert the string to a number.
+                                        phoneFollowXarfcn = parseInt(cellFnc[1]);  // Convert the string to a number.
                                         
                                         // If LTE OR with 0x80000000 so GO knows LTE.
                                         if( cellTech[1] == "LTE" )
