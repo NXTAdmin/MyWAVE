@@ -1050,9 +1050,6 @@ jdo do not enable the thunker...
      isBluetoothSubscribed = false;
      u8ScanResults[0]      = 0;
      bBtIcdVer2   = false;
-     
-     UpdateStatusLine( "SN: " );
-
  }
 }
 
@@ -2448,7 +2445,6 @@ function GetDeviceSerialNumbersLoop()
                                         }
     
                                         document.getElementById("searchMessageBox").innerHTML = outText;
-                                        UpdateStatusLine( outText );
                                     }
                                 }
                                 
@@ -2711,7 +2707,6 @@ function GetDeviceSerialNumbersLoop()
                                 document.getElementById("searchMessageBox").innerHTML = outText;                            
                             }
 
-                            UpdateStatusLine( outText );
                         }
 
 

@@ -613,9 +613,6 @@ var nxty = {
 
                 PrintLog(1,  "Msg: Status Rsp: ICD ver=0x" + nxtyRxStatusIcd.toString(16) );
                 
-                UpdateStatusLine( "MyWave ver: " + szVersion + " ICD: 0x" + nxtyRxStatusIcd.toString(16) );
-                
-                
                 // Only grab the BoardConfig value if old ICD, <= 0x07. 
                 if( nxtyRxStatusIcd <= V1_ICD )
                 {
@@ -2582,5 +2579,20 @@ function SetFollowXarfcn(myXarfcn)
 }
 
 
+
+
+// Support functions......................................................................................
+// U8ToHexText............................................................................................
+function U8ToHexText(u8)
+{
+    if( u8 < 0x10 )
+    {
+        return( "0" + u8.toString(16) );     // Add a leading 0....
+    }
+    else
+    {
+        return( u8.toString(16) );     
+    }
+}
 
 
