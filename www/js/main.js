@@ -139,16 +139,18 @@ function SpinnerStop()
 
 
 
-function showAlert(message, title) 
+function showAlert( title, message ) 
 {
-  if(window.isPhone) 
-  {
-    navigator.notification.alert(message, null, title, 'ok');
-  } 
-  else 
-  {
-    alert(title ? (title + ": " + message) : message);
-  }
+    PrintLog(1, "ShowAlert: Title=" + title + " msg=" + message );
+  
+    if(window.isPhone) 
+    {
+        navigator.notification.alert(message, null, title, 'ok');
+    } 
+    else 
+    {
+        alert(title ? (title + ": " + message) : message);
+    }
 }
 
 
@@ -220,7 +222,7 @@ var app = {
         }
         else
         {
-            showAlert("Back to where?", "Back...");
+            showAlert( "Back", "Back to where?" );
         }
         
     },

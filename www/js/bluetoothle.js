@@ -291,7 +291,7 @@ function initializeSuccess(obj)
       
       
       Spinnerstop()
-      showAlert( obj.status, "Bluetooth Error" );
+      showAlert(  "Bluetooth Error", obj.status );
   }
 
   isSouthBoundIfStarted = true;
@@ -2772,6 +2772,8 @@ function GetDeviceSerialNumbersLoop()
             
             //ShowAlertPopUpMsg( GetLangString("BluetoothRangeIssue"), GetLangString("BluetoothRangeIssueMsg") );
             guiDeviceFlag = false;
+            
+            RestartSouthBoundIf(true, false);   // Restart clean without deleting MAC babbling list....
         }
 
         // Clean up...

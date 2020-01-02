@@ -286,7 +286,7 @@ function onReadFileErrorCB(e)
     PrintLog(99, "Unable to open file: " + tempFileName + "  Error:" + e.toString() );
     g_fileReadSuccess = false;
     
-    showAlert( "Unable to open file: " + tempFileName, "File Open Error" );
+    showAlert( "File Open Error", "Unable to open file: " + tempFileName  );
 
 }
 
@@ -327,7 +327,7 @@ function ReadFileOnErrorCB(evt)
     PrintLog(1, "Unable to read file: " + tempFileName );
     g_fileReadSuccess = false;
 
-    showAlert("Unable to read file: " + tempFileName, "File Read Error");
+    showAlert("File Read Error", "Unable to read file: " + tempFileName );
 }
 // End of Read File call backs....................................................................................
 

@@ -1586,7 +1586,7 @@ var nxty = {
                 {
                     // Unii up but UART redirect error
                     PrintLog(99,  "Msg: NAK Rsp: UART redirect error." );                    
-                    showAlert("Redirect to NU failed.", "UNII link up.");
+                    showAlert( "UNII link up.", "Redirect to NU failed.");
                 }
                 else if( nxtyLastNakType == NXTY_NAK_TYPE_TIMEOUT )
                 {
