@@ -536,7 +536,7 @@ function FollowMyPhone(myState, mySetTag)
                             
                             for( var i = 0; i < cells.length; i++ )
                             {
-                                PrintLog(1, "Cell: " + cells[i];
+                                PrintLog(1, "Cell: " + cells[i] );
                             }
                             
                         },
