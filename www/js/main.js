@@ -532,9 +532,7 @@ function FollowMyPhone(myState, mySetTag)
                         {
                             PrintLog(1, "Telephony1: " + JSON.stringify(info)); 
                             PrintLog(1, "Telephony2: " + info );
-                            
-                            var infoObj = JSON.parse(info); 
-                            PrintLog(1, "Telephony3: " + infoObj.cellInfo ); 
+                            PrintLog(1, "Telephony3: " + info.cellInfo ); 
                             
                         },
                         function(err)               // Fail
