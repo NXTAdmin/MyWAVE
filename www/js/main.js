@@ -1233,6 +1233,7 @@ function FollowMyPhone(myState, mySetTag)
                 {
                     // Wait for BT to become disconnected....
                     setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK, mySetTag); }, 1000 );  // Come back in 1 second
+                    return;
                 }
                 else
                 {
