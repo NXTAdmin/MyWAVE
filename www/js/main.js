@@ -614,10 +614,24 @@ function FollowMyPhone(myState, mySetTag)
             }
             else
             {
-                PrintLog(99, "Follow State timed out..."); 
                 if( isSouthBoundIfCnx )
                 {
+                    PrintLog(99, "Follow State timed out after connecting to SN: " + guiSerialNumber ); 
                     DisconnectAndStopSouthBoundIf();
+                }
+                else
+                {
+                    PrintLog(1, "Follow State timed out because it could not connect to SN: " + guiSerialNumber );
+                    PrintLog(1, "Shifting timing to make sure that we are not in sync with another connection." );
+                    SimpleTimer.stop(onStopped);
+
+                    // Start a timer that can run from background...
+                    var config = {
+                        interval: 30000, // 30 seconds
+                        useWakelock: false
+                    }
+                    SimpleTimer.start(onTimerTick, errorStart, config);
+                    
                 }
             }
         }
