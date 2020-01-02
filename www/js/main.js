@@ -352,7 +352,11 @@ function MainLoop()
 {
 
     uMainLoopCounter++;
-    PrintLog(1, "MainLoop: Counter=" + uMainLoopCounter );
+    
+    if( uMainLoopCounter > 20 )
+    {
+        PrintLog(1, "MainLoop: Counter=" + uMainLoopCounter );  // Print a feel good just in case nothing is happening...
+    }
     
     // --------------------------------------------------------------------
     switch(uMainLoopState)
