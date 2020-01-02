@@ -677,8 +677,7 @@ function FollowMyPhone(myState, mySetTag)
                     StopSimpleTimer();
 
                     // Start a timer that can run from background...
-                    StartSimpleTimer(30);
-                    
+                    setTimeout( function(){ StartSimpleTimer(30); }, 700 );
                 }
             }
         }
