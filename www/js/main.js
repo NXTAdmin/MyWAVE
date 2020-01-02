@@ -583,9 +583,7 @@ function FollowMyPhone(myState, mySetTag)
                     else
                     {
                         PrintLog(1, "Follow Tag no longer matches, disable Follow My Phone");
-                        bFollowMyPhoneFlag = false;
-                        SimpleTimer.stop(onStopped);
-                        
+                        SetFollow(false);
                     }
                     followState = FOLLOW_STATE_VERIFY;
                 }
