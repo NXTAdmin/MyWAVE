@@ -323,7 +323,6 @@ const   MAIN_LOOP_STATE_OPERATE   = 1;
 var     uMainLoopState            = MAIN_LOOP_STATE_INIT;
 var     uMainLoopCounter          = 0;
 var     MainLoopIntervalHandle    = null;
-v
 //.................................................................................................
 function StartMainLoop()
 {
