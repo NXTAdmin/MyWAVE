@@ -674,14 +674,10 @@ function FollowMyPhone(myState, mySetTag)
                 {
                     PrintLog(1, "Follow State timed out because it could not connect to SN: " + guiSerialNumber );
                     PrintLog(1, "Shifting timing to make sure that we are not in sync with another connection." );
-                    SimpleTimer.stop(onStopped);
+                    StopSimpleTimer();
 
                     // Start a timer that can run from background...
-                    var config = {
-                        interval: 30000, // 30 seconds
-                        useWakelock: false
-                    }
-                    SimpleTimer.start(onTimerTick, errorStart, config);
+                    StartSimpleTimer(30);
                     
                 }
             }
@@ -731,18 +727,12 @@ function SetFollow(myState)
         RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
 
         // Start a timer that can run from background...
-        var config = {
-            interval: 30000, // 30 seconds
-            useWakelock: false
-        }
-        
-        // Start
-        SimpleTimer.start(onTimerTick, errorStart, config);
+        StartSimpleTimer(30);
     }
     else
     {
         PrintLog(1, "Do not follow...");
-        SimpleTimer.stop(onStopped);
+        StopSimpleTimer();
         ForgetThisDevice();                                     // Forget this BT device.
         window.localStorage.removeItem( "phoneFollowTag_Id" );  // Delete the follow tag stored on the phone.
     }
@@ -760,17 +750,44 @@ function SetFollow(myState)
 
 
 // -------------------------------------------------------------------------------------------------------
+// Runs at the Android level, even in backgroud or when app is asleep...
+//
+function StartSimpleTimer( myTimerSec )
+{
+    var timerMs = 30000;    // Min is 30 seconds...
+    
+    PrintLog(1, "StartSimpleTimer(" + myTimerSec + ")" );
+    
+    if( myTimerSec > 30 )
+    {
+        timerMs = myTimerSec * 1000;
+    }
+    
+    var config = {
+            interval: timerMs, 
+            useWakelock: false
+        }
+    SimpleTimer.start(onTimerTick, errorStart, config);
+}
+
+function StopSimpleTimer()
+{
+    SimpleTimer.stop(onStopped);
+}
+
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
     FollowMyPhone(FOLLOW_STATE_INIT, 0);
 }    
 
-function errorStart(message) {
+function errorStart(message) 
+{
     PrintLog(1, 'timer start failed: ' + message);
 }
 
-function onStopped() {
-    PrintLog(1, 'timer is stopped');
+function onStopped() 
+{
+    PrintLog(1, 'Simple Timer is stopped');
 }
 
