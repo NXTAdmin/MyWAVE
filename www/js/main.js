@@ -550,7 +550,7 @@ function FollowMyPhone(myState, mySetTag)
                                     var cellFnc  = cellData[1].split(":");
                                     var cellReg  = cellData[2].split(":");
                                     
-                                    if( cellReg[1] == true )
+                                    if( cellReg[1] == "true" )
                                     {
                                         phoneFollowXarfcn = parseInt(cellFcn[1]);  // Convert the string to a number.
                                         
