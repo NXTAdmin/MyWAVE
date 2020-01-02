@@ -545,10 +545,16 @@ function FollowMyPhone(myState, mySetTag)
                                 var cellData = cells[i].split(" ");  // cellData[0] = tech:LTE etc
                                 var cellTech = cellData[0].split(":");
                                 
+                                PrintLog(1, "cellData=" + cellData );
+                                PrintLog(1, "cellTech=" + cellTech );
+                                
                                 if( cellTech[0] == "tech"  )
                                 {
                                     var cellFnc  = cellData[1].split(":");
                                     var cellReg  = cellData[2].split(":");
+                                    
+                                    PrintLog(1, "cellFnc=" + cellFnc );
+                                    PrintLog(1, "cellReg=" + cellReg );
                                     
                                     if( cellReg[1] == "true" )
                                     {
