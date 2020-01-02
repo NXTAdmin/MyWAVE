@@ -530,9 +530,14 @@ function FollowMyPhone(myState, mySetTag)
                         
                         function(info)        // Success
                         {
-                            PrintLog(1, "Telephony1: " + JSON.stringify(info)); 
-                            PrintLog(1, "Telephony2: " + info );
-                            PrintLog(1, "Telephony3: " + info.cellInfo ); 
+                            // Return looks like: "cellInfo":"tech:LTE fcn:66536 isReg:true dbm:-105, tech:LTE fcn:66536 isReg:false dbm:-111"
+                            PrintLog(1, "Telephony: " + JSON.stringify(info));
+                            var cells = info.cellInfo.split(",");
+                            
+                            for( var i = 0; i < cells.length; i++ )
+                            {
+                                PrintLog(1, "Cell: " + cells[i];
+                            }
                             
                         },
                         function(err)               // Fail
