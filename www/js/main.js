@@ -1160,7 +1160,7 @@ function MainLoop()
                     }
                     else
                     {
-                        PrintLog(1, "no Follow Tag stored on phone so disable Follow My Phone.");
+                        PrintLog(1, "No Follow Tag stored on phone so disable Follow My Phone.");
                         SetFollow(false);
                     }
                 }
@@ -1240,6 +1240,8 @@ function FollowMyPhone(myState, mySetTag)
                     ConnectBluetoothDevice(myLastBtAddress);
                 }
                 
+                phoneFollowTag = window.localStorage.getItem("phoneFollowTag_Id");
+
                 phony.getCellInfo(
                         
                         function(info)        // Success
@@ -1380,8 +1382,8 @@ function SetFollow(myState)
         randomTag >>>= 0;   // Use >>> operator to make unsiged.
 
         PrintLog(1, "Start Following: tag = 0x" + randomTag.toString(16) );
-        FollowMyPhone(FOLLOW_STATE_INIT, randomTag);                    // Call right away to give the tag to the hardware.
         window.localStorage.setItem("phoneFollowTag_Id", randomTag);    // Remember locally
+        FollowMyPhone(FOLLOW_STATE_INIT, randomTag);                    // Call right away to give the tag to the hardware.
         
         RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
 
