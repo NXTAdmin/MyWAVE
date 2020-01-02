@@ -641,10 +641,12 @@ function clickFollow()
 {
     if (document.getElementById('myonoffswitch').checked) 
     {
+        PrintLog(1, "\r\nUser pressed Follow----------------------------------------------");
         SetFollow(true);
     } 
     else 
     {
+        PrintLog(1, "\r\nUser pressed No Follow----------------------------------------------");
         SetFollow(false);
     }
 }
@@ -655,7 +657,6 @@ function SetFollow(myState)
 {
     if( myState == true )
     {
-        
         // Create random tag between 0 and 0x7FFFFFFF
         var randomTag = Math.random() * 0x7FFFFFFF; 
 

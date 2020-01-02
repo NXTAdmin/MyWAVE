@@ -1517,51 +1517,6 @@ function subscribeSuccess(obj)
             {
                 if(bUseThunkLayer)      // Rx from BT into thunker
                 {
-/*                    
-                    if( PrintLogLevel >= 2 )
-                    {
-                        var outText = u8[0].toString(16);    // Convert to hex output...
-                        for( var i = 1; i < u8.length; i++ )
-                        {
-                            if( !(i%44) )
-                            {
-                                PrintLog(2,  "Msg Rx:d: " + outText );
-                                outText = u8[i].toString(16);
-                            }
-                            else
-                            {
-                                outText = outText + " " + u8[i].toString(16);
-                            }
-                        }
-                        
-                        if( outText.length > 0 )
-                        {
-                            PrintLog(2,  "Msg Rx:d: " + outText );
-                        }
-                       
-                    }
-*/
-                    
-                    for( var i = 0; i < u8.length; i++ )
-                    {
-                        u8ThunkRx[i] = u8[i];
-                    }
-                    
-                    u8ThunkRxCount      += (u8.length - 4);
-                    u8ThunkRxCountTotal += (u8.length - 4);
-                    
-                    // bluetooth --> In  --- thunk - thunk - thunk --> ReadRxThunkOut --> nxty ICD msg
-//                    if( (window.device.platform == androidPlatform) && (parseFloat(window.device.version) < 8) )      // Android 8.0 is API 26 
-                    if( (window.device.platform == androidPlatform) )      
-                    {
-                        Module._ReadRxThunkInReorder( u8ThunkRx.byteOffset, u8.length );
-                    }
-                    else
-                    {
-                        // IOS does not have the modified plugin so feed the packets in directly.  IOS should not have the reordering problem.
-                        Module._ReadRxThunkIn( u8ThunkRx.byteOffset, u8.length );
-                    }
-                     
                 }
                 else
                 {
@@ -1663,46 +1618,6 @@ function WriteSouthBoundData( u8 )
 
     if(bUseThunkLayer)  // Tx to thunker...
     {
-        if( bRxThunkPending == false )
-        {
-            bRxThunkPending = true;
-         
-            if( PrintLogLevel >= 2 )
-            {
-                var outText = u8[0].toString(16);    // Convert to hex output...
-                for( var i = 1; i < u8.length; i++ )
-                {
-                    if( !(i%44) )
-                    {
-                        PrintLog(2,  "Msg Tx: " + outText );
-                        outText = u8[i].toString(16);
-                    }
-                    else
-                    {
-                        outText = outText + " " + u8[i].toString(16);
-                    }
-                }
-                
-                if( outText.length > 0 )
-                {
-                    PrintLog(2,  "Msg Tx: " + outText );
-                }
-            }
-
-            for( var i = 0; i < u8.length; i++ )
-            {
-                u8ThunkTx[i] = u8[i];
-            }
-            
-            // In  --- thunk - thunk - thunk --> SendTxThunkOut --> bluetooth
-            Module._SendTxThunkIn( u8ThunkTx.byteOffset, u8.length );
-        }
-        else
-        {
-            PrintLog(99, "BT: Waiting on Thunk Response from ReadRxThunkOut(). Tx aborted." );
-            ClearNxtyMsgPending();              // Make sure not stuck waiting for a response...
-            return(false);
-        }
     }
     else
     {
@@ -1770,20 +1685,12 @@ jdo: old way of delevering messages based on time and connection interval.
 function writeSuccessQ(obj)
 {
 //  PrintLog(1, "BT: WriteQ success: " + obj.status);
-    if(bUseThunkLayer)  // Tx to thunker...
-    {
-        Module._TxComplete();
-    }
 }
 
 function writeErrorQ(msg)
 {
     PrintLog(99, "BT: WriteQ error: " + msg.error + " - " + msg.message);
     
-    if(bUseThunkLayer)  // Tx to thunker...
-    {
-        Module._TxComplete();
-    }
 }
 
 
