@@ -232,6 +232,10 @@ var guiAntennaGetBoosterListFlag = false;       // true when a delay should be d
 var guiAntennaGotBoosterListFlag = false;       // true when guiDeviceTempSubSnList[] has been populated. 
 var guiSerialNumber         = "";               // String based on the serial number.
 
+const   PRODUCT_TYPE_GO         = "GO";    
+const   PRODUCT_TYPE_GO_G32     = "GO_G32";    
+var guiProductType          = PRODUCT_TYPE_GO_G32; // String based on the BT SW version since we do not have access to SKU.
+
 var bSkalAntControlFlag          = false;       // Read AntennaControl reg to see if G32 type GO.  false: If value is 0xDEADBABE then not G32.
 var deviceFoundUIFlag       = false;
 var locationEnabled         = false;    // For IOS or Android >= 6, set to TRUE if location enabled after check.

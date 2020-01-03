@@ -427,7 +427,14 @@ function MainLoop()
 // jdo test
                     
 
-                    document.getElementById("go_img_id").innerHTML = szImgG32;
+                    if( guiProductType == PRODUCT_TYPE_GO )
+                    {
+                        document.getElementById("go_img_id").innerHTML = szImgG31;
+                    }
+                    else
+                    {
+                        document.getElementById("go_img_id").innerHTML = szImgG32;
+                    }
                     document.getElementById("go_sn_id").innerHTML = guiSerialNumber;
 
                     // Cel-Fi hardware supports Follow My Phone, see if this phone has requested to follow:

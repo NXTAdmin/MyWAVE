@@ -1444,7 +1444,21 @@ var nxty = {
                 
                 else if( nxtyCurrentReq == NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR )
                 {
-                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                
+                    // Read Xfer Buffer address and BT SW Version number
+                    
+                    //                   Chan List Flash Addr  Read             Xfer Buffer Addr      Read            RegSupport Cell-Search  Read
+                    //                   11 f0 0 0 20 0 0 0 C  10 f0 0 0 1c     11 f0 0 0 20 0 0 0 0  10 f0 0 0 1c    11 f0 0 0 20 0 0 0 11 10 0 0 0 0
+                    //                   51 1                  50 0 0 0 0       51 1                  50 0 0 0 0      51 1                  50 0 0 40 xx
+                    //                      [61]                  [63]             [68]                  [70]            [75]                  [77]
+                    
+                    
+                    //                   Write Xfer Buffer Addr     Read             Write BT SW Ver         Read
+                    // Tx: ae 0E f1 13   11 f0 0 0 20 0 0 0 0       10 f0 0 0 1c     11 f0 0 0 20 0 0 0 f    10 f0 00 00 1c 2e  
+                    // Rx  ae 31 ce 53   51 1                       50 01 02 03 04   51 1                    50 00 00 65 04
+                    //     [0]           [4]                        [6]              [11]                             [16]
+                
+                    if( (u8RxBuff[4] == NXTY_NAK_RSP) || (u8RxBuff[6] == NXTY_NAK_RSP) || (u8RxBuff[11] == NXTY_NAK_RSP) || (u8RxBuff[13] == NXTY_NAK_RSP) ) 
                     {
                         // Got a NAK...
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
@@ -1461,6 +1475,18 @@ var nxty = {
                                                
                         nxtyNuXferBufferAddr >>>= 0;  
                         PrintLog(1,  "Super Msg Rsp: Xfer Buffer Addr: 0x" + nxtyNuXferBufferAddr.toString(16) );
+                        
+                        
+                        // Use the BT version number to determine if G31 or G32...
+                        // CC2541 (PRO/DUO/G31): Version read from HW is 0x03 0x04 ==> 003.004  
+                        // CC2640 (G32 Coors):   Version read from HW is 0x65 0x04 ==> 101.004
+                        guiProductType = PRODUCT_TYPE_GO_G32;  // Default to a G32 since most common.
+                        if( u8RxBuff[16] <= 0x03 )
+                        {
+                            guiProductType = PRODUCT_TYPE_GO;
+                        }
+                        PrintLog(1,  "Super Msg Rsp: Product type = " + guiProductType + "  BT SW Ver[0] = 0x" + u8RxBuff[16].toString(16) );
+                         
                     }
                 }
                 
@@ -2355,6 +2381,26 @@ function GetXferBufferAddr()
     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
     u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+    
+    
+    // Read BT SW Version .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_SELPARAM_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_SELPARAM_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_SELPARAM_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_SELPARAM_REG;
+    u8TempTxBuff[i++] = 0x00;                               
+    u8TempTxBuff[i++] = 0x00;
+    u8TempTxBuff[i++] = 0x00;
+    u8TempTxBuff[i++] = 0x0F;                                     // Drop BT SW version into xfer buffer
+    
+    u8TempTxBuff[i++] = NXTY_READ_ADDRESS_REQ;                    // Now read the xfer buffer.
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_XFER_BUFFER >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_XFER_BUFFER >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_XFER_BUFFER >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_XFER_BUFFER;
+                
+    
     
     nxtyCurrentReq = NXTY_SUPER_MSG_GET_XFER_BUFFER_ADDR;
     nxty.SendNxtyMsg(NXTY_SUPER_MSG_REQ, u8TempTxBuff, i);
