@@ -433,7 +433,7 @@ function MainLoop()
                     }
                     else
                     {
-                        document.getElementById("go_img_id").innerHTML = szImgG32;
+                        document.getElementById("go_img_id").innerHTML = szImgG31;
                     }
                     document.getElementById("go_sn_id").innerHTML = guiSerialNumber;
 
