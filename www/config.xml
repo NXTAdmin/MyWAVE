@@ -51,8 +51,8 @@
     <!-- Plugins -->
  
     <!-- Core plugins -->
-    <gap:plugin name="cordova-plugin-file"           source="npm" version="6.0.1" />    <!-- jdo: added for file management  4.3.1-->
-    <gap:plugin name="cordova-plugin-file-transfer"  source="npm" version="1.6.0" />    <!-- jdo: added to transfer files for download from the cloud. -->        
+    <gap:plugin name="cordova-plugin-file"           source="npm" version="6.0.1" />    <!-- jdo: added for file management  CLI:7.0.1:4.3.1-->
+    <gap:plugin name="cordova-plugin-file-transfer"  source="npm" version="1.7.1" />    <!-- jdo: added to transfer files for download from the cloud. CLI:7.0.1:1.6.0 -->        
     <gap:plugin name="cordova-plugin-whitelist"      source="npm" version="1.2.0" />    <!-- jdo: needed for new whitelist network management.  -->
     <gap:plugin name="cordova-plugin-device"         source="npm" version="1.1.3" />    <!-- jdo: Added to use "window.device.platform" -->
     <gap:plugin name="cordova-plugin-globalization"  source="npm" version="1.0.4" />
