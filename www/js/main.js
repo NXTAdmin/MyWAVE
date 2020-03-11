@@ -7,6 +7,14 @@
 //  Version:
 //  2/1/19:  00.00.01:   Initial Test release
 //
+//
+//  To Do:
+//    - Add logic for last Xarfcn sent and if not different then do not connect BT.
+//    - For testing:
+//        Display Phone xarfcn:
+//        Sent to CelFi xarfcn:
+//        Actual CelFi  xarfcn:
+//
 //=================================================================================================
 
 
