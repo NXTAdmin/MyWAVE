@@ -252,9 +252,11 @@ var app = {
                         "<span class='onoffswitch-inner'></span>" +
                         "<span class='onoffswitch-switch'></span>" +
                     "</label>" +
+                    "<div id='phone_x_id'  class='test_text'>Phone Xarfcn :</div>" +
+                    "<div id='sent_x_id'   class='test_text'>Sent to GO   :</div>" +
+                    "<div id='actual_x_id' class='test_text'>Acutal Xarfcn:</div>" +
                 "</div>" +
                 "<div class='div_footer'>" +
-                    "<div class='test_version'>Xarfcn</div>" +
                     "<div class='text_version'>Version 1.0.1</div>" +
                     "<div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div>" +
                 "</div>" +
