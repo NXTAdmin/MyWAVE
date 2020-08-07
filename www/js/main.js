@@ -255,9 +255,9 @@ var app = {
                 "</div>" +
 
                 "<div>" +
-                    "<div id='phone_x_id'  class='test_text'>Phone Xarfcn :</div>" +
-                    "<div id='sent_x_id'   class='test_text'>Sent to GO   :</div>" +
-                    "<div id='actual_x_id' class='test_text'>Acutal Xarfcn:</div>" +
+                    "<div id='phone_x_id'  class='text_test'>Phone Xarfcn :</div>" +
+                    "<div id='sent_x_id'   class='text_test'>Sent to GO   :</div>" +
+                    "<div id='actual_x_id' class='text_test'>Acutal Xarfcn:</div>" +
                   "</div>" +
 
                 
