@@ -12,7 +12,7 @@
 //    - Add logic for last Xarfcn sent and if not different then do not connect BT.
 //    - For testing:
 //        Display Phone xarfcn:
-//        Sent to CelFi xarfcn:
+//        Sent to CelFi xarfcn:  nxtyFollowXarfcn  (Wave ID: 23 for FollowXarfcn)
 //        Actual CelFi  xarfcn:
 //
 //=================================================================================================
@@ -425,7 +425,7 @@ function MainLoop()
             }
             else if( nxtyFollowXarfcn == -1 )
             {
-                GetFollowXarfcn();
+                GetFollowAndCurrentXarfcn();
             }
             else
             {

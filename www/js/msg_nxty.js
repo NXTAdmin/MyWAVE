@@ -89,6 +89,7 @@ const     NXTY_WAVEID_BAND_MASK_4G_TYPE   = 0x01030000;     // Set bits 24~31 to
 const     NXTY_WAVEID_TECHDATAPERIODSEC   = 0x01150000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 21 for TechDataPeriodSec
 const     NXTY_WAVEID_FOLLOW_TAG          = 0x01160000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 22 for FollowTag
 const     NXTY_WAVEID_FOLLOW_XARFCN       = 0x01170000;     // Set bits 24~31 to 1 for CfgParamId and bits 16 to 23 to 23 for FollowXarfcn
+const     NXTY_WAVEID_CURRENT_XARFCN      = 0x030E0000;     // Set bits 24~31 to 3 for ReadOnlyParams and bits 16 to 23 to E for CurrentXarfcn
 const   NXTY_PCCTRL_WAVE_DATA_BUFFER      = 0xF000001C;     // Same as XFER_BUFFER
 
 const   NXTY_PCCTRL_CELLIDTIME            = 0xF000002C;
@@ -237,6 +238,7 @@ var bExtAntCheckComplete               = false;            // Set to true when w
 var bExtAntAvailable                   = false;            // Set to true if ant check returns non 0xFFFFFFFF.
 var nxtyFollowTag                      = -1;
 var nxtyFollowXarfcn                   = -1;
+var nxtyCurrentXarfcn                  = -1;
 
 // CU Cloud Info bits....................................
 const CU_CLOUD_INFO_TECH_MASK          = 0x00000FFF;   // bits 0 to 11 are used for Tech Mode control.
@@ -1374,12 +1376,12 @@ var nxty = {
                 {
                     // Read the Follow Xarfcn
 
-                    //                   Write FollowXarfcn         Read  
-                    // Tx: ae 0E f1 13   11 f0 0 0 20 01 17 00 00   10 f0 0 0 1c   c3  
-                    // Rx  ae 31 ce 53   51 1                       50 01 02 03 04 
-                    //     [0]           [4]                        [6] 
+                    //                   Write FollowXarfcn         Read                Write ActualXarfcn         Read
+                    // Tx: ae 0E f1 13   11 f0 0 0 20 01 17 00 00   10 f0 0 0 1c        11 f0 0 0 20 03 0E 00 00   10 f0 0 0 1c   c3  
+                    // Rx  ae 31 ce 53   51 1                       50 01 02 03 04      51 1                       50 01 02 03 04
+                    //     [0]           [4]                        [6]                 [11]                       [13] 
                     
-                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) ) 
+                    if( (u8RxBuff[4]  == NXTY_NAK_RSP) || (u8RxBuff[6]  == NXTY_NAK_RSP) || (u8RxBuff[11]  == NXTY_NAK_RSP) || (u8RxBuff[13]  == NXTY_NAK_RSP)) 
                     {
                         // Got a NAK...
                         iNxtySuperMsgRspStatus = NXTY_SUPER_MSG_STATUS_FAIL_NAK;
@@ -1393,8 +1395,22 @@ var nxty = {
                                            (u8RxBuff[9] << 8)  |        
                                            u8RxBuff[10];
                                                
-                        nxtyFollowXarfcn >>>= 0;  
-                        PrintLog(1,  "Super Msg Rsp: Follow Xarfcn: 0x" + nxtyFollowXarfcn.toString(16) );
+                        nxtyFollowXarfcn >>>= 0;
+                        
+                        nxtyCurrentXarfcn = (u8RxBuff[13] << 24) |          
+                                            (u8RxBuff[14] << 16) |          
+                                            (u8RxBuff[15] << 8)  |        
+                                            u8RxBuff[16];
+                                               
+                        nxtyCurrentXarfcn >>>= 0;  
+                        PrintLog(1,  "Super Msg Rsp: Follow Xarfcn: 0x" + nxtyFollowXarfcn.toString(16) + "  Current Xarfcn: 0x" + nxtyCurrentXarfcn.toString(16) );
+                        
+                        if( nxtyCurrentXarfcn == nxtyNuXferBufferAddr )
+                        {
+                            PrintLog(99,  "Current Xarfcn read back not supported on this device.  Setting to 0" );
+                            nxtyCurrentXarfcn = 0;
+                        }
+                        
                     }
                 }
                 else if( nxtyCurrentReq == NXTY_SUPER_MSG_SET_FOLLOW_XARFCN )
@@ -2329,12 +2345,12 @@ function GetFollowTag()
 }
 
 
-// GetFollowXarfcn.......................................................................................
-function GetFollowXarfcn()
+// GetFollowAndCurrentXarfcn.......................................................................................
+function GetFollowAndCurrentXarfcn()
 {
     var i            = 0;
 
-    PrintLog(1,  "Super Msg Send: Get FollowXarfcn." );
+    PrintLog(1,  "Super Msg Send: GetFollowAndCurrentXarfcn()." );
 
     // Read Wave ID FollowXarfcn .................................................                
     u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
@@ -2346,6 +2362,23 @@ function GetFollowXarfcn()
     u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 16);
     u8TempTxBuff[i++] = (NXTY_WAVEID_FOLLOW_XARFCN >> 8);
     u8TempTxBuff[i++] = NXTY_WAVEID_FOLLOW_XARFCN;
+    
+    u8TempTxBuff[i++] = NXTY_READ_ADDRESS_REQ;                    // Now read the data buffer.
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_DATA_BUFFER;
+
+    // Read Wave ID Current Xarfcn .................................................                
+    u8TempTxBuff[i++] = NXTY_WRITE_ADDRESS_REQ;
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 24);  
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 16);
+    u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_ID_REG >> 8);
+    u8TempTxBuff[i++] = NXTY_PCCTRL_WAVE_ID_REG;
+    u8TempTxBuff[i++] = (NXTY_WAVEID_CURRENT_XARFCN >> 24);                               
+    u8TempTxBuff[i++] = (NXTY_WAVEID_CURRENT_XARFCN >> 16);
+    u8TempTxBuff[i++] = (NXTY_WAVEID_CURRENT_XARFCN >> 8);
+    u8TempTxBuff[i++] = NXTY_WAVEID_CURRENT_XARFCN;
     
     u8TempTxBuff[i++] = NXTY_READ_ADDRESS_REQ;                    // Now read the data buffer.
     u8TempTxBuff[i++] = (NXTY_PCCTRL_WAVE_DATA_BUFFER >> 24);  
