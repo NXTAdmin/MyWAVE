@@ -1397,10 +1397,10 @@ var nxty = {
                                                
                         nxtyFollowXarfcn >>>= 0;
                         
-                        nxtyCurrentXarfcn = (u8RxBuff[13] << 24) |          
-                                            (u8RxBuff[14] << 16) |          
-                                            (u8RxBuff[15] << 8)  |        
-                                            u8RxBuff[16];
+                        nxtyCurrentXarfcn = (u8RxBuff[14] << 24) |          
+                                            (u8RxBuff[15] << 16) |          
+                                            (u8RxBuff[16] << 8)  |        
+                                            u8RxBuff[17];
                                                
                         nxtyCurrentXarfcn >>>= 0;  
                         PrintLog(1,  "Super Msg Rsp: Follow Xarfcn: 0x" + nxtyFollowXarfcn.toString(16) + "  Current Xarfcn: 0x" + nxtyCurrentXarfcn.toString(16) );
