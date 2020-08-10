@@ -54,7 +54,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "00.02.14";
+var szVersion               = "00.01.01";
 
 
 
