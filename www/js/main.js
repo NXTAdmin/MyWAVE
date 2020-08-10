@@ -686,7 +686,7 @@ function FollowMyPhone(myState, mySetTag)
                     varTemp &= ~XARFCN_LTE_BIT;
                     outText += "LTE: "
                 }
-                document.getElementById("phone_x_id").innerHTML = outText + " + 0x" + varTemp.toString(16);
+                document.getElementById("phone_x_id").innerHTML = outText + " 0x" + varTemp.toString(16);
                 
                 
                 varTemp = nxtyFollowXarfcn;
@@ -696,7 +696,7 @@ function FollowMyPhone(myState, mySetTag)
                     varTemp &= ~XARFCN_LTE_BIT;
                     outText += "LTE: "
                 }
-                document.getElementById("sent_x_id").innerHTML = outText + " + 0x" + varTemp.toString(16);
+                document.getElementById("sent_x_id").innerHTML = outText + " 0x" + varTemp.toString(16);
                 
                 varTemp = nxtyCurrentXarfcn;
                 outText = "Current GO Xarfcn: ";
@@ -705,7 +705,7 @@ function FollowMyPhone(myState, mySetTag)
                     varTemp &= ~XARFCN_LTE_BIT;
                     outText += "LTE: "
                 }
-                document.getElementById("current_x_id").innerHTML = outText + " + 0x" + varTemp.toString(16);
+                document.getElementById("current_x_id").innerHTML = outText + " 0x" + varTemp.toString(16);
                 // End test display------------------------------------------------------------------------------
 
                 if( phoneFollowXarfcn == nxtyCurrentXarfcn)
