@@ -6,6 +6,8 @@
 //
 //  Version:
 //  2/1/19:  00.00.01:   Initial Test release
+//  08/12/20: 00.01.02:  Set min SDK from 28 to 21 to allow older Android phones.
+//                       Added 128 x 128 ICON.
 //
 //
 //  To Do:
@@ -54,7 +56,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "00.01.01";
+var szVersion               = "00.01.02";
 
 
 
