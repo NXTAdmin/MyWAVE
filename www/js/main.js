@@ -214,7 +214,7 @@ var app = {
         
   
         // Add logic to detect a finger slide..
-        var slideContainer = document.querySelector(".onoffswitch");  // Select the class onoffswitch
+        var slideContainer = document.querySelector("#myonoffswitch");  // Select the ID
 
         slideContainer.addEventListener("touchstart", startTouch, false);
         slideContainer.addEventListener("touchmove", moveTouch, false);
@@ -340,14 +340,17 @@ function moveTouch(e)
   if (diffX > 0) 
   {
     // swiped left
+    document.getElementById('myonoffswitch').checked = false;
     document.getElementById("current_x_id").innerHTML = "swiped left";
   } 
   else 
   {
     // swiped right
+    document.getElementById('myonoffswitch').checked = true;
     document.getElementById("current_x_id").innerHTML = "swiped right";
   }  
 
+  clickFollow();
   initialX = null;
 
   e.preventDefault();
