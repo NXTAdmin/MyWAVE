@@ -132,6 +132,7 @@
 
 .onoffswitch-inner:before {
 /*    content: "Following";  */
+    content: "         ";  
     padding-left: 16px;
     background-color: #F4F4F4; 
     color: #434A54;
