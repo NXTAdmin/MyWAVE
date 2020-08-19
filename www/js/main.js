@@ -214,7 +214,7 @@ var app = {
         
   
         // Add logic to detect a finger slide..
-        var slideContainer = document.querySelector("#myonoffswitch");  // Select the ID
+        var slideContainer = document.querySelector(".onoffswitch");  // Select the ID
 
         slideContainer.addEventListener("touchstart", startTouch, false);
         slideContainer.addEventListener("touchmove", moveTouch, false);
