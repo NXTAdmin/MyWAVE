@@ -138,6 +138,10 @@
     color: #434A54;
 }
 
+.onoffswitch-inner-follow {
+    content: "Following";  
+}
+
 .onoffswitch-inner:after {
     content: "Off";
     padding-right: 16px;
