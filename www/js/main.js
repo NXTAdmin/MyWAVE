@@ -220,7 +220,7 @@ var app = {
         slideContainer.addEventListener("touchmove", moveTouch, false);
         
         
-//        StartMainLoop();
+        StartMainLoop();
         
         window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            //
     },   
@@ -271,13 +271,13 @@ var app = {
                   "</div>" +
 
                 
-                "<div class='div_footer'>" +
-                    "<div class='text_version'>Version 1.0.1</div>" +
-                    "<div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div>" +
-                "</div>" +
+//                "<div class='div_footer'>" +
+//                    "<div class='text_version'>Version 1.0.1</div>" +
+//                    "<div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div>" +
+//                "</div>" +
            "</div>";
                     
-//        $('body').html(myHtml); 
+        $('body').html(myHtml); 
         
      
         currentView = "main";
