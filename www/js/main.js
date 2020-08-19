@@ -271,7 +271,7 @@ var app = {
 
                 
                 "<div class='div_footer'>" +
-                    "<div class='text_version'>Version 1.0.1</div>" +
+                    "<div class='text_version'>" + szVersion + "</div>" +
                     "<div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div>" +
                 "</div>" +
            "</div>";
