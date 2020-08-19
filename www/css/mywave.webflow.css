@@ -55,7 +55,7 @@
   padding-right: 16px;
   padding-bottom: 16px;
   padding-left: 16px;
-  -webkit-box-pack: justify;
+/*  -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
   -ms-flex-pack: justify;
   justify-content: space-between;
@@ -63,7 +63,7 @@
   -webkit-align-items: flex-end;
   -ms-flex-align: end;
   align-items: flex-end;
-  text-align: left;
+  text-align: left; */
 }
 
 .text_producttitle {
