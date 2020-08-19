@@ -220,7 +220,7 @@ var app = {
         slideContainer.addEventListener("touchmove", moveTouch, false);
         
         
-        StartMainLoop();
+//        StartMainLoop();
         
         window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            //
     },   
@@ -277,7 +277,7 @@ var app = {
                 "</div>" +
            "</div>";
                     
-        $('body').html(myHtml); 
+//        $('body').html(myHtml); 
         
      
         currentView = "main";
