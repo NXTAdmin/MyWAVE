@@ -213,6 +213,13 @@ var app = {
         } 
         
   
+        // Add logic to detect a finger slide..
+        var slideContainer = document.querySelector(".onoffswitch");  // Select the class onoffswitch
+
+        slideContainer.addEventListener("touchstart", startTouch, false);
+        slideContainer.addEventListener("touchmove", moveTouch, false);
+        
+        
         StartMainLoop();
         
         window.plugins.insomnia.keepAwake( successAcquirePowerManagement, failAcquirePowerManagement );            //
@@ -311,6 +318,40 @@ var app = {
 
 
 
+//.................................................................................................................
+// Swipe  Left / Right detection 
+var initialX = null;
+
+function startTouch(e) 
+{
+  initialX = e.touches[0].clientX;
+};
+
+function moveTouch(e) 
+{
+  if (initialX === null) {
+    return;
+  }
+
+  var currentX = e.touches[0].clientX;
+  var diffX = initialX - currentX;
+
+  // sliding horizontally
+  if (diffX > 0) 
+  {
+    // swiped left
+    document.getElementById("current_x_id").innerHTML = "swiped left";
+  } 
+  else 
+  {
+    // swiped right
+    document.getElementById("current_x_id").innerHTML = "swiped right";
+  }  
+
+  initialX = null;
+
+  e.preventDefault();
+};
 
 
 
