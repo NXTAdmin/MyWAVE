@@ -48,12 +48,12 @@
 
 .div_footer {
  /*display: -webkit-box;  
- display: -webkit-flex;  
+ display: -webkit-flex;*/  
   display: -ms-flexbox;
   display: flex; 
   
   
-  width: 100%; */
+  width: 100%; 
   padding-right: 16px;
   padding-bottom: 16px;
   padding-left: 16px;  
@@ -75,7 +75,8 @@
 }
 
 .text_version {
-    color: #ccd1d9;
+   /* color: #ccd1d9; */
+    color: #6a6c6e;
     font-size: 12px;
     padding-left: 16px
 }
