@@ -251,8 +251,7 @@ var app = {
 
         var myHtml = 
 
-//           "<div class='section'>" +
-           "<div>" +
+           "<div class='section'>" +
                 "<div id='go_img_id' class='div_product'>" + "" +
                     "<div id='go_sn_id' class='text_producttitle'>" + guiSerialNumber + "</div>" +
                 "</div>" +
