@@ -257,8 +257,8 @@ var app = {
                 "</div>" +
                 "<div class='onoffswitch'>" +
                     "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
-                    "<label class='onoffswitch-label' for='myonoffswitch'>" +
-                        "<span class='onoffswitch-inner'></span>" +
+                    "<label  class='onoffswitch-label' for='myonoffswitch'>" +
+                        "<span id='onofflabelspan_id' class='onoffswitch-inner'></span>" +
                         "<span class='onoffswitch-switch'></span>" +
                     "</label>" +
                 "</div>" +
@@ -341,13 +341,11 @@ function moveTouch(e)
   {
     // swiped left
     document.getElementById('myonoffswitch').checked = false;
-    document.getElementById("current_x_id").innerHTML = "swiped left";
   } 
   else 
   {
     // swiped right
     document.getElementById('myonoffswitch').checked = true;
-    document.getElementById("current_x_id").innerHTML = "swiped right";
   }  
 
   clickFollow();
@@ -846,6 +844,7 @@ function SetFollow(myState)
     
             // Start a timer that can run from background...
             StartSimpleTimer(30);
+            
         }
         else
         {
@@ -904,6 +903,8 @@ function StopSimpleTimer()
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
+    document.getElementById('onofflabelspan_id')..innerHTML = "Follow this";
+
     FollowMyPhone(FOLLOW_STATE_INIT, 0);
 }    
 
