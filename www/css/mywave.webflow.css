@@ -47,12 +47,11 @@
 }
 
 .div_footer 
-/* display: -webkit-box; 
-  display: -webkit-flex; */
+/* display: -webkit-box;  */ 
+  display: -webkit-flex; 
+  
   display: -ms-flexbox;
   display: flex; 
-  
-  
   width: 100%;
   padding-right: 16px;
   padding-bottom: 16px;
