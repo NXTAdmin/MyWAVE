@@ -826,32 +826,45 @@ function clickFollow()
 //-------------------------------------------------------------------------------------------------------
 function SetFollow(myState)
 {
-    if( myState == true )
+    PrintLog(1, "SetFollow(" + myState + ")" );
+
+    if( myState != bFollowMyPhoneFlag )
     {
-        // Create random tag between 0 and 0x7FFFFFFF
-        var randomTag = Math.random() * 0x7FFFFFFF; 
-
-        randomTag >>>= 0;   // Use >>> operator to make unsiged.
-
-        PrintLog(1, "Start Following: tag = 0x" + randomTag.toString(16) );
-        window.localStorage.setItem("phoneFollowTag_Id", randomTag);    // Remember locally
-        FollowMyPhone(FOLLOW_STATE_INIT, randomTag);                    // Call right away to give the tag to the hardware.
+        if( myState == true )
+        {
+    
+            // Create random tag between 0 and 0x7FFFFFFF
+            var randomTag = Math.random() * 0x7FFFFFFF; 
+    
+            randomTag >>>= 0;   // Use >>> operator to make unsiged.
+    
+            PrintLog(1, "Start Following: tag = 0x" + randomTag.toString(16) );
+            window.localStorage.setItem("phoneFollowTag_Id", randomTag);    // Remember locally
+            FollowMyPhone(FOLLOW_STATE_INIT, randomTag);                    // Call right away to give the tag to the hardware.
+            
+            RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
+    
+            // Start a timer that can run from background...
+            StartSimpleTimer(30);
+        }
+        else
+        {
+            PrintLog(1, "Do not follow...");
+            StopSimpleTimer();
+            ForgetThisDevice();                                     // Forget this BT device.
+            window.localStorage.removeItem( "phoneFollowTag_Id" );  // Delete the follow tag stored on the phone.
+        }
         
-        RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
-
-        // Start a timer that can run from background...
-        StartSimpleTimer(30);
+        
+        bFollowMyPhoneFlag = myState; 
+        document.getElementById("myonoffswitch").checked = myState;
     }
     else
     {
-        PrintLog(1, "Do not follow...");
-        StopSimpleTimer();
-        ForgetThisDevice();                                     // Forget this BT device.
-        window.localStorage.removeItem( "phoneFollowTag_Id" );  // Delete the follow tag stored on the phone.
+        PrintLog(1, "  No action required.  Current follow state = " + bFollowMyPhoneFlag);
     }
     
-    bFollowMyPhoneFlag = myState; 
-    document.getElementById("myonoffswitch").checked = myState;
+    
 }
 
 
