@@ -35,16 +35,16 @@
     
     <!-- <preference name="phonegap-version" value="cli-6.5.0" />  --> 
     
-    <preference name="phonegap-version" value="cli-9.0.0" /> 
-    <!-- <preference name="phonegap-version" value="cli-7.0.1" /> --> 
-    <!-- <preference name='pgb-builder-version' value='1' />  -->        <!-- To use new 7.0.1 Phonegap with old build process.  Without this line there are icon file issues.  -->
+    <!-- <preference name="phonegap-version" value="cli-9.0.0" />  --> 
+    <preference name="phonegap-version" value="cli-7.1.0" /> 
+    <preference name='pgb-builder-version' value='1' />          <!-- To use new 7.0.1 Phonegap with old build process.  Without this line there are icon file issues.  -->
     
      
     <preference name="orientation"                value="portrait" />       <!-- all: default means both landscape and portrait are enabled -->
     <preference name="target-device"              value="universal" />      <!-- all: possible values handset, tablet, or universal -->
     <preference name="fullscreen"                 value="true" />           <!-- all: hides the status bar at the top of the screen -->
     <preference name="StatusBarOverlaysWebView"   value="false" />
-    <preference name="DisallowOverscroll"         value="true" />
+    <preference name="DisallowOverscroll"         value="false" />
     <preference name="webviewbounce"              value="false" />          <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
     <preference name="prerendered-icon"           value="true" />           <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
     <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
