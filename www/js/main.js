@@ -432,7 +432,7 @@ function MainLoop()
             
             if(bfileOpenLogFileSuccess == false )
             {
-                SpinnerStart( "", GetLangString("SearchDevices") );  // "Searching for Cel-Fi Devices..."
+//                SpinnerStart( "", GetLangString("SearchDevices") );  // "Searching for Cel-Fi Devices..."
 
                 PrintLog(1, "MainLoop: Init: Open File system...");
                 OpenFileSystem();
