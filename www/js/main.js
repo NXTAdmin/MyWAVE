@@ -270,7 +270,7 @@ var app = {
 
                 
                 "<div class='div_footer'>" +
-                    "<div class='text_version'>" + szVersion + "</div>" +
+                    "<div class='text_version'>Version: " + szVersion + "</div>" +
                     "<div class='div_footeroption'><a href='https://cel-fi.com/support/'><img src='img/HelpIcon.svg' alt='' class='image_footericon'></a></div>" +
                 "</div>" +
            "</div>";
@@ -758,7 +758,7 @@ function FollowMyPhone(myState, mySetTag)
                 }
                 else
                 {
-                    SetFollowText(false);
+                    SetFollowText(true);
                     PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) + "  Not following." );
                 }
 
