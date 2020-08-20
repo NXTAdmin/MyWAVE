@@ -269,7 +269,7 @@ var app = {
                         "</label>" +
                     "</div>" +
 
-                    "<div id='follow_text_id' class='text_producttitle'>    </div>" +
+                    "<div id='follow_text_id' class='text_follow'>    </div>" +
                 "</div>" +
 
                 "<div>" +

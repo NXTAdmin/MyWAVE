@@ -74,6 +74,7 @@
     <gap:plugin name="cordova-plugin-globalization"  source="npm" version="1.0.4" />
     <!-- <gap:plugin name="cordova-plugin-spinnerdialog" source="npm" /> -->
     <gap:plugin name="cordova-plugin-native-spinner" source="npm" />
+    <gap:plugin spec="https://github.com/greybax/cordova-plugin-native-spinner" source="git"/>
     
     
     
