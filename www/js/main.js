@@ -128,7 +128,9 @@ function SpinnerStart(title, msg )
     // Note: spinner dialog is cancelable by default on Android and iOS. On WP8, it's fixed by default
     // so make fixed on all platforms.
     // Title is only allowed on Android so never show the title.
-    window.plugins.spinnerDialog.show(null, msg, true);
+//    window.plugins.spinnerDialog.show(null, msg, true);
+    
+    SpinnerDialog.show(null, msg, true);  // cordova-plugin-native-spinner
     bSpinner = true;
     
     // Save to log file...
@@ -141,7 +143,10 @@ function SpinnerStop()
 {
     if( bSpinner )
     {
-        window.plugins.spinnerDialog.hide();
+//        window.plugins.spinnerDialog.hide();
+        
+        SpinnerDialog.hide();  // cordova-plugin-native-spinner
+        
         bSpinner = false;
     }
 }
@@ -264,7 +269,7 @@ var app = {
                         "</label>" +
                     "</div>" +
 
-                    "<div id='follow_text_id' class='text_producttitle'>Following</div>" +
+                    "<div id='follow_text_id' class='text_producttitle'>    </div>" +
                 "</div>" +
 
                 "<div>" +
@@ -847,7 +852,7 @@ function SetFollowText(myState)
         }
         else
         {
-            document.getElementById('follow_text_id').innerHTML = "";
+            document.getElementById('follow_text_id').innerHTML = "         ";
             
             // Remove the "Following" text, should display "On"
             // $('#onofflabel_id').empty();  // This worked on PC in chrome but does not work on app
