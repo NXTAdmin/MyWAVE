@@ -8,14 +8,13 @@
 //  2/1/19:  00.00.01:   Initial Test release
 //  08/12/20: 00.01.02:  Set min SDK from 28 to 21 to allow older Android phones.
 //                       Added 128 x 128 ICON.
-//
+//                       Added testing text.
+//  08/xx/20: 00.01.03:  Added slide detection for slider.
+//                       Added "Following" to slider when actually following, phone's Xarfcn matches GO's Xarfcn.
+//                       Removed screen bouncing when touched.  Due to version CSS setting width incorrectly.
+//               TODO    Weng's issue when idle      
 //
 //  To Do:
-//    - Add logic for last Xarfcn sent and if not different then do not connect BT.
-//    - For testing:
-//        Display Phone xarfcn:  phoneFollowXarfcn
-//        Sent to CelFi xarfcn:  nxtyFollowXarfcn    (Wave ID: 23 for FollowXarfcn)
-//        Current CelFi  xarfcn: nxtyCurrentXarfcn   (Wave ID: 0x0E for CurrentXarfcn)
 //
 //=================================================================================================
 
@@ -843,9 +842,7 @@ function SetFollowText(myState)
         
         bFollowingTextFlag = myState;
     }
-    
-
-    
+        
 }
 
 //-------------------------------------------------------------------------------------------------------
@@ -931,8 +928,6 @@ function StopSimpleTimer()
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
-
-    
     FollowMyPhone(FOLLOW_STATE_INIT, 0);
 }    
 
