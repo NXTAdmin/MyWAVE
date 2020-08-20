@@ -257,7 +257,7 @@ var app = {
                 "</div>" +
                 "<div class='onoffswitch'>" +
                     "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
-                    "<label  id='onofflabel_id' class='onoffswitch-label' for='myonoffswitch'>" +
+                    "<label  id='onofflabel_id' class='onoffswitch-label' for='myonoffswitch'>Hello" +
                         "<span  class='onoffswitch-inner'></span>" +
                         "<span class='onoffswitch-switch'></span>" +
                     "</label>" +
