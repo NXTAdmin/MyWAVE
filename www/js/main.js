@@ -758,7 +758,7 @@ function FollowMyPhone(myState, mySetTag)
                 }
                 else
                 {
-                    SetFollowText(true);
+                    SetFollowText(false);
                     PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) + "  Not following." );
                 }
 
@@ -813,11 +813,14 @@ function clickFollow()
     {
         PrintLog(1, "\r\nUser pressed Follow----------------------------------------------");
         SetFollow(true);
+        SetFollowText(true);  // jdo test - remove this
+
     } 
     else 
     {
         PrintLog(1, "\r\nUser pressed No Follow----------------------------------------------");
         SetFollow(false);
+        SetFollowText(false);  // jdo test - remove this
     }
 }
 
