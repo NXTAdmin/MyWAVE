@@ -254,12 +254,17 @@ var app = {
                 "<div id='go_img_id' class='div_product'>" + "" +
                     "<div id='go_sn_id' class='text_producttitle'>" + guiSerialNumber + "</div>" +
                 "</div>" +
-                "<div class='onoffswitch'>" +
-                    "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
-                    "<label  id='onofflabel_id' class='onoffswitch-label' for='myonoffswitch'>" +
-                        "<span  class='onoffswitch-inner'></span>" +
-                        "<span class='onoffswitch-switch'></span>" +
-                    "</label>" +
+                    
+                "<div>" +
+                    "<div class='onoffswitch'>" +
+                        "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
+                        "<label  id='onofflabel_id' class='onoffswitch-label' for='myonoffswitch'>" +
+                            "<span  class='onoffswitch-inner'></span>" +
+                            "<span class='onoffswitch-switch'></span>" +
+                        "</label>" +
+                    "</div>" +
+
+                    "<div id='follow_text_id' class='text_producttitle'>Following</div>" +
                 "</div>" +
 
                 "<div>" +
@@ -267,6 +272,7 @@ var app = {
                     "<div id='sent_x_id'   class='text_test'>Sent to GO:</div>" +
                     "<div id='current_x_id' class='text_test'>Current GO Xarfcn:</div>" +
                   "</div>" +
+                        
 
                 
                 "<div class='div_footer'>" +
@@ -834,13 +840,17 @@ function SetFollowText(myState)
         PrintLog(1, "SetFollowText(" + myState + ")" );
         if( myState == true )
         {
+            document.getElementById('follow_text_id').innerHTML = "Following";
+            
             // Change the "on" text to "Following"
-            $('#onofflabel_id').append('<style>.onoffswitch-inner:before{content: "Following" !important;}</style>');
+            // $('#onofflabel_id').append('<style>.onoffswitch-inner:before{content: "Following" !important;}</style>');
         }
         else
         {
+            document.getElementById('follow_text_id').innerHTML = "";
+            
             // Remove the "Following" text, should display "On"
-            $('#onofflabel_id').empty();
+            // $('#onofflabel_id').empty();  // This worked on PC in chrome but does not work on app
         }
         
         bFollowingTextFlag = myState;
