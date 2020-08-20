@@ -903,7 +903,7 @@ function StopSimpleTimer()
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
-    $('#onofflabel_id').addClass("onoffswitch-follow");
+    $('#onofflabel_id').append('<style>.onoffswitch-inner:before{content: "Following" !important;}</style>');
     
     FollowMyPhone(FOLLOW_STATE_INIT, 0);
 }    
