@@ -257,8 +257,8 @@ var app = {
                 "</div>" +
                 "<div class='onoffswitch'>" +
                     "<input type='checkbox' name='onoffswitch' class='onoffswitch-checkbox' id='myonoffswitch' onclick='clickFollow();'>" +
-                    "<label  class='onoffswitch-label' for='myonoffswitch'>" +
-                        "<span id='onofflabelspan_id' class='onoffswitch-inner'></span>" +
+                    "<label  id='onofflabel_id' class='onoffswitch-label' for='myonoffswitch'>" +
+                        "<span  class='onoffswitch-inner'></span>" +
                         "<span class='onoffswitch-switch'></span>" +
                     "</label>" +
                 "</div>" +
@@ -903,7 +903,7 @@ function StopSimpleTimer()
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
-    $('#onofflabelspan_id').addClass("onoffswitch-inner-follow");
+    $('#onofflabel_id').addClass("onoffswitch-follow");
     
     FollowMyPhone(FOLLOW_STATE_INIT, 0);
 }    

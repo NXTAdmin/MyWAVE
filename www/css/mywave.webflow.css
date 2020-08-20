@@ -132,13 +132,13 @@
 
 .onoffswitch-inner:before {
 /*    content: "Following";  */
-    content: "         ";  
+    content: "On       ";  
     padding-left: 16px;
     background-color: #F4F4F4; 
     color: #434A54;
 }
 
-.onoffswitch-inner-follow {
+.onoffswitch-follow {
     content: "Following";  
 }
 
