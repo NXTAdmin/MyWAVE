@@ -100,7 +100,6 @@
 .onoffswitch {
     position: relative; 
     width: 256px; 
-    height: 25%;
     -webkit-user-select:none; 
     -moz-user-select:none; 
     -ms-user-select: none;
