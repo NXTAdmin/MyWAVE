@@ -128,9 +128,7 @@ function SpinnerStart(title, msg )
     // Note: spinner dialog is cancelable by default on Android and iOS. On WP8, it's fixed by default
     // so make fixed on all platforms.
     // Title is only allowed on Android so never show the title.
-//    window.plugins.spinnerDialog.show(null, msg, true);
-    
-    SpinnerDialog.show(null, msg, true);  // cordova-plugin-native-spinner
+    window.plugins.spinnerDialog.show(null, msg, true);
     bSpinner = true;
     
     // Save to log file...
@@ -143,10 +141,7 @@ function SpinnerStop()
 {
     if( bSpinner )
     {
-//        window.plugins.spinnerDialog.hide();
-        
-        SpinnerDialog.hide();  // cordova-plugin-native-spinner
-        
+        window.plugins.spinnerDialog.hide();
         bSpinner = false;
     }
 }
