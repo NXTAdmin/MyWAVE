@@ -264,7 +264,7 @@ var app = {
                         "</label>" +
                     "</div>" +
 
-                    "<div id='follow_text_id' class='text_follow'>    </div>" +
+                    "<div id='follow_text_id' class='text_follow'>Status: On</div>" +
                 "</div>" +
 
                 "<div>" +
@@ -840,14 +840,14 @@ function SetFollowText(myState)
         PrintLog(1, "SetFollowText(" + myState + ")" );
         if( myState == true )
         {
-            document.getElementById('follow_text_id').innerHTML = "Following";
+            document.getElementById('follow_text_id').innerHTML = "Status: Following";
             
             // Change the "on" text to "Following"
             // $('#onofflabel_id').append('<style>.onoffswitch-inner:before{content: "Following" !important;}</style>');
         }
         else
         {
-            document.getElementById('follow_text_id').innerHTML = "         ";
+            document.getElementById('follow_text_id').innerHTML = "Status: On";
             
             // Remove the "Following" text, should display "On"
             // $('#onofflabel_id').empty();  // This worked on PC in chrome but does not work on app
