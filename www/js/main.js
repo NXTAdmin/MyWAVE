@@ -790,6 +790,10 @@ function FollowMyPhone( bStart, mySetTag)
 
                 
                 DisconnectAndStopSouthBoundIf();
+
+                // Next time restart....
+                followState        = FOLLOW_STATE_INIT;
+                followStateCounter = 0;
                 return;
             }
             
@@ -817,6 +821,11 @@ function FollowMyPhone( bStart, mySetTag)
 
                     // Start a timer that can run from background...
                     setTimeout( function(){ StartSimpleTimer(30); }, 700 );
+                    
+                    // Next time restart....
+                    followState        = FOLLOW_STATE_INIT;
+                    followStateCounter = 0;
+
                 }
             }
         }
@@ -941,7 +950,8 @@ function StopSimpleTimer()
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
-    FollowMyPhone(true, 0);  // Called from timer tick........
+//    FollowMyPhone(true, 0);  // Init: Called from timer tick........
+    FollowMyPhone(false, 0);  // Where we left off: Called from timer tick........
 }    
 
 function errorStart(message) 
