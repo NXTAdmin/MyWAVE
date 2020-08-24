@@ -129,7 +129,7 @@ function SpinnerStart(title, msg )
     // so make fixed on all platforms.
     // Title is only allowed on Android so never show the title.
 //    window.plugins.spinnerDialog.show(null, msg, true);
-    navigator.notification.activityStart(msg);
+    navigator.notification.activityStart(title, msg);
     bSpinner = true;
     
     // Save to log file...
