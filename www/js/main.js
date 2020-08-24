@@ -567,15 +567,14 @@ const   FOLLOW_STATE_GET_TAG    = 2;
 const   FOLLOW_STATE_SET_XARFCN = 3;
 const   FOLLOW_STATE_VERIFY     = 4;
 const   FOLLOW_STATE_DONE       = 5;
-const   FOLLOW_STATE_WORK       = 100;
 var     followState             = FOLLOW_STATE_INIT;
 var     followStateCounter      = 0;
 
-function FollowMyPhone(myState, mySetTag)
+function FollowMyPhone( bStart, mySetTag)
 {
-    if( myState == FOLLOW_STATE_INIT)
+    if( bStart )
     {
-        followState        = myState;
+        followState        = FOLLOW_STATE_INIT;
         followStateCounter = 0;
     }
 
@@ -587,12 +586,12 @@ function FollowMyPhone(myState, mySetTag)
         {
             case FOLLOW_STATE_INIT:
             {
-                PrintLog(1, "Follow State Init");
+                PrintLog(1, "Follow State: Init");
                 
                 if(isSouthBoundIfCnx)
                 {
                     // Wait for BT to become disconnected....
-                    setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK, mySetTag); }, 1000 );  // Come back in 1 second
+                    setTimeout( function(){ FollowMyPhone(false, mySetTag); }, 1000 );  // Come back in 1 second
                     return;
                 }
                 else
@@ -663,7 +662,7 @@ function FollowMyPhone(myState, mySetTag)
             {
                 if(isSouthBoundIfCnx)
                 {
-                    PrintLog(1, "Follow State Set Tag");
+                    PrintLog(1, "Follow State: Set Tag");
                     nxtyFollowTag = -1;
                     SetFollowTag(mySetTag);
                     followState = FOLLOW_STATE_SET_XARFCN;
@@ -675,7 +674,7 @@ function FollowMyPhone(myState, mySetTag)
             {
                 if(isSouthBoundIfCnx)
                 {
-                    PrintLog(1, "Follow State Get Tag");
+                    PrintLog(1, "Follow State: Get Tag");
                     nxtyFollowTag = -1;
                     GetFollowTag();
                     followState = FOLLOW_STATE_SET_XARFCN;
@@ -685,7 +684,7 @@ function FollowMyPhone(myState, mySetTag)
 
             case FOLLOW_STATE_SET_XARFCN:
             {
-                PrintLog(1, "Follow State Set Xarfcn");
+                PrintLog(1, "Follow State: Set Xarfcn");
                 
                 if( (isSouthBoundIfCnx == true) && (nxtyFollowTag != -1) )
                 {
@@ -714,7 +713,7 @@ function FollowMyPhone(myState, mySetTag)
             }
             case FOLLOW_STATE_VERIFY:
             {
-                PrintLog(1, "Follow State Verify");
+                PrintLog(1, "Follow State: Verify");
                 
                 // No need to verigy anything...it either worked and we move on or it failed and we move on to update next time.  No retry here.
                 GetFollowAndCurrentXarfcn();  // Simply get the status before disconnecting in case we want to display
@@ -724,7 +723,7 @@ function FollowMyPhone(myState, mySetTag)
             
             case FOLLOW_STATE_DONE:
             {
-                PrintLog(1, "Follow State Done");
+                PrintLog(1, "Follow State: Done");
                 
                 // Start test display------------------------------------------------------------------------------
                 // Update the test information...
@@ -780,7 +779,7 @@ function FollowMyPhone(myState, mySetTag)
         {
             if( followStateCounter < 9)
             {
-                setTimeout( function(){ FollowMyPhone(FOLLOW_STATE_WORK, mySetTag); }, 1000 );  // Come back in 1 second
+                setTimeout( function(){ FollowMyPhone(false, mySetTag); }, 1000 );  // Come back in 1 second
             }
             else
             {
@@ -875,7 +874,7 @@ function SetFollow(myState)
     
             PrintLog(1, "Start Following: tag = 0x" + randomTag.toString(16) );
             window.localStorage.setItem("phoneFollowTag_Id", randomTag);    // Remember locally
-            FollowMyPhone(FOLLOW_STATE_INIT, randomTag);                    // Call right away to give the tag to the hardware.
+            FollowMyPhone(true, randomTag);                    // Call right away to give the tag to the hardware.
             
             RememberThisDevice(guiDeviceMacAddrList[btCnxIdIdx], icdBtList[btCnxIdIdx], guiDeviceRssiList[btCnxIdIdx] );
             SetFollowText(false);
@@ -941,7 +940,7 @@ function StopSimpleTimer()
 function onTimerTick() 
 {
     PrintLog(1, "\r\nTimer Tick----------------------------------------------");
-    FollowMyPhone(FOLLOW_STATE_INIT, 0);
+    FollowMyPhone(true, 0);
 }    
 
 function errorStart(message) 
