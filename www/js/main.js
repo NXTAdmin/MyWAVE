@@ -593,7 +593,9 @@ function FollowMyPhone( bStart, mySetTag)
                 if(isSouthBoundIfCnx)
                 {
                     // Wait for BT to become disconnected....
-                    setTimeout( function(){ FollowMyPhone(false, mySetTag); }, 1000 );  // Come back in 1 second
+                    PrintLog(1, "  - BT connected, try to disconnect...");
+                    DisconnectAndStopSouthBoundIf();
+                    // setTimeout( function(){ FollowMyPhone(false, mySetTag); }, 1000 );  // Come back in 1 second
                     return;
                 }
                 else
