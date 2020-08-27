@@ -9,10 +9,12 @@
 //  08/12/20: 00.01.02:  Set min SDK from 28 to 21 to allow older Android phones.
 //                       Added 128 x 128 ICON.
 //                       Added testing text.
-//  08/xx/20: 00.01.03:  Added slide detection for slider.
+//  08/24/20: 00.01.03:  Added slide detection for slider.
 //                       Added "Status: On/Off/Following" below slider.
 //                       Removed screen bouncing when touched.  Due to version CSS setting width incorrectly.
 //                       Switched to native spinner instead of plugin.
+//                       Modified timer tick to just move state machine along and not re-init.
+//                         - When phone in standby mode, timer tick does not run for very long.
 //               TODO    Weng's issue when idle      
 //
 //  To Do:
