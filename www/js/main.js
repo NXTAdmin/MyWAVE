@@ -58,7 +58,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "00.01.03";
+var szVersion               = "00.91.03";
 
 
 var szSuccess               = "";
@@ -590,9 +590,19 @@ function FollowMyPhone( bStart, mySetTag)
         clearTimeout(FollowMyPhoneTimer);
         FollowMyPhoneTimer = null;  
     }
+
+    var stateText = followState.toString();
+    switch(followState)
+    {
+        case FOLLOW_STATE_INIT:         stateText = "INIT";         break;
+        case FOLLOW_STATE_SET_TAG:      stateText = "SET_TAG";      break;
+        case FOLLOW_STATE_GET_TAG:      stateText = "GET_TAG";      break;
+        case FOLLOW_STATE_SET_XARFCN:   stateText = "SET_XARFCN";   break;
+        case FOLLOW_STATE_VERIFY:       stateText = "VERIFY";       break;
+        case FOLLOW_STATE_DONE:         stateText = "DONE";         break;
+    }
     
-    
-//    PrintLog(1, "Follow State counter =" + followStateCounter);
+    PrintLog(1, "Follow State=" + stateText + " counter=" + followStateCounter );
 
     if(locationEnabled)
     {
