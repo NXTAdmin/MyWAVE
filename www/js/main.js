@@ -15,6 +15,7 @@
 //                       Switched to native spinner instead of plugin.
 //                       Modified timer tick to just move state machine along and not re-init.
 //                         - When phone in standby mode, timer tick does not run for very long.
+//  09/03/20: 00.01.04:  Added a timeout to gracefully handle an error when in standby.
 //               TODO    Weng's issue when idle      
 //
 //  To Do:
@@ -58,7 +59,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "00.91.03";
+var szVersion               = "00.01.04";
 
 
 var szSuccess               = "";
@@ -574,6 +575,7 @@ const   FOLLOW_STATE_VERIFY     = 4;
 const   FOLLOW_STATE_DONE       = 5;
 var     followState             = FOLLOW_STATE_INIT;
 var     followStateCounter      = 0;
+var     followInitMs            = 0;
 
 function FollowMyPhone( bStart, mySetTag)
 {
@@ -611,6 +613,8 @@ function FollowMyPhone( bStart, mySetTag)
             case FOLLOW_STATE_INIT:
             {
                 PrintLog(1, "Follow State: Init");
+                var d = new Date();
+                followInitMs = d.getTime();
                 
                 if(isSouthBoundIfCnx)
                 {
@@ -700,6 +704,15 @@ function FollowMyPhone( bStart, mySetTag)
                     SetFollowTag(mySetTag);
                     followState = FOLLOW_STATE_SET_XARFCN;
                 }
+                else
+                {
+                    var d = new Date();
+                    if( (d.getTime() - followInitMs) > (20 * 1000) )
+                    {
+                        PrintLog(1, "Follow State: Set Tag: More than 20 seconds and still no BT connection, reinit.");
+                        FollowMyPhone(true, mySetTag);
+                    }
+                }
                 break;
             }
             
@@ -711,6 +724,15 @@ function FollowMyPhone( bStart, mySetTag)
                     nxtyFollowTag = -1;
                     GetFollowTag();
                     followState = FOLLOW_STATE_SET_XARFCN;
+                }
+                else
+                {
+                    var d = new Date();
+                    if( (d.getTime() - followInitMs) > (20 * 1000) )
+                    {
+                        PrintLog(1, "Follow State: Get Tag: More than 20 seconds and still no BT connection, reinit.");
+                        FollowMyPhone(true, mySetTag);
+                    }
                 }
                 break;
             }
