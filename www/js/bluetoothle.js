@@ -507,6 +507,8 @@ function HandlePreLocationConfirmation(buttonIndex)
 
 function restartApp() 
 {
+    PrintLog(1, "restartApp()" );
+    guiDisableBtScanFlag = false; 
     Location.reload();
 }
 
@@ -596,7 +598,7 @@ function displayLocationServiceRequiredAndroid10()
     PrintLog(1, "displayLocationServiceRequiredAndroid10()" );
     
     navigator.notification.confirm(
-            GetLangString('LocationServicesRequiredText'),    // message
+            GetLangString('LocationServicesRequiredText10'),    // message
             HandleLocationServicesRequiredConfirmation,  // callback to invoke with index of button pressed
             GetLangString('LocationServicesRequired'),       // title
             ['Try Again - After Setting'] );                       // buttonLabels
