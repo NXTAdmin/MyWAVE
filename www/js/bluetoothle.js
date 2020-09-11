@@ -551,12 +551,6 @@ function checkLocationPermissionAndroid()
 
         if( (window.device.platform == androidPlatform) && (parseInt(window.device.version, 10) < 10)  ) 
         {
-            // Android version >= 10 must have Location services always on for standby mode to work...
-            PrintLog(1, "checkLocationPermissionAndroid() - Android version >= 10, must set location manually.");
-            displayLocationServiceRequiredAndroid10();  
-        }
-        else
-        {
             PrintLog(1, "checkLocationPermissionAndroid() - phone may be automatically sent to the background to show system permission popup.");
             bluetoothle.requestPermission(function(obj) 
             {
@@ -574,6 +568,12 @@ function checkLocationPermissionAndroid()
     //            util.displayLocationServiceRequiredAndroid();
                 displayLocationServiceRequiredAndroid();  
             });
+        }
+        else
+        {
+            // Android version >= 10 must have Location services always on for standby mode to work...
+            PrintLog(1, "checkLocationPermissionAndroid() - Android version >= 10, must set location manually.");
+            displayLocationServiceRequiredAndroid10();  
         }
     });
 }
