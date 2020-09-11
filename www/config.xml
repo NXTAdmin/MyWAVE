@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         id          = "com.nextivityinc.MyWave"
         versionCode = "10"
-        version     = "01.02.05">
+        version     = "01.03.05">
  
     <name>MyWAVE</name>
  
