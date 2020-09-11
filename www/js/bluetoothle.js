@@ -509,7 +509,7 @@ function restartApp()
 {
     PrintLog(1, "restartApp()" );
     guiDisableBtScanFlag = false; 
-    Location.reload();
+    location.reload();
 }
 
 function HandleLocationServicesRequiredConfirmation(buttonIndex)
