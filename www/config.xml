@@ -4,7 +4,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         id          = "com.nextivityinc.MyWave"
         versionCode = "10"
-        version     = "01.01.05">
+        version     = "01.02.05">
  
     <name>MyWAVE</name>
  
@@ -30,6 +30,11 @@
         permission on your app, which PhoneGap requires.
     -->
     <preference name="permissions"                value="none"/>
+
+    <!-- Add following permission to get the "Allow Location all the time" selection to be added to Location permissions. -->
+    <gap:config-file platform="android" parent="/manifest">
+        <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    </gap:config-file>
 
     <!-- Customize your app and platform with the preference element. -->
     
