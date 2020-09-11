@@ -507,7 +507,7 @@ function HandlePreLocationConfirmation(buttonIndex)
 
 function restartApp() 
 {
-    location.reload();
+    Location.reload();
 }
 
 function HandleLocationServicesRequiredConfirmation()
@@ -549,23 +549,32 @@ function checkLocationPermissionAndroid()
             return;
         }
 
-        PrintLog(1, "checkLocationPermissionAndroid() - phone may be automatically sent to the background to show system permission popup.");
-        bluetoothle.requestPermission(function(obj) 
+        if( (window.device.platform == androidPlatform) && (parseInt(window.device.version, 10) < 10)  ) 
         {
-            if (obj.requestPermission) 
+            // Android version >= 10 must have Location services always on for standby mode to work...
+            PrintLog(1, "checkLocationPermissionAndroid() - Android version >= 10, must set location manually.");
+            displayLocationServiceRequiredAndroid10();  
+        }
+        else
+        {
+            PrintLog(1, "checkLocationPermissionAndroid() - phone may be automatically sent to the background to show system permission popup.");
+            bluetoothle.requestPermission(function(obj) 
             {
-                //Permission granted
-                // Re-enable the check and now both location services and permissions shouold pass so bluetooth should start scanning.
-                guiDisableBtScanFlag = false;               
-                PrintLog(1, "checkLocationPermissionAndroid() - user just granted permission.");
-                return;
-            }
-
-            // Permission denied, show another message?
-            PrintLog(1, "checkLocationPermissionAndroid() - user just denied permission.");
-//            util.displayLocationServiceRequiredAndroid();
-            displayLocationServiceRequiredAndroid();  
-        });
+                if (obj.requestPermission) 
+                {
+                    //Permission granted
+                    // Re-enable the check and now both location services and permissions shouold pass so bluetooth should start scanning.
+                    guiDisableBtScanFlag = false;               
+                    PrintLog(1, "checkLocationPermissionAndroid() - user just granted permission.");
+                    return;
+                }
+    
+                // Permission denied, show another message?
+                PrintLog(1, "checkLocationPermissionAndroid() - user just denied permission.");
+    //            util.displayLocationServiceRequiredAndroid();
+                displayLocationServiceRequiredAndroid();  
+            });
+        }
     });
 }
 
@@ -582,6 +591,17 @@ function displayLocationServiceRequiredAndroid()
 
 }
 
+function displayLocationServiceRequiredAndroid10()
+{
+    PrintLog(1, "displayLocationServiceRequiredAndroid10()" );
+    
+    navigator.notification.confirm(
+            GetLangString('LocationServicesRequiredText'),    // message
+            HandleLocationServicesRequiredConfirmation,  // callback to invoke with index of button pressed
+            GetLangString('LocationServicesRequired'),       // title
+            ['Try Again - After Setting'] );                       // buttonLabels
+
+}
 
 
 // StartScan.....................................................................................
