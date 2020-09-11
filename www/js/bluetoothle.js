@@ -512,7 +512,7 @@ function restartApp()
     Location.reload();
 }
 
-function HandleLocationServicesRequiredConfirmation()
+function HandleLocationServicesRequiredConfirmation(buttonIndex)
 {
     // buttonIndex = 0 if dialog dismissed, i.e. back button pressed.
     // buttonIndex = 1 if 'Ok'
