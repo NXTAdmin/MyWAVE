@@ -59,7 +59,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.05.05";
+var szVersion               = "01.06.05";
 
 
 var szSuccess               = "";
@@ -460,6 +460,7 @@ function MainLoop()
                 if( guiNumDevicesFound )  // When set to 1 in BT file, we should have the SN by then.
                 {
                     uMainLoopState = MAIN_LOOP_STATE_OPERATE;
+                    GetLocation();
                 }
             }
             break;
@@ -996,5 +997,39 @@ function errorStart(message)
 function onStopped() 
 {
     PrintLog(1, 'Simple Timer is stopped');
+}
+
+
+
+//GetLocation.......................................................................................
+function GetLocation() 
+{
+    PrintLog(1, "GetLocation() - locationEnabled = " + locationEnabled );
+    if(locationEnabled) 
+    {
+        navigator.geolocation.getCurrentPosition(getLocationSuccess, getLocationError, {timeout:30000});
+    }    
+}
+
+function getLocationSuccess(position) 
+{
+    PrintLog(1, "GetLocation() success lat=" + position.coords.latitude + " long=" + position.coords.longitude );
+
+/*    
+ alert('Latitude: '          + position.coords.latitude          + '\n' +
+       'Longitude: '         + position.coords.longitude         + '\n' +
+       'Altitude: '          + position.coords.altitude          + '\n' +
+       'Accuracy: '          + position.coords.accuracy          + '\n' +
+       'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+       'Heading: '           + position.coords.heading           + '\n' +
+       'Speed: '             + position.coords.speed             + '\n' +
+       'Timestamp: '         + position.timestamp                + '\n');
+*/          
+}
+
+
+function getLocationError(error) 
+{
+    PrintLog(99, "GetLocation() Error=" + error.message + "  code=" + error.code  );
 }
 
