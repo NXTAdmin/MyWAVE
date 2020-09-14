@@ -645,9 +645,18 @@ function FollowMyPhone( bStart, mySetTag)
                         function(info)        // Success
                         {
                             // Return looks like: "cellInfo":"tech:LTE fcn:66536 isReg:true dbm:-105, tech:LTE fcn:66536 isReg:false dbm:-111"
-                            //   or               "cellInfo":" getAllCellInfo returned null." if no cells available.
-                            PrintLog(1, "Telephony: " + JSON.stringify(info));
+                            //   or               "cellInfo":"getAllCellInfo returned null." if no cells available.
+                            //   or               "cellInfo":"getAllCellInfo returned empty." if app Location permission is not set to "Allow all the time".  New with Android 10.
                             var cells = info.cellInfo.split(",");
+
+                            if( cells[0] == "getAllCellInfo returned empty.")
+                            {
+                                PrintLog(1, "Telephony: " + JSON.stringify(info) + " Verify that app Location permission is set to \"Allow all the time\".");
+                            }
+                            else
+                            {
+                                PrintLog(1, "Telephony: " + JSON.stringify(info));
+                            }
                             
                             for( var i = 0; i < cells.length; i++ )
                             {
