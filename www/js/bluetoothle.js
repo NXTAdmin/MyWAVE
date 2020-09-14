@@ -2966,6 +2966,21 @@ function HandlePhoneForeground()
 {
 
     PrintLog(1, "BT: Phone returned from background.  " + Date());
+    
+    if( bAllowAllTheTime == false )
+    {
+        // Tell user to go to settings and set app's location permission to "Allow all the time".
+        var tempAllowAllTheTime = window.localStorage.getItem("bAllowAllTheTime_ID"); 
+        if( tempAllowAllTheTime == null )
+        {
+            window.localStorage.setItem("bAllowAllTheTime_ID", "true" );
+            showAlert(  GetLangString('LocationServicesRequired'), GetLangString('LocationServicesRequiredText10') );
+        }
+        
+        
+    }
+    
+    
 /*    
     bPhoneInBackground = false;
 

@@ -69,6 +69,7 @@ var bSpinner                = false;
 var szNoStatus              = "No status response from unit so ICD version not known...kill app and retry";
 var bCnxToCu                = true;             // Set to true if connected locally to CU after reading local BoardConfig.
 var bCnxToOneBoxNu          = false;            // Set to true if connected to a 1-Box NU, all UART redirects are disabled.
+var bAllowAllTheTime        = true;             // Set to false if Android >= 10 and Cell info returns empth.
 
 var bPhoneInBackground      = false;    // Set to true if phone is in background.
 var bFollowMyPhoneFlag      = false;    // Set to true when phone is in Follow My Phone mode.
@@ -205,6 +206,8 @@ var app = {
         // Register the event listener if the back button is pressed...
         document.addEventListener("backbutton", app.onBackKeyDown, false);
         document.addEventListener("pause", HandlePhoneBackground, false);
+        document.addEventListener("resume", HandlePhoneForeground, false);
+
         
         app.renderHomeView();
         
@@ -651,7 +654,15 @@ function FollowMyPhone( bStart, mySetTag)
 
                             if( cells[0] == "getAllCellInfo returned empty.")
                             {
-                                PrintLog(1, "Telephony: " + JSON.stringify(info) + " Verify that app Location permission is set to \"Allow all the time\".");
+                                if( (window.device.platform == androidPlatform) && (parseInt(window.device.version, 10) >= 10)  ) 
+                                {
+                                    bAllowAllTheTime = false;
+                                    PrintLog(1, "Telephony: " + JSON.stringify(info) + " Verify that app Location permission is set to \"Allow all the time\".");
+                                }
+                                else
+                                {
+                                    PrintLog(1, "Telephony: " + JSON.stringify(info) + " Android version < 10 so do not know why this occurred.");
+                                }
                             }
                             else
                             {
