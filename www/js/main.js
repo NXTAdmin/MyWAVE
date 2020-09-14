@@ -16,7 +16,12 @@
 //                       Modified timer tick to just move state machine along and not re-init.
 //                         - When phone in standby mode, timer tick does not run for very long.
 //  09/03/20: 00.01.04:  Added a timeout to gracefully handle an error when in standby.
-//               TODO    Weng's issue when idle      
+//  09/14/20: 01.00.06:  Added logic to display a popup, if Android 10 or later, to go to the 
+//                       settings page and for the MyWave app set location permissions to "Allow all of the time"
+//                       so that cell data can be collected while in standby.
+//                       Added check to remind user to set MyWave app's location permission to "Allow all of the time" if
+//                       cell data could not be acquired during standby.  The alert pops up when app comes back to foreground.
+//               TODO    
 //
 //  To Do:
 //
@@ -59,7 +64,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.07.05";
+var szVersion               = "01.00.06";
 
 
 var szSuccess               = "";
