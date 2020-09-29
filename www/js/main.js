@@ -21,6 +21,8 @@
 //                       so that cell data can be collected while in standby.
 //                       Added check to remind user to set MyWave app's location permission to "Allow all of the time" if
 //                       cell data could not be acquired during standby.  The alert pops up when app comes back to foreground.
+//  09/29/20: 01.00.07:  Removed Android debug statement.
+//                       Removed Xarfcn text. 
 //               TODO    
 //
 //  To Do:
@@ -64,7 +66,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.00.06";
+var szVersion               = "01.00.07";
 
 
 var szSuccess               = "";
@@ -281,11 +283,12 @@ var app = {
                     "<div id='follow_text_id' class='text_follow'>Status: Off</div>" +
                 "</div>" +
 
-                "<div>" +
-                    "<div id='phone_x_id'  class='text_test'>Phone Xarfcn:</div>" +
-                    "<div id='sent_x_id'   class='text_test'>Sent to GO:</div>" +
-                    "<div id='current_x_id' class='text_test'>Current GO Xarfcn:</div>" +
-                  "</div>" +
+                
+//                "<div>" +
+//                    "<div id='phone_x_id'  class='text_test'>Phone Xarfcn:</div>" +
+//                    "<div id='sent_x_id'   class='text_test'>Sent to GO:</div>" +
+//                    "<div id='current_x_id' class='text_test'>Current GO Xarfcn:</div>" +
+//                  "</div>" +
                         
 
                 
@@ -806,6 +809,7 @@ function FollowMyPhone( bStart, mySetTag)
             {
                 PrintLog(1, "Follow State: Done");
                 
+/*  Disable test display                
                 // Start test display------------------------------------------------------------------------------
                 // Update the test information...
                 var varTemp = phoneFollowXarfcn;
@@ -836,7 +840,8 @@ function FollowMyPhone( bStart, mySetTag)
                 }
                 document.getElementById("current_x_id").innerHTML = outText + " 0x" + varTemp.toString(16);
                 // End test display------------------------------------------------------------------------------
-
+*/
+                
                 if( phoneFollowXarfcn == nxtyCurrentXarfcn)
                 {
                     PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) );
