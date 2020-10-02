@@ -691,7 +691,6 @@ function FollowMyPhone( bStart, mySetTag)
                                 {
                                     var cellFnc  = cellData[1].split(":");
                                     var cellReg  = cellData[2].split(":");
-                                    var cellBw   = cellData[3].split(":");
                                     
                                     if( cellReg[1] == "true" )
                                     {
@@ -702,6 +701,7 @@ function FollowMyPhone( bStart, mySetTag)
                                         {
                                             phoneFollowXarfcn |= 0x80000000;
                                             
+                                            var cellBw   = cellData[3].split(":");
                                             var uBw = parseInt(cellBw[1]);  // Convert the string to a number.
                                             
                                             // bit 27=bBwValid, bit24/25 is the bandwidth (00=5MHz, 01=10MHz, 10=15MHz, 11=20MHz)
@@ -867,7 +867,7 @@ function FollowMyPhone( bStart, mySetTag)
                 // End test display------------------------------------------------------------------------------
 */
                 
-                if( phoneFollowXarfcn == nxtyCurrentXarfcn)
+                if( (phoneFollowXarfcn != 0) && (phoneFollowXarfcn == nxtyCurrentXarfcn) )
                 {
                     PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) );
                     SetFollowText( "Following" );
