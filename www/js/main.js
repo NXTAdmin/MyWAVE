@@ -23,6 +23,9 @@
 //                       cell data could not be acquired during standby.  The alert pops up when app comes back to foreground.
 //  09/29/20: 01.00.07:  Removed Android debug statement.
 //                       Removed Xarfcn text. 
+//  10/02/20: 01.00.08:  Changed "Android 6.0+ requires..." to "7.0+" since min use is 7.0.
+//                       Change minSdkVersion to 24, Android 7.0.
+//                       Removed Xarfcn text. 
 //               TODO    
 //
 //  To Do:
@@ -66,7 +69,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.00.07";
+var szVersion               = "01.00.08";
 
 
 var szSuccess               = "";
@@ -655,7 +658,7 @@ function FollowMyPhone( bStart, mySetTag)
                         
                         function(info)        // Success
                         {
-                            // Return looks like: "cellInfo":"tech:LTE fcn:66536 isReg:true dbm:-105, tech:LTE fcn:66536 isReg:false dbm:-111"
+                            // Return looks like: "cellInfo":"tech:LTE fcn:66536 isReg:true dbm:-105 bw:5000, tech:WCDMA fcn:66536 isReg:false dbm:-111"  (LTE includes bw)
                             //   or               "cellInfo":"getAllCellInfo returned null." if no cells available.
                             //   or               "cellInfo":"getAllCellInfo returned empty." if app Location permission is not set to "Allow all the time".  New with Android 10.
                             var cells = info.cellInfo.split(",");
@@ -697,6 +700,8 @@ function FollowMyPhone( bStart, mySetTag)
                                         if( cellTech[1] == "LTE" )
                                         {
                                             phoneFollowXarfcn |= 0x80000000;
+                                            
+                                            var cellBw  = cellData[3].split(":");
                                         }
                                         
                                         phoneFollowXarfcn >>>= 0;  // Make unsigned.
