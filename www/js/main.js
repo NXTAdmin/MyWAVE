@@ -25,7 +25,7 @@
 //                       Removed Xarfcn text. 
 //  10/02/20: 01.00.08:  Changed "Android 6.0+ requires..." to "7.0+" since min use is 7.0.
 //                       Change minSdkVersion to 24, Android 7.0.
-//                       Removed Xarfcn text. 
+//                       Added bw:xxxx, LTE is 5,10,15,20 MHz and WCDMA is fixed at 5MHz.                       
 //               TODO    
 //
 //  To Do:
@@ -658,7 +658,7 @@ function FollowMyPhone( bStart, mySetTag)
                         
                         function(info)        // Success
                         {
-                            // Return looks like: "cellInfo":"tech:LTE fcn:66536 isReg:true dbm:-105 bw:5000, tech:WCDMA fcn:66536 isReg:false dbm:-111"  (LTE includes bw)
+                            // Return looks like: "cellInfo":"tech:LTE fcn:66536 isReg:true dbm:-105 bw:20000, tech:WCDMA fcn:66536 isReg:false dbm:-111 bw:5000"  
                             //   or               "cellInfo":"getAllCellInfo returned null." if no cells available.
                             //   or               "cellInfo":"getAllCellInfo returned empty." if app Location permission is not set to "Allow all the time".  New with Android 10.
                             var cells = info.cellInfo.split(",");
@@ -691,6 +691,7 @@ function FollowMyPhone( bStart, mySetTag)
                                 {
                                     var cellFnc  = cellData[1].split(":");
                                     var cellReg  = cellData[2].split(":");
+                                    var cellBw   = cellData[3].split(":");
                                     
                                     if( cellReg[1] == "true" )
                                     {
@@ -701,7 +702,26 @@ function FollowMyPhone( bStart, mySetTag)
                                         {
                                             phoneFollowXarfcn |= 0x80000000;
                                             
-                                            var cellBw  = cellData[3].split(":");
+                                            var uBw = parseInt(cellBw[1]);  // Convert the string to a number.
+                                            
+                                            // bit 27=bBwValid, bit24/25 is the bandwidth (00=5MHz, 01=10MHz, 10=15MHz, 11=20MHz)
+                                            // uBw = 0x7FFFFFFF (2147483647) UNAVAILABLE
+                                            if( uBw == 5000 )
+                                            {
+                                                phoneFollowXarfcn |= 0x08000000;    // 1000: Valid 5MHz
+                                            }
+                                            else if( uBw == 10000 )
+                                            {
+                                                phoneFollowXarfcn |= 0x09000000;   // 1001: Valid 10MHz
+                                            }
+                                            else if( uBw == 15000 )
+                                            {
+                                                phoneFollowXarfcn |= 0x0A000000;   // 1010: Valid 15MHz
+                                            }
+                                            else if( uBw == 20000 )
+                                            {
+                                                phoneFollowXarfcn |= 0x0B000000;   // 1011: Valid 20MHz
+                                            }
                                         }
                                         
                                         phoneFollowXarfcn >>>= 0;  // Make unsigned.
