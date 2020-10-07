@@ -26,6 +26,7 @@
 //  10/02/20: 01.00.08:  Changed "Android 6.0+ requires..." to "7.0+" since min use is 7.0.
 //                       Change minSdkVersion to 24, Android 7.0.
 //                       Added bw:xxxx, LTE is 5,10,15,20 MHz and WCDMA is fixed at 5MHz.                       
+//  10/07/20: 01.00.09:  Protect getBandwidth() in plugin since new with API 28.  So Android 9 and up are allowed to call getBandwidth().
 //               TODO    
 //
 //  To Do:
@@ -69,7 +70,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.92.08";
+var szVersion               = "01.00.09";
 
 
 var szSuccess               = "";
