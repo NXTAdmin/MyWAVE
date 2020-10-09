@@ -70,7 +70,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.00.09";
+var szVersion               = "01.91.09";
 
 
 var szSuccess               = "";
@@ -287,12 +287,12 @@ var app = {
                     "<div id='follow_text_id' class='text_follow'>Status: Off</div>" +
                 "</div>" +
 
-                
-//                "<div>" +
-//                    "<div id='phone_x_id'  class='text_test'>Phone Xarfcn:</div>" +
-//                    "<div id='sent_x_id'   class='text_test'>Sent to GO:</div>" +
-//                    "<div id='current_x_id' class='text_test'>Current GO Xarfcn:</div>" +
-//                  "</div>" +
+// Enable test display                
+                "<div>" +
+                    "<div id='phone_x_id'  class='text_test'>Phone Xarfcn:</div>" +
+                    "<div id='sent_x_id'   class='text_test'>Sent to GO:</div>" +
+                    "<div id='current_x_id' class='text_test'>Current GO Xarfcn:</div>" +
+                  "</div>" +
                         
 
                 
@@ -835,7 +835,7 @@ function FollowMyPhone( bStart, mySetTag)
             {
                 PrintLog(1, "Follow State: Done");
                 
-/*  Disable test display                
+//  Disable test display                
                 // Start test display------------------------------------------------------------------------------
                 // Update the test information...
                 var varTemp = phoneFollowXarfcn;
@@ -866,7 +866,7 @@ function FollowMyPhone( bStart, mySetTag)
                 }
                 document.getElementById("current_x_id").innerHTML = outText + " 0x" + varTemp.toString(16);
                 // End test display------------------------------------------------------------------------------
-*/
+//
                 
                 if( (phoneFollowXarfcn != 0) && (phoneFollowXarfcn == nxtyCurrentXarfcn) )
                 {
