@@ -27,6 +27,8 @@
 //                       Change minSdkVersion to 24, Android 7.0.
 //                       Added bw:xxxx, LTE is 5,10,15,20 MHz and WCDMA is fixed at 5MHz.                       
 //  10/07/20: 01.00.09:  Protect getBandwidth() in plugin since new with API 28.  So Android 9 and up are allowed to call getBandwidth().
+//  02/03/21: 01.91.10:  Modify status to includ searching and Band not supported.
+//
 //               TODO    
 //
 //  To Do:
@@ -70,7 +72,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.91.09";
+var szVersion               = "01.91.10";
 
 
 var szSuccess               = "";
@@ -81,6 +83,8 @@ var szNoStatus              = "No status response from unit so ICD version not k
 var bCnxToCu                = true;             // Set to true if connected locally to CU after reading local BoardConfig.
 var bCnxToOneBoxNu          = false;            // Set to true if connected to a 1-Box NU, all UART redirects are disabled.
 var bAllowAllTheTime        = true;             // Set to false if Android >= 10 and Cell info returns empth.
+var currentXarfcnZeroCount  = 0;
+
 
 var bPhoneInBackground      = false;    // Set to true if phone is in background.
 var bFollowMyPhoneFlag      = false;    // Set to true when phone is in Follow My Phone mode.
@@ -867,18 +871,37 @@ function FollowMyPhone( bStart, mySetTag)
                 document.getElementById("current_x_id").innerHTML = outText + " 0x" + varTemp.toString(16);
                 // End test display------------------------------------------------------------------------------
 //
-                
+                var myStatus = "  Not following";
                 if( (phoneFollowXarfcn != 0) && (phoneFollowXarfcn == nxtyCurrentXarfcn) )
                 {
-                    PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) );
+                    myStatus = "  Following";
                     SetFollowText( "Following" );
+                    currentXarfcnZeroCount = 0;
                 }
                 else
                 {
-                    PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) + "  Not following." );
-                    SetFollowText( "On" );
+                    if( nxtyCurrentXarfcn == 0 )
+                    {
+                        currentXarfcnZeroCount++
+                        if(currentXarfcnZeroCount < 5 )
+                        {
+                            myStatus = "  Searching";
+                            SetFollowText( "Searching" );
+                        }
+                        else
+                        {
+                            myStatus = "  Band not supported";
+                            SetFollowText( "Band not supported" );
+                        }
+                    }
+                    else
+                    {
+                        myStatus = "  Not Following";
+                        SetFollowText( "Not Following" );
+                    }
+                    
                 }
-
+                PrintLog(1, "Follow: Phone=0x" + phoneFollowXarfcn.toString(16) + "  Go request=0x" + nxtyFollowXarfcn.toString(16) + "  Go Current=0x" + nxtyCurrentXarfcn.toString(16) + myStatus );
                 
                 DisconnectAndStopSouthBoundIf();
 
