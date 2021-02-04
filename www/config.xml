@@ -119,12 +119,13 @@
     
 <platform name="android">
     <!-- Implement adaptive icon for Android (Per MV) -->
-    <resource-file src="res/values/colors.xml" target="/app/src/main/res/values/colors.xml"/>
+<!--    <resource-file src="res/values/colors.xml" target="/app/src/main/res/values/colors.xml"/>
     <icon background="@color/background" density="mdpi" foreground="res/icon/android/mdpi-foreground.png"             src="res/icon/android/icon@MDPI.png"/>
     <icon background="@color/background" density="hdpi" foreground="res/icon/android/hdpi-foreground.png"             src="res/icon/android/icon@HDPI.png"/>
     <icon background="@color/background" density="xhdpi" foreground="res/icon/android/xhdpi-foreground.png"           src="res/icon/android/icon@XHDPI.png"/>
     <icon background="@color/background" density="xxhdpi" foreground="res/icon/android/xxhdpi-foreground.png"         src="res/icon/android/icon@XXHDPI.png"/>
     <icon background="@color/background" density="xxxhdpi" foreground="res/icon/android/xxxhdpi-foreground.png"       src="res/icon/android/icon@XXXHDPI.png"/>
+-->    
 </platform>
 
     
