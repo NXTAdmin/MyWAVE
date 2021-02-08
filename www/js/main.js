@@ -27,7 +27,8 @@
 //                       Change minSdkVersion to 24, Android 7.0.
 //                       Added bw:xxxx, LTE is 5,10,15,20 MHz and WCDMA is fixed at 5MHz.                       
 //  10/07/20: 01.00.09:  Protect getBandwidth() in plugin since new with API 28.  So Android 9 and up are allowed to call getBandwidth().
-//  02/03/21: 01.91.10:  Modify status to includ searching and Band not supported.
+//  02/03/21: 01.91.10:  Modify status to include searching and Band not supported.
+//  02/08/21: 01.91.11:  Added all ICONs.
 //
 //               TODO    
 //
@@ -72,7 +73,7 @@ var bNaking                 = false;
 var isNetworkConnected      = null;
 var bGotUserInfoRspFromCloud    = false;
 var msgTimer                = null; 
-var szVersion               = "01.91.10";
+var szVersion               = "01.91.11";
 
 
 var szSuccess               = "";
